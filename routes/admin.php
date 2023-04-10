@@ -25,6 +25,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/', [CategoryController::class, 'store'])->name('categories.store');
         Route::post('/update', [CategoryController::class, 'update'])->name('categories.update');
         Route::get('/category-multi', [CategoryController::class, 'category_multi'])->name('categories.multi');
+        Route::get('/category-multi-data', [CategoryController::class, 'category_multi_data'])->name('categories.multi.data');
     });
 
     Route::group(['prefix' => 'product', 'as' => 'products.'], function () {

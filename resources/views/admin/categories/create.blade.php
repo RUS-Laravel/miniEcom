@@ -17,6 +17,9 @@
                                     <option data-display="Select" value="">Parent</option>
                                     @foreach ($parents as $parent)
                                     <option value="{{ $parent->id }}">{{ $parent->name }}</option>
+                                    @foreach ($parent->categories as $cat)
+                                    <option value="{{ $cat->id }}">---{{ $cat->name }}</option>
+                                    @endforeach
                                     @endforeach
                                 </select>
                             </div>
