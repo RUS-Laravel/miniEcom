@@ -32,7 +32,7 @@ class UserEditRequest extends FormRequest
                 [
                     'message' => 'Validation Error',
                     'status' => false,
-                    'data' => implode(',', $validator->errors()->all())
+                    'data' =>$validator->errors()->all()
                 ]
             )
         );

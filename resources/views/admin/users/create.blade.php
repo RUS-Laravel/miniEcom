@@ -1,4 +1,4 @@
-<div id="con-close-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+<div id="userInsertModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
     <div class="modal-dialog">
         <form action="{{ route('admin.users.store') }}" method="POST">
             @csrf
@@ -55,7 +55,7 @@
                     </div>
                 </div>
                 <div class="modal-footer border-top">
-                    <button type="submit" class="btn btn-info waves-effect waves-light">Create</button>
+                    <button type="button" data-insert="user-insert-button" class="btn btn-info waves-effect waves-light">Create</button>
                 </div>
             </div>
         </form>

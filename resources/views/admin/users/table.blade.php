@@ -16,17 +16,25 @@
                 <td>{{ $item->name }}</td>
                 <td>{{ $item->surname }}</td>
                 <td>{{ $item->email }}</td>
-                <td>{{ $item->is_user }}</td>
+                <td>
+                    @if ($item->is_user == 1)
+                        Admin
+                    @else
+                        Client
+                    @endif
+                </td>
                 <td>
                     <button type="button" class="btn btn-soft-warning waves-effect waves-light"
                             data-control="user-edit-button" data-id="{{ $item->id }}"
                             data-url="{{ route('admin.users.edit', $item->id) }}">Edit
                     </button>
                     @if (auth()->id() != $item->id)
-                        <form class="d-inline" action="{{ route('admin.users.delete', $item->id) }}" method="POST">
-                            @csrf
-                            <button type="submit" class="btn btn-soft-danger waves-effect waves-light">Delete</button>
-                        </form>
+                     
+                        <button type="button" 
+                        data-con="user_del_button" 
+                        data-id="{{ $item->id }}" 
+                        data-url="{{ route('admin.users.delete', $item->id) }}" class="btn btn-soft-danger waves-effect waves-light">Delete</button>
+                        
                     @endif
                 </td>
             </tr>

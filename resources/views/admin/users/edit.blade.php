@@ -44,12 +44,12 @@
                         <div class="col-12">
                             <div class="mt-3">
                                 <div class="custom-control custom-radio">
-                                    <input type="radio" id="customRadioedit1" name="is_user" value="1" class="custom-control-input">
-                                    <label class="custom-control-label" for="customRadioedit1">Admin User</label>
+                                    <input type="radio" id="customEditRadio1" name="is_user" value="1" class="custom-control-input">
+                                    <label class="custom-control-label" for="customEditRadio1">Admin User</label>
                                 </div>
                                 <div class="custom-control custom-radio">
-                                    <input type="radio" id="customRadioEdit2" name="is_user" value="2" class="custom-control-input">
-                                    <label class="custom-control-label" for="customRadioEdit2">Client User</label>
+                                    <input type="radio" id="customEditRadio2" name="is_user" value="2" class="custom-control-input">
+                                    <label class="custom-control-label" for="customEditRadio2">Client User</label>
                                 </div>
                             </div>
                         </div>

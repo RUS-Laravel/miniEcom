@@ -11,34 +11,43 @@ class UserController extends Controller
 {
     public function index()
     {
-        $data = User::all();
-
-        return view('admin.users.index', compact('data'));
+        
+        return view('admin.users.index');
     }
 
-    public function edit($id)
-    {
+    public function data(){
+        $data = User::all();
+        return response()->json([
+            'data' => $data,
+            'table' => view('admin.users.table', compact('data'))->render(),
+        ]);
+    }
+
+    public function store(UserStoreRequest $request){
+        //dd($request->all());
+        $res = User::create($request->all());
+        return response()->json([
+            'message' => $res ? 'User inserted' : 'Error',
+            'status' => (bool)$res
+        ]);
+    }
+
+    public function edit($id){
         return response()->json(User::find($id));
     }
 
-    public function delete($id)
-    {
-        User::whereId($id)->delete();
-        return back();
-    }
-
-    public function store(UserStoreRequest $request)
-    {
-        User::create($request->all());
-        return back();
-    }
-
-    public function update(UserEditRequest $request)
-    {
-        $result =  User::where('id', $request->id)->update($request->all());
+    public function update(UserEditRequest $request){
+        $result = User::where('id',$request->id)->update($request->all());
         return response()->json([
-            'message' => $result ? 'User Updated' : 'Error',
+            'message' => $result ? 'User updated' : 'Error',
             'status' => (bool)$result
+        ]);
+    }
+    public function delete($id){
+        $del = User::find($id)->delete();
+        return response()->json([
+            'message' => 'User deleted',
+            'status' => (bool)$del
         ]);
     }
 }

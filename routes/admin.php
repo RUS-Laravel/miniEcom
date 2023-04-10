@@ -11,8 +11,9 @@ Route::middleware('auth')->group(function () {
 
     Route::group(['prefix' => 'users'], function () {
         Route::get('/', [UserController::class, 'index'])->name('users.index');
-        Route::get('/edit/{id}', [UserController::class, 'edit'])->name('users.edit');
-        Route::post('/delete/{id}', [UserController::class, 'delete'])->name('users.delete');
+        Route::get('/data', [UserController::class, 'data'])->name('users.data');
+        Route::get('/edit/{id?}', [UserController::class, 'edit'])->name('users.edit');
+        Route::get('/delete/{id?}', [UserController::class, 'delete'])->name('users.delete');
         Route::post('/', [UserController::class, 'store'])->name('users.store');
         Route::post('/update', [UserController::class, 'update'])->name('users.update');
     });
@@ -31,5 +32,6 @@ Route::middleware('auth')->group(function () {
     Route::group(['prefix' => 'product', 'as' => 'products.'], function () {
         Route::get('/', [ProductController::class, 'index'])->name('index');
         Route::get('/create', [ProductController::class, 'create'])->name('create');
+        Route::post('/create', [ProductController::class, 'store'])->name('store');
     });
 });

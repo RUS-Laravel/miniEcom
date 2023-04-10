@@ -39,7 +39,14 @@ class UserStoreRequest extends FormRequest
         // dd($validator->errors()->messages());
         # ya json formatında yada view html formatında response type
         throw new HttpResponseException(
-            back()->withErrors($validator->errors()->all())
+            //back()->withErrors($validator->errors()->all())
+            response()->json(
+                [
+                   'message' => 'Validation error',
+                   'status' => false,
+                   'data' =>$validator->errors()->all()
+                ]
+            )
         );
     }
 }
