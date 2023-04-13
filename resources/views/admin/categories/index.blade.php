@@ -30,6 +30,7 @@
     <script>
         $(document).ready(function() {
             table();
+            $("#selectize-select").selectize();
         });
 
         function table() {
@@ -42,7 +43,7 @@
                 }
             });
         }
-        $("#selectize-select").selectize();
+
         let $edit_modal = $('#editModal');
 
         $(document.body).on('click', '[data-control="edit-button"]', function() {
@@ -58,9 +59,13 @@
                     else
                         $edit_modal.find('#customRadioEdit2').attr('checked', true)
 
-
                     $edit_modal.modal('show')
-                    $("#selectize-select-edit").selectize();
+                    setTimeout(() => {
+                        var $select = $("#selectize-select-edit").selectize();
+                        var selectize = $select[0].selectize;
+                        var defaultValueIds = [response.parent_id];
+                        selectize.setValue(defaultValueIds);
+                    }, 100);
                 }
             });
         })
@@ -81,12 +86,8 @@
                             Swal.fire(response.message, '', 'success')
                         }
                     });
-
                 }
             })
-
-
-
         })
 
         $(document.body).on('click', '[data-control="update-button"]', function() {

@@ -17,12 +17,24 @@ class ProductController extends BaseController
 
     public function create()
     {
-        $parents = Category::whereNull('parent_id')->with('categories')->get();
-        return view('admin.products.create',compact('parents'));
+        $parents = Category::whereNull('parent_id')->with('categories.categories')->get();
+        return view('admin.products.create', compact('parents'));
     }
+
+
+    public function data()
+    {
+        $data = Product::with('category:id,name')->get();
+        return response()->json([
+            'data' => $data,
+            'table' => view('admin.products.table', compact('data'))->render(),
+        ]);
+    }
+
 
     public function store(ProductStoreRequest $request)
     {
-        return self::json_response(data: $request->all());
+        Product::create($request->all());
+        return redirect()->route('admin.products.index');
     }
 }

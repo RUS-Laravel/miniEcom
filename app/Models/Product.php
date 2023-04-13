@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Product extends Model
 {
@@ -11,6 +12,13 @@ class Product extends Model
 
     protected $fillable = [
         'title', 'description', 'slug', 'code', 'status', 'category_id', 'stock', 'price', 'discount'
+    ];
+
+    protected $appends = ['total', 'total_formatted', 'diff'];
+
+    protected $casts = [
+        'created_at' => 'date:d-m-Y',
+        'updated_at' => 'datetime:Y-m-d H:00',
     ];
 
     // public function setSlugAttribute($value)
@@ -21,11 +29,33 @@ class Product extends Model
     public function slug()
     {
         return new Attribute(
-            set: fn ($value) => str($value)->slug('-')
+            set: fn ($value) => str($value)->slug('-')->toString()
         );
     }
 
-    public function category()
+    public function getTotalAttribute(): float
+    {
+        return  $this->stock * $this->price;
+    }
+
+    public function getDiffAttribute()
+    {
+        return now()->diffForHumans($this->updated_at);
+    }
+
+    public function getTotalFormattedAttribute(): string
+    {
+        return  number_format($this->stock * $this->price, 2) . " AZN";
+    }
+
+    // public function total(): Attribute
+    // {
+    //     return new Attribute(
+    //         get: fn () => $this->stock * $this->price
+    //     );
+    // }
+
+    public function category(): HasOne
     {
         return $this->hasOne(Category::class, 'id', 'category_id');
     }

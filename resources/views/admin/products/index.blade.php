@@ -24,5 +24,20 @@
 @push('js')
     <script src="{{ url('assets/libs/sweetalert2/sweetalert2.min.js') }}"></script>
     <script src="{{ url('assets/libs/selectize/js/standalone/selectize.min.js') }}"></script>
-    <script></script>
+    <script>
+        $(document).ready(function() {
+            table();
+        });
+
+        function table() {
+            $.ajax({
+                url: '{{ route('admin.products.data') }}',
+                success: function(response) {
+                    if (response.table !== undefined) {
+                        $('[data-control="data-table"]').html(response.table)
+                    }
+                }
+            });
+        }
+    </script>
 @endpush

@@ -8,7 +8,7 @@
                     @csrf
                     <div class="form-group">
                         <label>Category</label> <br />
-                        <select id="selectize-select" name="parent_id">
+                        <select id="selectize-select" name="category_id">
                             <option data-display="Select" value="">Parent</option>
                             @foreach ($parents as $parent)
                             <option value="{{ $parent->id }}">{{ $parent->name }}</option>
