@@ -24,5 +24,43 @@
 @push('js')
     <script src="{{ url('assets/libs/sweetalert2/sweetalert2.min.js') }}"></script>
     <script src="{{ url('assets/libs/selectize/js/standalone/selectize.min.js') }}"></script>
-    <script></script>
+    <script>
+        $(document).ready(function() {
+            table();
+        });
+        function table() {
+            $.ajax({
+                url: "{{ route('admin.products.data') }}",
+                success: function(response) {
+                    if (response.table !== undefined) {
+                        $('[data-control="data-table"]').html(response.table)
+                    }
+                }
+            });
+        }
+
+        $(document.body).on('click', '[data-control="delete-button"]', function() {
+            Swal.fire({
+                title: 'Do you want to save the changes?',
+                showDenyButton: false,
+                showCancelButton: true,
+                confirmButtonText: 'Delete',
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        url: $(this).data('url'),
+                        method: 'DELETE',
+                        success: function(response) {
+                            table()
+                            Swal.fire(response.message, '', 'success')
+                        }
+                    });
+
+                }
+            })
+
+
+
+        })
+    </script>
 @endpush

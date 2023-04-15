@@ -33,5 +33,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [ProductController::class, 'index'])->name('index');
         Route::get('/create', [ProductController::class, 'create'])->name('create');
         Route::post('/create', [ProductController::class, 'store'])->name('store');
+        Route::get('/data', [ProductController::class, 'data'])->name('data');
+        Route::get('/edit/{id}', [ProductController::class, 'edit'])->name('edit');
+        Route::post('/update', [ProductController::class, 'update'])->name('update');
+        Route::delete('/delete/{id}', [ProductController::class, 'delete'])->name('delete');
     });
 });
