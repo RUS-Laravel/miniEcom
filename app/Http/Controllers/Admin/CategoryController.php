@@ -12,7 +12,7 @@ class CategoryController extends Controller
     public function index()
     {
         $parents = Category::all();
-        
+
         return view('admin.categories.index', compact('parents'));
     }
 
@@ -28,7 +28,7 @@ class CategoryController extends Controller
 
     public function edit($id)
     {
-        
+
         return response()->json(Category::find($id));
     }
 
@@ -60,16 +60,18 @@ class CategoryController extends Controller
         ]);
     }
 
-    public function category_multi(){
-        $parents = Category::whereNull('parent_id')->with('categories')->get();
-        return view('admin.categories.cat_multi',compact('parents'));
+    public function category_multi()
+    {
+        $parents = Category::whereNull('parent_id')->with('categories.categories')->get();
+        return view('admin.categories.cat_multi', compact('parents'));
     }
 
-    public function category_multi_data(){
-        $data = Category::whereNull('parent_id')->with('categories')->get();
+    public function category_multi_data()
+    {
+        $parents = Category::whereNull('parent_id')->with('categories.categories')->get();
         return response()->json([
-            'data' => $data,
-            'multicat' => view('admin.categories.multi_data_cat', compact('data'))->render(),
+            'data' => $parents,
+            'multicat' => view('admin.categories.multi_data_cat', compact('parents'))->render(),
         ]);
     }
 }

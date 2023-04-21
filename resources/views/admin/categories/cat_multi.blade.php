@@ -9,10 +9,10 @@
                     @include('admin.categories.error')
                 </p>
 
-                    <div data-control="category-data-table">
-                        @include('admin.categories.multi_data_cat')
-                    </div><!-- end col -->
-                
+                <div data-control="category-data-table">
+                    {{-- @include('admin.categories.multi_data_cat') --}}
+                </div><!-- end col -->
+
             </div>
         </div>
     </div>
@@ -21,7 +21,7 @@
 @endsection
 @push('css-lib')
     <link href="{{ url('assets/libs/selectize/css/selectize.bootstrap3.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ url('assets/libs/nestable2/jquery.nestable.min.css')}}" rel="stylesheet" />
+    <link href="{{ url('assets/libs/nestable2/jquery.nestable.min.css') }}" rel="stylesheet" />
 @endpush
 @push('css')
     <!-- Sweet Alert-->
@@ -29,35 +29,35 @@
 @endpush
 @push('js')
     <script src="{{ url('assets/libs/sweetalert2/sweetalert2.min.js') }}"></script>
-    <script src="{{ url('assets/libs/nestable2/jquery.nestable.min.js')}}"></script>
-    <script src="{{ url('assets/js/pages/nestable.init.js')}}"></script>
+    <script src="{{ url('assets/libs/nestable2/jquery.nestable.min.js') }}"></script>
+    <script src="{{ url('assets/js/pages/nestable.init.js') }}"></script>
     <script src="{{ url('assets/libs/selectize/js/standalone/selectize.min.js') }}"></script>
     <script>
-        $(document).ready(function(){
-                fetchData();
-                $('[data-action="expand-all"]').click(function(){
-                    $('[data-parent="child"]').slideDown("slow");
-                    //$(".dd-collapsed .dd-expand").css("display", "block");  
-                });
-                $('[data-action="collapse-all"]').click(function(){
-                    $('[data-parent="child"]').slideUp("slow");
-                    //$(".dd-collapsed .dd-expand").css("display", "none");
-                    //$('[data-id="2"]').addClass('dd-colapsed');
-                });
-                /*$('[data-action="collapse"]').click(function(){
-                    console.log('hi')
-                    $('.dd-collapse').css('display','none');
-                    $('.dd-expand').css('display','block');
-                    $('.dd-collapsed').css('display','block');
-                    $(this).data('parent').slideUp();
-                });
-                $('[data-action="expand"]').click(function(){
-                    console.log('hi')
-                    $('.dd-expand').css('display','none');
-                    $('.dd-collapse').css('display','block');    
-                    $(this).data('parent').slideDown();
-                });*/
-                
+        $(document).ready(function() {
+            fetchData();
+            $('[data-action="expand-all"]').click(function() {
+                $('[data-parent="child"]').slideDown("slow");
+                //$(".dd-collapsed .dd-expand").css("display", "block");  
+            });
+            $('[data-action="collapse-all"]').click(function() {
+                $('[data-parent="child"]').slideUp("slow");
+                //$(".dd-collapsed .dd-expand").css("display", "none");
+                //$('[data-id="2"]').addClass('dd-colapsed');
+            });
+            /*$('[data-action="collapse"]').click(function(){
+                console.log('hi')
+                $('.dd-collapse').css('display','none');
+                $('.dd-expand').css('display','block');
+                $('.dd-collapsed').css('display','block');
+                $(this).data('parent').slideUp();
+            });
+            $('[data-action="expand"]').click(function(){
+                console.log('hi')
+                $('.dd-expand').css('display','none');
+                $('.dd-collapse').css('display','block');    
+                $(this).data('parent').slideDown();
+            });*/
+
         });
 
         function fetchData() {
@@ -82,10 +82,10 @@
                     $edit_modal.find('[name="name"]').val(response.name)
                     $edit_modal.find('[name="description"]').val(response.description)
                     // if null olanda parent category yazili olan option select olsun
-                    if(response.parent_id == null)
+                    if (response.parent_id == null)
                         $edit_modal.find('[name="parent_id"]').val('Parent Category').attr('selected', true)
                     else
-                    // elesede ise alt category-nin parentin name secili olsun
+                        // elesede ise alt category-nin parentin name secili olsun
                         $edit_modal.find('[name="parent_id"]').val(response.name).attr('selected', true)
                     if (response.status == 1)
                         $edit_modal.find('#customRadioEdit1').attr('checked', true)
@@ -94,7 +94,11 @@
 
 
                     $edit_modal.modal('show')
-                    $("#selectize-select-edit").selectize();
+
+                    var $select = $("#selectize-select-edit").selectize();
+                        var selectize = $select[0].selectize;
+                        var defaultValueIds = [response.parent_id];
+                        selectize.setValue(defaultValueIds);
                 }
             });
         })

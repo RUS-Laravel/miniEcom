@@ -2,9 +2,11 @@
     <thead>
         <tr>
             <th>#</th>
-            <th>Parent</th>
-            <th>Name</th>
-            <th>Description Name</th>
+            <th>Category</th>
+            <th>Title</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Total</th>
             <th>Status</th>
             <th></th>
         </tr>

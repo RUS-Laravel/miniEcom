@@ -14,7 +14,7 @@
                             <div class="form-group">
                                 <label>Select</label> <br />
                                 <select id="selectize-select-edit" name="parent_id">
-                                    <!--<option data-display="Select" value="">Parent</option>-->
+                                    <option data-display="Select" value="">Parent</option>-->
                                     @foreach ($parents as $data)
                                     <option value="{{ $data->id }}">{{ $data->name }}</option>
                                         @foreach ($data->categories as $cat)
