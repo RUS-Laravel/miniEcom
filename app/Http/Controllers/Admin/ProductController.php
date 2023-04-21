@@ -31,15 +31,6 @@ class ProductController extends BaseController
         ]);
     }
 
-    public function data()
-    {
-        $data = Product::with('category:id,name')->get();
-        return response()->json([
-            'data' => $data,
-            'table' => view('admin.products.table', compact('data'))->render(),
-        ]);
-    }
-
     public function store(ProductStoreRequest $request)
     {
         //return self::json_response(data: $request->all());
