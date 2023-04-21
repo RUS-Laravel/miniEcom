@@ -48,6 +48,16 @@ class Product extends Model
         return  number_format($this->stock * $this->price, 2) . " AZN";
     }
 
+    public function getPricePrettyAttribute(): string
+    {
+        return  number_format($this->price, 2) . " AZN";
+    }
+
+    public function getDiscountPriceAttribute(): string
+    {
+        return  number_format($this->price - ($this->price * $this->discount / 100), 2) . " AZN";
+    }
+
     // public function total(): Attribute
     // {
     //     return new Attribute(
@@ -58,5 +68,10 @@ class Product extends Model
     public function category(): HasOne
     {
         return $this->hasOne(Category::class, 'id', 'category_id');
+    }
+
+    public function images()
+    {
+        return $this->morphMany(Image::class, 'imageable');
     }
 }

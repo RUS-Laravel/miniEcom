@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Web\IndexController;
 use App\Http\Controllers\Web\LoginController;
+use App\Http\Controllers\Web\ProductController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,3 +18,5 @@ Route::prefix('auth')->group(function () {
     Route::post('/login', [LoginController::class, 'login'])->name('auth.login.post');
     Route::get('/logout', [LoginController::class, 'logout'])->name('auth.logout');
 });
+
+Route::get('/product/{slug}_{id}', [ProductController::class, 'detail'])->name('product.detail');

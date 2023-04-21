@@ -11,11 +11,12 @@ class UserController extends Controller
 {
     public function index()
     {
-        
+
         return view('admin.users.index');
     }
 
-    public function data(){
+    public function data()
+    {
         $data = User::all();
         return response()->json([
             'data' => $data,
@@ -23,27 +24,35 @@ class UserController extends Controller
         ]);
     }
 
-    public function store(UserStoreRequest $request){
+    public function store(UserStoreRequest $request)
+    {
         //dd($request->all());
         $res = User::create($request->all());
+        // $res->image()->create([
+        //     'name' => 'picture.jpg',
+        //     'path' => 'images/users/'
+        // ]);
         return response()->json([
             'message' => $res ? 'User inserted' : 'Error',
             'status' => (bool)$res
         ]);
     }
 
-    public function edit($id){
+    public function edit($id)
+    {
         return response()->json(User::find($id));
     }
 
-    public function update(UserEditRequest $request){
-        $result = User::where('id',$request->id)->update($request->all());
+    public function update(UserEditRequest $request)
+    {
+        $result = User::where('id', $request->id)->update($request->all());
         return response()->json([
             'message' => $result ? 'User updated' : 'Error',
             'status' => (bool)$result
         ]);
     }
-    public function delete($id){
+    public function delete($id)
+    {
         $del = User::find($id)->delete();
         return response()->json([
             'message' => 'User deleted',

@@ -21,4 +21,9 @@ class Category extends Model
     {
         return $this->hasOne(self::class, 'id', 'parent_id');
     }
+
+    public function image()
+    {
+        return $this->morphOne(Image::class, 'imageable');
+    }
 }

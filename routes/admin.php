@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\OrderController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->group(function () {
@@ -36,6 +37,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/data', [ProductController::class, 'data'])->name('data');
         Route::get('/edit/{id}', [ProductController::class, 'edit'])->name('edit');
         Route::post('/update', [ProductController::class, 'update'])->name('update');
-        Route::delete('/delete/{id}', [ProductController::class, 'delete'])->name('delete');
+        Route::post('/delete/{id}', [ProductController::class, 'delete'])->name('delete');
+    });
+
+    Route::group(['prefix' => 'orders', 'as' => 'orders.'], function () {
+        Route::get('/', [OrderController::class, 'index'])->name('index');
+        Route::get('/data', [OrderController::class, 'data'])->name('data');
     });
 });

@@ -9,12 +9,12 @@
                     <div class="form-group">
                         <label>Category</label> <br />
                         <select id="selectize-select" name="category_id">
-                            <option data-display="Select" value="">Parent</option>
+                            <option data-display="Select" value="">Choose Category</option>
                             @foreach ($parents as $parent)
-                            <option value="{{ $parent->id }}">{{ $parent->name }}</option>
-                            @foreach ($parent->categories as $cat)
-                            <option value="{{ $cat->id }}">---{{ $cat->name }}</option>
-                            @endforeach
+                                <option value="{{ $parent->id }}">{{ $parent->name }}</option>
+                                @foreach ($parent->categories as $cat)
+                                    <option value="{{ $cat->id }}">---{{ $cat->name }}</option>
+                                @endforeach
                             @endforeach
                         </select>
                     </div>

@@ -49,7 +49,7 @@
                 if (result.value) {
                     $.ajax({
                         url: $(this).data('url'),
-                        method: 'DELETE',
+                        method: 'POST',
                         success: function(response) {
                             table()
                             Swal.fire(response.message, '', 'success')

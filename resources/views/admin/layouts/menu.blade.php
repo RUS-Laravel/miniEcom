@@ -42,6 +42,13 @@
                     </a>
                 </li>
 
+                <li>
+                    <a href="{{ route('admin.orders.index') }}">
+                        <i class="mdi mdi-cart-outline"></i>
+                        <span> @lang('Orders') </span>
+                    </a>
+                </li>
+
             </ul>
         </div>
         <!-- End Sidebar -->

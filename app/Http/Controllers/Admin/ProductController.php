@@ -40,9 +40,11 @@ class ProductController extends BaseController
 
     public function edit($id)
     {
-        $cats = Category::whereNull('parent_id')->with('categories')->get();
+        // $cats = Category::whereNull('parent_id')->with('categories')->get();
         $product = Product::find($id);
-        return view('admin.products.edit', compact('cats','product'));
+        $parents = Category::whereNull('parent_id')->with('categories.categories')->get();
+
+        return view('admin.products.edit', compact('parents','product'));
     }
 
     public function update(ProductStoreRequest $request)

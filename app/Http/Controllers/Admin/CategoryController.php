@@ -47,7 +47,11 @@ class CategoryController extends Controller
 
     public function store(CategoryStoreRequest $request)
     {
-        Category::create($request->all());
+        $result =  Category::create($request->all());
+        // $result->image()->create([
+        //     'name' => 'picture2.jpg',
+        //     'path' => 'images/categories/'
+        // ]);
         return back();
     }
 

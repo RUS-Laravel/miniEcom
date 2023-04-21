@@ -16,7 +16,7 @@ class BaseRequest extends FormRequest
     protected function failedValidation(Validator $validator)
     {
 
-        dd($validator->errors());
+        // dd($validator->errors());
         //  if ($this->ajax() or $this->routeIs('api/*'))
         if ($this->ajax())
             throw new HttpResponseException(
