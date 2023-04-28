@@ -21,12 +21,16 @@ class ProductController extends BaseController
         return view('admin.products.create', compact('parents'));
     }
 
-    /*public function store_image(ProductStoreRequest $request){
+    public function store_image(ProductStoreRequest $request)
+    {
         $image = $request->file('file');
-        $imageName = time().rand(1,100).'.'.$image->extension();
-        $image->move(public_path('images'),$imageName);
-        return response()->json(['success'=>$imageName]);
-    }*/
+        $imageName = time() . rand(1, 100) . '.' . $image->extension();
+        $image->move(public_path('images'), $imageName);
+        return response()->json([
+            'success' => $imageName ?? null,
+            '$image' => $image
+        ]);
+    }
 
     public function data()
     {
@@ -38,10 +42,10 @@ class ProductController extends BaseController
     }
 
     public function store(ProductStoreRequest $request)
-    { 
+    {
         //return self::json_response(data: $request->all());
-       dd($_FILES);
-       dd($request->file('file'));
+        dd($_FILES);
+        dd($request->file('file'));
         /*$imageName = time().rand(1,100).'.'.$image->getClientOriginalExtension();
         $image->move(public_path('/images/products'),$imageName);
         $res = Product::create($request->all());
@@ -58,12 +62,12 @@ class ProductController extends BaseController
         $product = Product::find($id);
         $parents = Category::whereNull('parent_id')->with('categories.categories')->get();
 
-        return view('admin.products.edit', compact('parents','product'));
+        return view('admin.products.edit', compact('parents', 'product'));
     }
 
     public function update(ProductStoreRequest $request)
     {
-        Product::where('id', $request->id)->update($request->all());
+        Product::where('id', $request->id)->update($request->only(app(Product::class)->getFillable()));
         return redirect()->route('admin.products.index');
     }
 
@@ -72,7 +76,4 @@ class ProductController extends BaseController
         Product::find($id)->delete();
         return redirect()->route('admin.products.index');
     }
-
-
-   
 }

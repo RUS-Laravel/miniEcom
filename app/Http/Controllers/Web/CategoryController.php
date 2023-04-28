@@ -11,7 +11,7 @@ class CategoryController extends Controller
 {
     public function __construct()
     {
-        view()->share('categories', Product::with('category:id,name')->get());
+        view()->share('categories', Product::with('category:id,name')->active()->get());
         view()->share('cats', Category::with('categories')->get());
     }
     public function catalog($id){

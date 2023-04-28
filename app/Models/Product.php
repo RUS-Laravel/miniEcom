@@ -21,17 +21,18 @@ class Product extends Model
         'updated_at' => 'datetime:Y-m-d H:00',
     ];
 
-    // public function setSlugAttribute($value)
-    // {
-    //     return $this->attributes['slug'] = str($value)->slug();
-    // }
-
-    public function slug()
+    public function setSlugAttribute($value)
     {
-        return new Attribute(
-            set: fn ($value) => str($value)->slug('-')->toString()
-        );
+        return $this->attributes['slug'] = str($value)->slug();
     }
+
+    // public function slug()
+    // {
+    //     return new Attribute(
+    //         set: fn ($value) => str($value)->slug('-')->toString(),
+    //         get: fn () => $this->slug,
+    //     );
+    // }
 
     public function getTotalAttribute(): float
     {
@@ -73,5 +74,10 @@ class Product extends Model
     public function images()
     {
         return $this->morphMany(Image::class, 'imageable');
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('status', 1);
     }
 }

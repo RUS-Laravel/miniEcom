@@ -10,7 +10,7 @@ class IndexController extends Controller
 {
     public function index()
     {
-        $products = Product::with('category')->get();
+        $products = Product::with('category')->active()->get();
         return view('web.pages.index', compact('products'));
     }
 }

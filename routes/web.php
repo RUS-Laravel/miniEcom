@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Web\CartController;
 use App\Http\Controllers\Web\CategoryController;
 use App\Http\Controllers\Web\IndexController;
 use App\Http\Controllers\Web\LoginController;
@@ -22,3 +23,9 @@ Route::prefix('auth')->group(function () {
 
 Route::get('category/{id?}', [CategoryController::class, 'catalog'])->name('catalog.show');
 Route::get('/product/{slug}_{id}', [ProductController::class, 'detail'])->name('product.detail');
+
+Route::prefix('cart')->group(function () {
+    Route::get('/', [CartController::class, 'index'])->name('cart.index');
+    Route::post('add-to-cart', [CartController::class, 'addToCart'])->name('cart.addToCart');
+    Route::get('remove-item/{rowId}', [CartController::class, 'remove'])->name('cart.remove');
+});

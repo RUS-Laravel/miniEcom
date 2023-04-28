@@ -37,7 +37,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/data', [ProductController::class, 'data'])->name('data');
         Route::get('/edit/{id}', [ProductController::class, 'edit'])->name('edit');
         Route::post('/update', [ProductController::class, 'update'])->name('update');
-        //Route::post('/create-image', [ProductController::class, 'store_image'])->name('store.image');
+        Route::post('/create-image', [ProductController::class, 'store_image'])->name('store_image');
         Route::post('/delete/{id}', [ProductController::class, 'delete'])->name('delete');
     });
 

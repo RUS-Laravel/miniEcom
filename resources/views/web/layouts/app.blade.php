@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ config('app.locale') }}">
 
 <head>
     <title>{{ config('app.name') }} - @yield('title')</title>
@@ -50,7 +50,7 @@
                             <!-- Logo -->
                             <div class="logo-container">
                                 <div class="logo-wrap">
-                                    <a href="{{route('web.index')}}">
+                                    <a href="{{ route('web.index') }}">
                                         <img class="logo-dark" src="img/logo_dark.png" alt="logo">
                                     </a>
                                 </div>
@@ -80,23 +80,23 @@
                             <div class="nav-cart clearfix hidden-sm hidden-xs">
                                 <div class="nav-cart-outer">
                                     <div class="nav-cart-inner">
-                                        <a href="#" class="nav-cart-icon">
-                                            2
+                                        <a href="{{ route('cart.index') }}" class="nav-cart-icon">
+                                            {{ Cart::count() }}
                                         </a>
                                     </div>
                                 </div>
                                 <div class="nav-cart-amount">
-                                    <a href="#"> $1569.99</a>
+                                    <a href="#"> {{ Cart::total() }}</a>
                                 </div>
                             </div> <!-- end cart -->
 
                             <div class="collapse navbar-collapse" id="navbar-collapse">
                                 <ul class="nav navbar-nav">
-                            
+
                                     <li class="dropdown">
-                                        <a href="{{route('web.index')}}">Home</a><i class="fa fa-angle-down dropdown-trigger"></i>
+                                        <a href="{{ route('web.index') }}">Home</a><i class="fa fa-angle-down dropdown-trigger"></i>
                                     </li>
-                            
+
                                     <li class="dropdown">
                                         <a href="#">Shop</a><i class="fa fa-angle-down dropdown-trigger"></i>
                                         <ul class="dropdown-menu">
@@ -107,12 +107,12 @@
                                             <li><a href="shop-checkout.html">Checkout</a></li>
                                         </ul>
                                     </li>
-                            
-                            
+
+
                                     <li class="mobile-links hidden-lg hidden-md">
                                         <a href="#">My Account</a>
                                     </li>
-                            
+
                                     <!-- Mobile search -->
                                     <li id="mobile-search" class="hidden-lg hidden-md">
                                         <form method="get" class="mobile-search">
@@ -122,7 +122,7 @@
                                             </button>
                                         </form>
                                     </li>
-                            
+
                                 </ul> <!-- end menu -->
                             </div> <!-- end collapse -->
 
@@ -153,7 +153,7 @@
 
         <div class="content-wrapper oh">
 
-         @yield('web-content')
+            @yield('web-content')
 
         </div> <!-- end content wrapper -->
     </main> <!-- end main wrapper -->

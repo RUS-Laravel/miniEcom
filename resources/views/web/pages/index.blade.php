@@ -1,4 +1,5 @@
 @extends('web.layouts.app')
+@section('title', __('Home'))
 @section('web-content')
     <div class="products-grid-wrap clearfix">
         <div id="products-grid">
@@ -23,7 +24,7 @@
                             </div>
                             <div class="product-details valign">
                                 <span class="category">
-                                    <a href="{{route('catalog.show',$product->category_id)}}">{{ $product->category->name }}</a>
+                                    <a href="{{ route('catalog.show', $product->category_id) }}">{{ $product->category->name }}</a>
                                 </span>
                                 <h3 class="product-title">
                                     <a href="{{ route('product.detail', [
@@ -49,7 +50,7 @@
                                     </span>
                                 @endif
                                 <div class="btn-quickview">
-                                    <a href="{{route('product.detail', ['slug'=>$product->slug,'id'=>$product->id])}}" class="btn btn-md btn-color">
+                                    <a href="{{ route('product.detail', ['slug' => $product->slug, 'id' => $product->id]) }}" class="btn btn-md btn-color">
                                         <span>Quickview</span>
                                     </a>
                                 </div>
