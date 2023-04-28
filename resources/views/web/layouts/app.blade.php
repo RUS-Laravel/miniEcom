@@ -50,7 +50,7 @@
                             <!-- Logo -->
                             <div class="logo-container">
                                 <div class="logo-wrap">
-                                    <a href="index.html">
+                                    <a href="{{route('web.index')}}">
                                         <img class="logo-dark" src="img/logo_dark.png" alt="logo">
                                     </a>
                                 </div>
@@ -92,35 +92,11 @@
 
                             <div class="collapse navbar-collapse" id="navbar-collapse">
                                 <ul class="nav navbar-nav">
-
+                            
                                     <li class="dropdown">
-                                        <a href="#">Home</a><i class="fa fa-angle-down dropdown-trigger"></i>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="index.html">Home</a></li>
-                                            <li><a href="index-2.html">Home 2</a></li>
-                                            <li><a href="index-3.html">Home 3</a></li>
-                                        </ul>
+                                        <a href="{{route('web.index')}}">Home</a><i class="fa fa-angle-down dropdown-trigger"></i>
                                     </li>
-
-                                    <li class="dropdown">
-                                        <a href="#">Pages</a><i class="fa fa-angle-down dropdown-trigger"></i>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="about-us.html">About Us</a></li>
-                                            <li><a href="contact.html">Contact</a></li>
-                                            <li><a href="coming-soon.html">Coming Soon</a></li>
-                                            <li><a href="404.html">404</a></li>
-                                        </ul>
-                                    </li>
-
-                                    <li class="dropdown">
-                                        <a href="#">Blog</a><i class="fa fa-angle-down dropdown-trigger"></i>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="blog-standard.html">Standard</a></li>
-                                            <li><a href="blog-masonry.html">Masonry</a></li>
-                                            <li><a href="blog-single.html">Single Post</a></li>
-                                        </ul>
-                                    </li>
-
+                            
                                     <li class="dropdown">
                                         <a href="#">Shop</a><i class="fa fa-angle-down dropdown-trigger"></i>
                                         <ul class="dropdown-menu">
@@ -131,19 +107,12 @@
                                             <li><a href="shop-checkout.html">Checkout</a></li>
                                         </ul>
                                     </li>
-
-                                    <li class="dropdown">
-                                        <a href="#">Elements</a><i class="fa fa-angle-down dropdown-trigger"></i>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="shortcodes.html">Shortcodes</a></li>
-                                            <li><a href="typography.html">Typography</a></li>
-                                        </ul>
-                                    </li> <!-- end elements -->
-
+                            
+                            
                                     <li class="mobile-links hidden-lg hidden-md">
                                         <a href="#">My Account</a>
                                     </li>
-
+                            
                                     <!-- Mobile search -->
                                     <li id="mobile-search" class="hidden-lg hidden-md">
                                         <form method="get" class="mobile-search">
@@ -153,7 +122,7 @@
                                             </button>
                                         </form>
                                     </li>
-
+                            
                                 </ul> <!-- end menu -->
                             </div> <!-- end collapse -->
 

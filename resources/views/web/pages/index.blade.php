@@ -23,7 +23,7 @@
                             </div>
                             <div class="product-details valign">
                                 <span class="category">
-                                    <a href="">{{ $product->category->name }}</a>
+                                    <a href="{{route('catalog.show',$product->category_id)}}">{{ $product->category->name }}</a>
                                 </span>
                                 <h3 class="product-title">
                                     <a href="{{ route('product.detail', [
@@ -31,6 +31,7 @@
                                         'id' => $product->id,
                                     ]) }}">{{ $product->title }}</a>
                                 </h3>
+
                                 @if ($product->discount)
                                     <span class="price">
                                         <del>
@@ -48,7 +49,7 @@
                                     </span>
                                 @endif
                                 <div class="btn-quickview">
-                                    <a href="#" class="btn btn-md btn-color">
+                                    <a href="{{route('product.detail', ['slug'=>$product->slug,'id'=>$product->id])}}" class="btn btn-md btn-color">
                                         <span>Quickview</span>
                                     </a>
                                 </div>

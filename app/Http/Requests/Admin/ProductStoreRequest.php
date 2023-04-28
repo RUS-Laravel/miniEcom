@@ -15,7 +15,9 @@ class ProductStoreRequest extends BaseRequest
 
     public function rules()
     {
-        return [
+        return
+         [
+           /* 'file' => ['required'],
             'title' => ['required', "unique:products,title"],
             'category_id' => ['required'],
             'code' => ['required'],
@@ -24,7 +26,7 @@ class ProductStoreRequest extends BaseRequest
             'slug' => ['required', "unique:products,slug"],
             'status' => ['required', 'in:1,2'],
             'discount' => ['nullable'],
-            'description' => ['nullable'],
+            'description' => ['nullable'],*/
         ];
     }
 }

@@ -10,7 +10,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- App favicon -->
     <link rel="shortcut icon" href="{{ url('assets/images/favicon.ico') }}">
-
+    @stack('css-dropzone')
     <!-- App css -->
     <link href="{{ url('assets/css/bootstrap-purple.min.css') }}" rel="stylesheet" type="text/css" id="bs-default-stylesheet" />
     @stack('css-lib')
@@ -214,7 +214,7 @@
 
     <!-- Vendor js -->
     <script src="{{ url('assets/js/vendor.min.js') }}"></script>
-
+    @stack('js-dropzone')
     <!-- App js -->
     <script src="{{ url('assets/js/app.min.js') }}"></script>
     <script type="text/javascript">

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Web\CategoryController;
 use App\Http\Controllers\Web\IndexController;
 use App\Http\Controllers\Web\LoginController;
 use App\Http\Controllers\Web\ProductController;
@@ -19,4 +20,5 @@ Route::prefix('auth')->group(function () {
     Route::get('/logout', [LoginController::class, 'logout'])->name('auth.logout');
 });
 
+Route::get('category/{id?}', [CategoryController::class, 'catalog'])->name('catalog.show');
 Route::get('/product/{slug}_{id}', [ProductController::class, 'detail'])->name('product.detail');

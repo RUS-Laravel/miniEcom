@@ -19,7 +19,7 @@
 
     <!-- icons -->
     <link href="{{ url('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
-    @stak('css')
+    @stack('css')
 
 </head>
 

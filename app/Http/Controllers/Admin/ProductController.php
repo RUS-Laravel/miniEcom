@@ -21,6 +21,12 @@ class ProductController extends BaseController
         return view('admin.products.create', compact('parents'));
     }
 
+    /*public function store_image(ProductStoreRequest $request){
+        $image = $request->file('file');
+        $imageName = time().rand(1,100).'.'.$image->extension();
+        $image->move(public_path('images'),$imageName);
+        return response()->json(['success'=>$imageName]);
+    }*/
 
     public function data()
     {
@@ -32,10 +38,18 @@ class ProductController extends BaseController
     }
 
     public function store(ProductStoreRequest $request)
-    {
+    { 
         //return self::json_response(data: $request->all());
-        Product::create($request->all());
-        return redirect()->route('admin.products.index');
+       dd($_FILES);
+       dd($request->file('file'));
+        /*$imageName = time().rand(1,100).'.'.$image->getClientOriginalExtension();
+        $image->move(public_path('/images/products'),$imageName);
+        $res = Product::create($request->all());
+         $res->image()->create([
+            'name' => $imageName,
+            'path' => 'images/products/'
+         ]);
+        return redirect()->route('admin.products.index');*/
     }
 
     public function edit($id)
@@ -58,4 +72,7 @@ class ProductController extends BaseController
         Product::find($id)->delete();
         return redirect()->route('admin.products.index');
     }
+
+
+   
 }
