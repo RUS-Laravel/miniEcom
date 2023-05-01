@@ -25,7 +25,7 @@ class ProductController extends BaseController
     {
         $image = $request->file('file');
         $imageName = time() . rand(1, 100) . '.' . $image->extension();
-        $image->move(public_path('images'), $imageName);
+        $image->move(public_path('images/products'), $imageName);
         return response()->json([
             'success' => $imageName ?? null,
             '$image' => $image
@@ -44,16 +44,13 @@ class ProductController extends BaseController
     public function store(ProductStoreRequest $request)
     {
         //return self::json_response(data: $request->all());
-        dd($_FILES);
-        dd($request->file('file'));
-        /*$imageName = time().rand(1,100).'.'.$image->getClientOriginalExtension();
-        $image->move(public_path('/images/products'),$imageName);
+        //dd($_FILES);
         $res = Product::create($request->all());
-         $res->image()->create([
+         /*$res->image()->create([
             'name' => $imageName,
             'path' => 'images/products/'
-         ]);
-        return redirect()->route('admin.products.index');*/
+         ]);*/
+        return redirect()->route('admin.products.index');
     }
 
     public function edit($id)

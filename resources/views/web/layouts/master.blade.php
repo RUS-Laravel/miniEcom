@@ -87,7 +87,7 @@
             <ul class="top-bar-acc">
               <li class="top-bar-link"><a href="#">My Wishlist</a></li>
               <li class="top-bar-link"><a href="#">Newsletter</a></li>
-              <li class="top-bar-link"><a href="#">Login</a></li>                 
+              <li class="top-bar-link"><a href="{{route('auth.login.user.index')}}">Login</a></li>                 
             </ul>
 
           </div>

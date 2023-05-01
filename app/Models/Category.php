@@ -22,6 +22,17 @@ class Category extends Model
         return $this->hasOne(self::class, 'id', 'parent_id');
     }
 
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'category_id', 'id');
+    }
+
+    public function scopeActiveproduct($query)
+    {
+        return $query->where('status', 1);
+    }
+
+
     public function image()
     {
         return $this->morphOne(Image::class, 'imageable');

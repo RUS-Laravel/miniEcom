@@ -5,7 +5,7 @@
         <div class="col-lg-12">
             <div class="card-box">
 
-                <form action="{{ route('admin.products.store_image') }}" method="post" class="dropzone" id="mydropzone" data-plugin="dropzone" data-previews-container="#file-previews"
+                <form action="{{ route('admin.products.store_image') }}" method="post" class="dropzone" id="productDropzone" data-plugin="dropzone" data-previews-container="#file-previews"
                       data-upload-preview-template="#uploadPreviewTemplate" enctype="multipart/form-data">
                     @csrf
 
@@ -134,7 +134,7 @@
             dictInvalidFileType: '@lang('dropzone.message.dictInvalidFileType')',
             dictMaxFilesExceeded: '@lang('dropzone.message.dictMaxFilesExceeded',['param'=>6])',
             acceptedFiles: ".jpeg,.jpg,.png,.webp",
-            addRemoveLinks: true,
+            addRemoveLinks: false,
             parallelUploads: 6,
             maxFiles: 6,
             cache: false,

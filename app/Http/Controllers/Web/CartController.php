@@ -21,6 +21,23 @@ class CartController extends Controller
         return redirect()->route('cart.index');
     }
 
+    public function update_cart(Request $request){
+        $rowId = $request->id;
+        $qty = $request->qty;
+       
+        $result = Cart::update($rowId,['qty'=>$qty]);
+        return response()->json([
+            'message' => $result ? 'Cart Updated' : 'Error',
+            'status' => (bool)$result
+        ]);
+    }
+
+    public function show_product($rowId){
+       $result= Cart::get($rowId);
+       dd($result);
+        //return view('');
+    }
+
     public function remove($rowId)
     {
         Cart::remove($rowId);

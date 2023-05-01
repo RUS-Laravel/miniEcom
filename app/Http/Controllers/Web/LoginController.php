@@ -13,6 +13,11 @@ class LoginController extends Controller
         return view('auth.login.index');
     }
 
+    public function user_index()
+    {
+        return view('auth.login.user_index');
+    }
+
     public function login(LoginRequest $request)
     {
         if (auth()->attempt($request->only('email', 'password'), (bool)($request->remember_me == "on"))) {

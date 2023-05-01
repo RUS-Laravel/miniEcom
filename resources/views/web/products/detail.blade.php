@@ -75,12 +75,12 @@
                         <span class="price">
                             @if ($product->discount)
                                 <del>
-                                    <span>{{ $product->discount_price }}</span>
+                                    <span>{{ $product->price_pretty }}</span>
                                 </del>
                             @endif
 
                             <ins>
-                                <span class="amount">{{ $product->price_pretty }}</span>
+                                <span class="amount">{{ $product->discount_price }}</span>
                             </ins>
                         </span>
                         <span class="rating">

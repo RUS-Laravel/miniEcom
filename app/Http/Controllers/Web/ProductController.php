@@ -11,14 +11,14 @@ class ProductController extends Controller
 {
     public function __construct()
     {
-        view()->share('categories', Product::with('category:id,name')->active()->get());
-        view()->share('cats', Category::with('categories')->get());
+        //view()->share('categories', Product::with('category:id,name')->active()->get());
+        //view()->share('cats', Category::with('categories')->get());
     }
 
-    public function detail($slug, $id)
+    public function detail($slug=null, $rowId=null)
     {
         $product = Product::with('category:id,name')->where([
-            'id' => $id,
+            'id' => $rowId,
             'slug' => $slug,
         ])->first();
 

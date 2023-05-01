@@ -59,6 +59,8 @@ class Product extends Model
         return  number_format($this->price - ($this->price * $this->discount / 100), 2) . " AZN";
     }
 
+   
+
     // public function total(): Attribute
     // {
     //     return new Attribute(

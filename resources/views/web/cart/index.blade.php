@@ -25,23 +25,30 @@
                                     @foreach (Cart::content() as $content)
                                         <tr class="cart_item">
                                             <td class="product-thumbnail">
-                                                <a href="#">
+                                                <a href="{{route('cart.show.product',$content->rowId)}}">
                                                     <img src="{{ url('img/shop/shop_item_3.jpg') }}" alt="">
                                                 </a>
                                             </td>
                                             <td class="product-name">
-                                                <a href="#">{{ $content->name }}</a>
+                                                <a href="{{route('cart.show.product',$content->rowId)}}">{{ $content->name }}</a>
                                                 {{-- <ul>
                                                     <li>Size: XL</li>
                                                     <li>Color: White</li>
                                                 </ul> --}}
                                             </td>
-                                            <td class="product-price">
-                                                <span class="amount">{{ $content->price }}</span>
-                                            </td>
+                                            @if ($content->discount())
+                                                <td class="product-price">
+                                                    <span class="amount">{{ $content->discount }}</span>
+                                                </td>
+                                            @else
+                                                <td class="product-price">
+                                                    <span class="amount">{{ $content->price }}</span>
+                                                </td>
+                                            @endif
+                                            
                                             <td class="product-quantity">
                                                 <div class="quantity buttons_added">
-                                                    <input type="number" step="1" min="0" value="{{ $content->qty }}" title="Qty" class="input-text qty text">
+                                                    <input type="number" step="1" min="0" value="{{ $content->qty }}" title="Qty" data-id="{{$content->rowId}}" name="qty" data-control="qty" data-url="{{route('cart.update', $content->rowId)}}" class="input-text qty text">
                                                     <div class="quantity-adjust">
                                                         <a href="#" class="plus">
                                                             <i class="fa fa-angle-up"></i>
@@ -125,3 +132,22 @@
 
 
 @endsection
+@push('js')
+    <script>
+        $(document).on('change', '[data-control="qty"]', function(){
+            var qty= $("input[name=qty]").val();
+            var id = $(this).data('id');
+            //console.log($(this).data('url'));
+            $.ajax({
+            url: $(this).data('url'),
+            method: 'POST',
+            data:{
+                id:id, qty:qty
+            },
+            success: function(response){//console.log(response);
+                    window.location.reload();
+                }
+            });
+        });
+    </script>
+@endpush

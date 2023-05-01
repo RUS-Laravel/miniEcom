@@ -17,6 +17,12 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton('categories', function () {
             return Category::with('categories')->whereNull('parent_id')->get();
         });
+
+        $this->app->singleton('cat_counts', function () {
+            return Category::whereNotNull('parent_id')->activeproduct()->withCount('products')->get();
+        });
+
+        
     }
 
     /**
