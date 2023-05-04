@@ -19,10 +19,10 @@ class AppServiceProvider extends ServiceProvider
         });
 
         $this->app->singleton('cat_counts', function () {
-            return Category::whereNotNull('parent_id')->activeproduct()->withCount('products')->get();
+            return (Category::whereNotNull('parent_id')->activeproduct()->withCount('products')->get()->filter(function ($item) {
+                return $item->products()->count() ? $item : null;
+            })->values());
         });
-
-        
     }
 
     /**

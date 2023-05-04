@@ -7,21 +7,21 @@
 
                 <div class="row">
                     <div class="col-lg-6">
-                        <form class="form-inline"> 
+                        <form class="form-inline">
                             @csrf
                             <div class="form-group">
                                 <label for="search" class="sr-only">Search</label>
                                 <input type="search" class="form-control" id="search" name="search" placeholder="Product search...">
                             </div>
-                    
+
                             <div class="form-group mx-sm-3">
                                 <label for="status-select" class="mr-2">Sort By</label>
                                 <select class="custom-select" id="status-select" name="status-select">
-                                    <option selected>All</option>
-                                    <option value="1">Popular</option>{{-- en cox beyenilen--}}
-                                    <option value="2">Price Low</option>
-                                    <option value="3">Price High</option>
-                                    <option value="4">Sold Out</option>{{-- en cox satilan--}}
+                                    <option selected value="">All</option>
+                                    <option value="popular">Popular</option>{{-- en cox beyenilen --}}
+                                    <option value="low">Price Low</option>
+                                    <option value="high">Price High</option>
+                                    <option value="sold">Sold Out</option>{{-- en cox satilan --}}
                                 </select>
                             </div>
                         </form>
@@ -34,7 +34,7 @@
                         </div>
                     </div><!-- end col-->
                 </div> <!-- end row -->
-                
+
             </div>
         </div>
     </div>
@@ -46,12 +46,12 @@
                     @include('admin.products.error')
                 </p>
                 <div class="table-responsive mt-1 mb-1" data-control="data-table">
-                  
+
                 </div>
-                @isset($products)
+                {{-- @isset($products)
                 {!! $products->withQueryString()->links('vendor.pagination.bootstrap-5') !!}
     
-                @endisset
+                @endisset --}}
             </div>
         </div>
     </div>
@@ -72,10 +72,11 @@
         $(document).ready(function() {
             table();
         });
-        function table(search='', sort='') {
+
+        function table(data = {}) {
             $.ajax({
                 url: "{{ route('admin.products.data') }}",
-                data:{search:search, sort:sort},
+                data: data,
                 dataType: 'json',
                 success: function(response) {
                     if (response.blade !== undefined) {
@@ -85,20 +86,26 @@
             });
         }
 
-         
+
         //SEARCH
 
-        $(document).on('keyup','#search', function(){
+        $(document).on('keyup', '#search', function() {
             var query = $(this).val();
-            table(query);
+            table({
+                search: query,
+                sort: $('#status-select').find(':selected').val()
+            });
         });
 
         //SORT
 
-        $(document).on('change','#status-select', function(){
+        $(document).on('change', '#status-select', function() {
             var select = $(this).val();
-            //console.log(select);
-            table(select);
+            console.log(select);
+            table({
+                query: $('#search').val(),
+                sort: select
+            });
         });
 
 

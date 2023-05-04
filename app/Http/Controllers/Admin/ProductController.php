@@ -12,17 +12,18 @@ class ProductController extends BaseController
 {
     public function index()
     {
-        $products = Product::with('category:id,name')->active()->orderBy('id','desc')->paginate(1);
-        return view('admin.products.index',compact('products'));
+        $products = Product::with('category:id,name')->get();
+        return view('admin.products.index', compact('products'));
     }
 
-    public function detail($id){
-        $product = Product::where('id',$id)
-                ->with('category:id,name')
-                ->with('color:id,color_name')
-                ->with('size:id,size_name')
-                ->first();
-               // dd($product);die;
+    public function detail($id)
+    {
+        $product = Product::where('id', $id)
+            ->with('category:id,name')
+            ->with('color:id,color_name')
+            ->with('size:id,size_name')
+            ->first();
+        // dd($product);die;
         return view('admin.products.detail', compact('product'));
     }
 
@@ -45,50 +46,40 @@ class ProductController extends BaseController
 
     public function data(Request $request)
     {
-     
-            $query = $request->get('search');
-            $select = $request->get('sort');
+        $search = $request->get('search');
+        $select = $request->get('sort');
 
-            $data = Product::with('category:id,name')
-                            ->active()
-                            ->where(function($q) use ($query, $select){
-                                if(!empty($query)){
-                                    $q->where('title','like','%'.$query.'%')
-                                        ->orWhere('stock','like','%'.$query.'%')
-                                        ->orWhere('discount','like','%'.$query.'%')
-                                        ->orWhere('price','like','%'.$query.'%');
-                                        
-                                }
-                                if(!empty($select)){
-                                    if($select == 2){
-                                        $q->where('price', '<', '50');
-                                       
-                                    }elseif($select == 3){
-                                        $q->where('price', '>', '50');
-                                     
-                                    }
-                                    
-                                }
-                                return $q;
-                            })
-                            ->orderBy('id','desc')
-                            ->paginate(1);
-                            //dd($data);
-                            $blade = view('admin.products.table', ['products' => $data])->render();
-                            return response()->json([
-                                'data' => $data, 
-                                'blade' => $blade, 
-                            
-                            ]);
-                  
-       
+        $query = Product::with('category:id,name');
+
+        if (!empty($search)) {
+            $query = $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', '%' . $search . '%')
+                    ->orWhere('stock', 'like', '%' . $search . '%')
+                    ->orWhere('discount', 'like', '%' . $search . '%')
+                    ->orWhere('price', 'like', '%' . $search . '%');
+            });
+        }
+
+        if (!empty($select)) {
+            $query = match ($select) {
+                'low' => $query->orderBy('price', 'asc'),
+                'high' => $query->orderBy('price', 'desc'),
+                default => $query
+            };
+        }
+
+        return response()->json([
+            'data' => $query->paginate(11),
+            'blade' => view('admin.products.table', ['products' => $query->paginate(11)])->render(),
+            'req' => $request->all()
+        ]);
     }
 
     public function store(ProductStoreRequest $request)
     {
         //return self::json_response(data: $request->all());
         $res = Product::create($request->all());
-         /*$res->image()->create([
+        /*$res->image()->create([
             'name' => $imageName,
             'path' => 'images/products/'
          ]);*/
