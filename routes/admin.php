@@ -5,6 +5,8 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\ColorController;
+use App\Http\Controllers\Admin\SizeController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->group(function () {
@@ -32,6 +34,7 @@ Route::middleware('auth')->group(function () {
 
     Route::group(['prefix' => 'product', 'as' => 'products.'], function () {
         Route::get('/', [ProductController::class, 'index'])->name('index');
+        Route::get('/detail/{id}', [ProductController::class, 'detail'])->name('detail');
         Route::get('/create', [ProductController::class, 'create'])->name('create');
         Route::post('/create', [ProductController::class, 'store'])->name('store');
         Route::get('/data', [ProductController::class, 'data'])->name('data');
@@ -44,6 +47,26 @@ Route::middleware('auth')->group(function () {
     Route::group(['prefix' => 'order', 'as' => 'orders.'], function () {
         Route::get('/', [OrderController::class, 'index'])->name('index');
         Route::get('/data', [OrderController::class, 'data'])->name('data');
+    });
+
+    Route::group(['prefix' => 'color', 'as' => 'colors.'], function () {
+        Route::get('/', [ColorController::class, 'index'])->name('index');
+        Route::get('/data', [ColorController::class, 'data'])->name('data');
+        Route::get('/create', [ColorController::class, 'create'])->name('create');
+        Route::post('/create', [ColorController::class, 'store'])->name('store');
+        Route::get('/edit/{id}', [ColorController::class, 'edit'])->name('edit');
+        Route::post('/update', [ColorController::class, 'update'])->name('update');
+        Route::post('/delete/{id}', [ColorController::class, 'delete'])->name('delete');
+    });
+
+    Route::group(['prefix' => 'size', 'as' => 'sizes.'], function () {
+        Route::get('/', [SizeController::class, 'index'])->name('index');
+        Route::get('/data', [SizeController::class, 'data'])->name('data');
+        Route::get('/create', [SizeController::class, 'create'])->name('create');
+        Route::post('/create', [SizeController::class, 'store'])->name('store');
+        Route::get('/edit/{id}', [SizeController::class, 'edit'])->name('edit');
+        Route::post('/update', [SizeController::class, 'update'])->name('update');
+        Route::post('/delete/{id}', [SizeController::class, 'delete'])->name('delete');
     });
 
     

@@ -12,7 +12,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach ($data as $item)
+        @foreach ($products as $item)
         <tr>
             <td>{{ $item->id }}</td>
             <td><span class="badge badge-soft-info">{{ $item->category->name ?? 'Parent Category' }}</span></td>
@@ -23,6 +23,9 @@
             <td><span class="badge badge-soft-{{ $item->status == 1 ? 'success' : 'danger' }}">{{ $item->status == 1 ? 'Active' : 'Passive' }}</td>
             <td>
 
+                <button type="button" class="btn btn-soft-success waves-effect waves-light">        
+                    <a href="{{ route('admin.products.detail', $item->id) }}">Detail</a>
+                </button>
                 <button type="button" class="btn btn-soft-warning waves-effect waves-light">        
                     <a href="{{ route('admin.products.edit', $item->id) }}">Edit</a>
                 </button>

@@ -37,7 +37,7 @@
 
                 <li>
                     <a href="{{ route('admin.products.index') }}">
-                        <i class="mdi mdi-view-dashboard-outline"></i>
+                        <i class="mdi mdi-cart-outline"></i>
                         <span> @lang('Products') </span>
                     </a>
                 </li>

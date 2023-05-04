@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Product extends Model
 {
@@ -81,5 +82,15 @@ class Product extends Model
     public function scopeActive($query)
     {
         return $query->where('status', 1);
+    }
+
+    public function color(): HasMany
+    {
+        return $this->hasMany(Color::class, 'product_id', 'id');
+    }
+
+    public function size(): HasMany
+    {
+        return $this->hasMany(Size::class, 'product_id', 'id');
     }
 }
