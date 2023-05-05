@@ -13,11 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('size', function (Blueprint $table) {
+        Schema::create('colors', function (Blueprint $table) {
             $table->id();
-            $table->string('size_name')->nullable();
-            $table->string('size');
-            $table->unsignedBigInteger('product_id');
+            $table->string('color_name');
             $table->timestamps();
         });
     }
@@ -29,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('size');
+        Schema::dropIfExists('colors');
     }
 };

@@ -7,18 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Size extends Model
+class Product_Size extends Model
 {
     use HasFactory;
-    protected $table = "size";
+    protected $table = "product_size";
     protected $fillable = [
-        'size_name', 'size'
+        'size_id','product_color_id'
     ];
 
-   
-
-    public function product_size(): HasOne
+    public function size(): HasMany
     {
-        return $this->hasOne(Product_Size::class, 'size_id', 'id');
+        return $this->hasMany(Size::class, 'id', 'size_id');
     }
 }

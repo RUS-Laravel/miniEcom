@@ -16,11 +16,11 @@ class ColorController extends BaseController
     }
 
     public function data(){
-        $data = Color::with('product')->get();
+        /*$data = Color::with('product')->get();
         return response()->json([
             'data'=>$data,
             'table'=>view('admin.products.colors.table', compact('data'))->render()
-        ]);
+        ]);*/
     }
 
     public function create(){
@@ -30,21 +30,21 @@ class ColorController extends BaseController
 
     public function store(ColorStoreRequest $request){
         //$res = Color::create($request->all());
-        foreach($request->name as $item=>$v){
+        /*foreach($request->name as $item=>$v){
             $data=array(
                 'color_name'=>$request->name[$item],
                 'product_id'=>$request->product_id
             ); 
             $res = Color::create($data);
         }
-        return redirect()->route('admin.colors.index');
+        return redirect()->route('admin.colors.index');*/
     }
 
     public function edit($id)
     {
-        $color = Color::find($id);
+       /* $color = Color::find($id);
         $products = Product::all();
-        return view('admin.products.colors.edit', compact('color', 'products'));
+        return view('admin.products.colors.edit', compact('color', 'products'));*/
     }
 
     public function update(ColorEditRequest $request){

@@ -84,13 +84,10 @@ class Product extends Model
         return $query->where('status', 1);
     }
 
-    public function color(): HasMany
+    public function color_products(): HasMany
     {
-        return $this->hasMany(Color::class, 'product_id', 'id');
+        return $this->hasMany(Color_Products::class, 'product_id', 'id');
     }
 
-    public function size(): HasMany
-    {
-        return $this->hasMany(Size::class, 'product_id', 'id');
-    }
+   
 }

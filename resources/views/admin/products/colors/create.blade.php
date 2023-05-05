@@ -16,33 +16,13 @@
                             @endforeach
                         </select>
                     </div>
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Color Name</th>
-                               
-                                <th>
-                                    <a href="javascript:void(0)" class="btn btn-primary addRow"><i class="mdi mdi-sticker-plus-outline"></i>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <div class="form-group mb-3">
-                                        <label for="name">Color name</label>
-                                        <input type="text" id="name" class="form-control" name="name[]" placeholder="Color name">
-                                    </div>
-                                </td>
-                                <td>
-                                    <a href="javascript:void(0)" class="btn btn-danger remove"><i class="mdi mdi-window-close"></i>
-                                </td>
-                            </tr>
-                            
-                        </tbody>
-                    </table>
-                    
-                   
+                    <div class="form-group">
+                        <label>Color</label> <br />
+                        <select class="form-control select2-multiple" data-toggle="select2" multiple="multiple" data-placeholder="Choose Color">
+                                <option value="AK">Alaska</option>
+                                <option value="HI">Hawaii</option>
+                        </select> 
+                    </div>                 
                     <button type="submit" class="btn btn-primary waves-effect waves-light" id="submit_all">Create</button>
                 </form>
                 <br>
@@ -56,7 +36,10 @@
 @endsection
 
 @push('css-lib')
-    <link href="{{ url('assets/libs/selectize/css/selectize.bootstrap3.css') }}" rel="stylesheet" type="text/css" />
+{{--<link href="{{url('assets/libs/multiselect/css/multi-select.css')}}" rel="stylesheet" type="text/css" />--}}
+<link href="{{ url('assets/libs/selectize/css/selectize.bootstrap3.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{url('assets/libs/select2/css/select2.min.css')}}" rel="stylesheet" type="text/css" />
+{{--<link href="{{url('assets/libs/bootstrap-select/css/bootstrap-select.min.css')}}" rel="stylesheet" type="text/css" /> --}}
 @endpush
 @push('css')
     <!-- Sweet Alert-->
@@ -66,36 +49,13 @@
 @push('js')
     <script src="{{ url('assets/libs/sweetalert2/sweetalert2.min.js') }}"></script>
     <script src="{{ url('assets/libs/selectize/js/standalone/selectize.min.js') }}"></script>
+    {{--<script src="{{url('/assets/libs/multiselect/js/jquery.multi-select.js')}}"></script>--}}
+    <script src="{{url('assets/libs/select2/js/select2.min.js')}}"></script>
+    {{--<script src="{{url('assets/libs/bootstrap-select/js/bootstrap-select.min.js')}}"></script>--}}
     <script>
         $("#selectize-select").selectize();
-
-        $(document).ready(function(){
-            $('.addRow').on('click', function(){
-                addRow();
-            });
-
-            function addRow(){
-                    var tr = '<tr>'+
-                        '<td>'+
-                            '<div class="form-group mb-3">'+
-                                '<label for="name">Color name</label>'+
-                                '<input type="text" id="name" class="form-control" name="name[]" placeholder="Color name">'+
-                            '</div>'+
-                        '</td>'+
-                        '<td><a href="javascript:void(0)" class="btn btn-danger remove"><i class="mdi mdi-window-close"></i></a></td>'+
-                    '</tr>';
-                    $('tbody').append(tr);
-            }
-            $(document).on('click', '.remove', function(){
-                    var last = $('tbody tr').length;
-                    if(last==1){
-                        alert("no deleted one row");
-                    }else{
-                        $(this).parent().parent().remove();
-                    }
-                    
-            });
-        });
+        $('.select2-multiple').select2();
+        
     </script>
 
 @endpush
