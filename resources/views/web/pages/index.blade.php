@@ -1,6 +1,6 @@
-@extends('web.layouts.app')
+@extends('web.layouts.master')
 @section('title', __('Home'))
-@section('web-content')
+@section('content')
     <div class="products-grid-wrap clearfix">
         <div id="products-grid">
 
@@ -8,7 +8,7 @@
                 <div class="product-item hover-trigger">
                     <div class="product-img">
                         <a href="#">
-                            <img src="{{ url('img/shop/shop_item_1.jpg') }}" alt="">
+                            <img src="{{ url('img/empty.png') }}" alt="">
                         </a>
                         @if ($product->discount)
                             <div class="product-label">

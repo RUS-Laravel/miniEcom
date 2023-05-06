@@ -75,6 +75,7 @@
                                 </tbody>
                             </table>
                         </div>
+
                         {{-- 
                         <div class="row mb-50">
                             <div class="col-md-5 col-sm-12">
@@ -129,6 +130,11 @@
 
                         </div>
                     </div> <!-- end col cart totals -->
+                    @if (auth('client')->check())
+                        @include('web.cart.form')
+                    @else
+                        <a class="btn btn-info btn-stroke mb-10 btn-block pt-30 pb-30" href="{{ route('login.account') }}">Login</a>
+                    @endif
                 </div>
         </section> <!-- end cart -->
     </div> <!-- end container -->

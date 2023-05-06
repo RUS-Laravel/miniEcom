@@ -24,11 +24,11 @@
                 <td>
 
                     <button type="button" class="btn btn-soft-warning waves-effect waves-light">
-                        <a href="{{ route('admin.products.edit', $item->id) }}">Edit</a>
+                        <a href="#">Detail</a>
                     </button>
                     <button type="button" class="btn btn-soft-danger waves-effect waves-light"
                             data-control="delete-button" data-id="{{ $item->id }}"
-                            data-url="{{ route('admin.products.delete', $item->id) }}">Delete
+                            data-url="#">Delete
                     </button>
                 </td>
             </tr>

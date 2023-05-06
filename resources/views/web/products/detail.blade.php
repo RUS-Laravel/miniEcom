@@ -10,15 +10,15 @@
 
                     <div class="col-md-6 col-xs-12 product-slider mb-60">
 
-                        <div class="flickity flickity-slider-wrap mfp-hover" id="gallery-main">
+                        <div class="flickity flickity-slider-wrap mfp-hover shadow-sm" id="gallery-main">
 
-                            <div class="gallery-cell">
-                                <a href="{{ url('img/shop/item_lg_1.jpg') }}" class="lightbox-img">
-                                    <img src="{{ url('img/shop/item_lg_1.jpg') }}" alt="" />
+                            <div class="gallery-cell ">
+                                <a href="{{ url('img/empty.png') }}" class="lightbox-img">
+                                    <img src="{{ url('img/empty.png') }}" alt="" />
                                     <i class="ui-zoom zoom-icon"></i>
                                 </a>
                             </div>
-                            <div class="gallery-cell">
+                            {{-- <div class="gallery-cell">
                                 <a href="{{ url('img/shop/item_lg_2.jpg') }}" class="lightbox-img">
                                     <img src="{{ url('img/shop/item_lg_2.jpg') }}" alt="" />
                                     <i class="ui-zoom zoom-icon"></i>
@@ -41,9 +41,9 @@
                                     <img src="{{ url('img/shop/item_lg_5.jpg') }}" alt="" />
                                     <i class="ui-zoom zoom-icon"></i>
                                 </a>
-                            </div>
+                            </div> --}}
                         </div> <!-- end gallery main -->
-
+{{-- 
                         <div class="gallery-thumbs">
                             <div class="gallery-cell">
                                 <img src="{{ url('img/shop/item_thumb_1.jpg') }}" alt="" />
@@ -60,7 +60,7 @@
                             <div class="gallery-cell">
                                 <img src="{{ url('img/shop/item_thumb_5.jpg') }}" alt="" />
                             </div>
-                        </div> <!-- end gallery thumbs -->
+                        </div> <!-- end gallery thumbs --> --}}
 
                     </div> <!-- end col img slider -->
 
