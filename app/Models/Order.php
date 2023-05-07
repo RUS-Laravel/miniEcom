@@ -7,18 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     protected $fillable = [
-        'no', 'status', 'payment_status', 'payment_type', 'discount', 'tax', 'shipment', 'user_id', 'adress_id'
+        'no', 'status', 'payment_status', 'total','payment_type', 'discount', 'tax', 'shipment', 'user_id', 'adress_id'
     ];
 
-    public function setNoAttribute()
-    {
-        $this->attributes['no'] = uniqid();
-    }
-
-    public function setStatusAttribute()
-    {
-        $this->attributes['status'] = 'Processing';
-    }
+    // public function setNoAttribute()
+    // {
+    //     $this->attributes['no'] = uniqid();
+    // }
 
     public function details()
     {

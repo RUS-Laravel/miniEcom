@@ -35,7 +35,7 @@
                             @endforeach
                         </div>
 
-                        <form action="" method="POST">
+                        <form action="{{ route('login.client') }}" method="POST">
                             @csrf
 
                             <div class="form-group mb-3">

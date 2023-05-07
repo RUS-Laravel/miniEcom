@@ -8,6 +8,13 @@
             <ul id="side-menu">
 
                 <li>
+                    <a href="{{ route('web.index') }}" target="_blank">
+                        <i class="mdi mdi-view-dashboard-outline"></i>
+                        <span> @lang('Web Site') </span>
+                    </a>
+                </li>
+
+                <li>
                     <a href="{{ route('admin.index') }}">
                         <i class="mdi mdi-view-dashboard-outline"></i>
                         <span> @lang('Dasboard') </span>

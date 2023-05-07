@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Web\BuyRequest;
 use Gloudemans\Shoppingcart\Facades\Cart;
 
 class CartController extends Controller
@@ -46,6 +49,30 @@ class CartController extends Controller
     public function remove($rowId)
     {
         Cart::remove($rowId);
+        return redirect()->route('cart.index');
+    }
+
+    public function buy(BuyRequest $request)
+    {
+
+        try {
+            DB::beginTransaction();
+            $order =  Order::create($request->validatedData());
+
+            foreach (Cart::content() as $item) {
+                $order->details()->create([
+                    'product_id' => $item->id,
+                    'price' => $item->price,
+                    'quantity' => $item->qty
+                ]);
+            }
+            Cart::destroy();
+            DB::commit();
+        } catch (\Throwable $th) {
+            dd($th->getMessage());
+            DB::rollBack();
+        }
+
         return redirect()->route('cart.index');
     }
 }

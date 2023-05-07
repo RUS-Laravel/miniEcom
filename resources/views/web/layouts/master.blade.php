@@ -20,6 +20,7 @@
   <link rel="stylesheet" href="{{ url('css/font-icons.css') }}" />
   <link rel="stylesheet" href="{{ url('css/sliders.css') }}" />
   <link rel="stylesheet" href="{{ url('css/style.css') }}" />
+  <link rel="stylesheet" href="{{ url('css/custom.css') }}" />
 @stack('css')
   <!-- Favicons -->
   <link rel="shortcut icon" href="{{ url('img/favicon.ico') }}">
@@ -87,7 +88,7 @@
             <ul class="top-bar-acc">
               <li class="top-bar-link"><a href="#">My Wishlist</a></li>
               <li class="top-bar-link"><a href="#">Newsletter</a></li>
-              <li class="top-bar-link"><a href="{{route('auth.login.user.index')}}">Login</a></li>                 
+              <li class="top-bar-link"><a href="{{route('login.account')}}">Login</a></li>                 
             </ul>
 
           </div>

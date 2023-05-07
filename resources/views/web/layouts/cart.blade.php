@@ -23,7 +23,7 @@
                     <div class="nav-cart-item clearfix">
                         <div class="nav-cart-img">
                             <a href="{{ route('cart.show.product', $row->rowId) }}">
-                                <img src="{{ url('img/shop/shop_item_1.jpg') }}" alt="">
+                                <img src="{{ url('img/empty.png') }}" alt="">
                             </a>
                         </div>
                         <div class="nav-cart-title">
