@@ -30,6 +30,7 @@ class CategoryEditRequest extends FormRequest
             'description' => ['nullable'],
             'parent_id' => ['nullable'],
             'status' => ['required', 'in:1,2'],
+            'tags' => ['required'],
         ];
     }
 

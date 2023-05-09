@@ -28,8 +28,8 @@
                     </div>
                     <div class="col-lg-6">
                         <div class="text-lg-right mt-3 mt-lg-0">
-                            <a href="{{ route('admin.colors.index') }}" class="btn btn-outline-success waves-effect waves-light">Product colors</a>
-                            <a href="{{ route('admin.sizes.index') }}" class="btn btn-outline-success waves-effect waves-light">Product sizes</a>
+                            <a href="{{ route('admin.products.colors.index') }}" class="btn btn-outline-success waves-effect waves-light">Product colors</a>
+                            <a href="{{ route('admin.products.sizes.index') }}" class="btn btn-outline-success waves-effect waves-light">Product sizes</a>
                             <a href="{{ route('admin.products.create') }}" class="btn btn-danger waves-effect waves-light"><i class="mdi mdi-plus-circle mr-1"></i> Add New</a>
                         </div>
                     </div><!-- end col-->

@@ -3,7 +3,7 @@
         <tr>
             <th>#</th>
             <th>Product</th>
-            <th>Color name</th>
+            <th>Color </th>
             <th></th>
         </tr>
     </thead>
@@ -11,17 +11,16 @@
         @foreach ($data as $item)
         <tr>
             <td>{{ $item->id }}</td>
-            <td><span class="badge badge-soft-info">{{ $item->product->title ?? '' }}</span></td>
-            <td>{{ $item->color_name }}</td>
-            
+            <td>{{ $item->product->title ?? '' }}</span></td>
+            <td>{{ $item->color->color_name ?? '' }}</span></td>
             <td>
 
                 <button type="button" class="btn btn-soft-warning waves-effect waves-light">        
-                    <a href="{{ route('admin.colors.edit', $item->id) }}">Edit</a>
+                    <a href="{{ route('admin.products.colors.edit', $item->id) }}">Edit</a>
                 </button>
                 <button type="button" class="btn btn-soft-danger waves-effect waves-light"
                         data-control="delete-button" data-id="{{ $item->id }}"
-                        data-url="{{ route('admin.colors.delete', $item->id) }}">Delete
+                        data-url="{{ route('admin.products.colors.delete', $item->id) }}">Delete
                 </button>
             </td>
         </tr>

@@ -24,4 +24,9 @@ class Order extends Model
     {
         return $this->hasOne(User::class, 'id', 'user_id');
     }
+
+    public function address()
+    {
+        return $this->hasMany(UserInformation::class, 'id', 'address_id');
+    }
 }

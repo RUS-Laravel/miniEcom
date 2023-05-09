@@ -28,6 +28,13 @@
                     </a>
                 </li>
 
+                <li>
+                    <a href="{{ route('client.profiles.index') }}">
+                        <i class="mdi mdi-cart-outline"></i>
+                        <span> @lang('Profile') </span>
+                    </a>
+                </li>
+
             </ul>
         </div>
         <!-- End Sidebar -->

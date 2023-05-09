@@ -5,10 +5,23 @@
             <div class="alert alert-info fade in alert-dismissible" role="alert">
                 <b>{{ auth('client')->user()->name }} {{ auth('client')->user()->surname }}</b>
             </div>
-
-            <input name="telephone" type="text" placeholder="Telefon">
-            <textarea name="address" placeholder="Address" rows="3"></textarea>
-
+            <div class="form-group mb-3">
+                <label for="phone-select">Phone Select</label>
+                <select class="form-control" id="phone-select" name="telephone">
+                    @foreach ($userInformations as $information)
+                        <option>{{$information->phone ?? ''}}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="form-group mb-3">
+                <label for="address-select">Address Select</label>
+                <select class="form-control" id="address-select" name="address">
+                    @foreach ($userInformations as $information)
+                        <option>{{$information->address ?? ''}}</option>
+                    @endforeach
+                </select>
+            </div>
+            
             <div class="col-md-12 mb-30">
                 <h6>Payment Type</h6>
                 <ul class="radio-buttons">

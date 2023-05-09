@@ -15,8 +15,8 @@ class Color extends Model
         'color_name'
     ];
 
-    public function color_products(): HasOne
+    public function color_products(): HasMany
     {
-        return $this->hasOne(Color_Products::class, 'color_id', 'id');
+        return $this->hasMany(Color_Products::class, 'color_id', 'id');
     }
 }

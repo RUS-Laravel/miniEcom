@@ -7,6 +7,8 @@ use App\Http\Requests\Admin\ProductStoreRequest;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Color_Products;
+use App\Models\Product_Size;
 
 class ProductController extends BaseController
 {
@@ -20,11 +22,13 @@ class ProductController extends BaseController
     {
         $product = Product::where('id', $id)
             ->with('category:id,name')
-            ->with('color:id,color_name')
-            ->with('size:id,size_name')
+            //->with('color:id,color_name')
+            //->with('size:id,size_name')
             ->first();
+        $colors = Color_Products::with('color:id,color_name')->where('product_id',$id)->get();
+        $sizes = Product_Size::with('size:id,size_name,size')->get();
         // dd($product);die;
-        return view('admin.products.detail', compact('product'));
+        return view('admin.products.detail', compact('product','colors','sizes'));
     }
 
     public function create()

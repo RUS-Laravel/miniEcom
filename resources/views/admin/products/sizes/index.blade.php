@@ -1,10 +1,10 @@
 @extends('admin.layouts.app')
-@section('title', __('Sizes'))
+@section('title', __('Product Sizes'))
 @section('content')
     <div class="row">
         <div class="col-lg-12">
             <div class="card-box">
-                <a href="{{ route('admin.sizes.create') }}" class="btn btn-outline-success waves-effect waves-light">+ New Size</a>
+                <a href="{{ route('admin.products.sizes.create') }}" class="btn btn-outline-success waves-effect waves-light">+ New Select Size</a>
                 <p class="sub-header font-13">
                     @include('admin.products.sizes.error')
                 </p>
@@ -31,7 +31,7 @@
         });
         function table() {
             $.ajax({
-                url: "{{ route('admin.sizes.data') }}",
+                url: "{{ route('admin.products.sizes.data') }}",
                 success: function(response) {
                     if (response.table !== undefined) {
                         $('[data-control="data-table"]').html(response.table)

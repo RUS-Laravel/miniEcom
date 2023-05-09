@@ -12,7 +12,7 @@ class Product extends Model
     protected $table = "products";
 
     protected $fillable = [
-        'title', 'description', 'slug', 'code', 'status', 'category_id', 'stock', 'price', 'discount'
+        'title', 'description', 'slug', 'code', 'status', 'category_id', 'stock', 'price', 'discount','tags','product_recevied'
     ];
 
     protected $appends = ['total', 'total_formatted', 'diff'];
@@ -84,10 +84,10 @@ class Product extends Model
         return $query->where('status', 1);
     }
 
-    public function color_products(): HasMany
+    public function color_products(): HasOne
     {
-        return $this->hasMany(Color_Products::class, 'product_id', 'id');
+        return $this->hasOne(Color_Products::class, 'product_id', 'id');
     }
 
-   
+    
 }

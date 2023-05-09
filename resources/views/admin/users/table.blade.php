@@ -24,6 +24,10 @@
                     @endif
                 </td>
                 <td>
+                    <button type="button" class="btn btn-soft-danger waves-effect waves-light">
+                        <a href="{{ route('admin.users.informations.detail', $item->id) }}">Detail</a>
+                    </button>
+
                     <button type="button" class="btn btn-soft-warning waves-effect waves-light"
                             data-control="user-edit-button" data-id="{{ $item->id }}"
                             data-url="{{ route('admin.users.edit', $item->id) }}">Edit

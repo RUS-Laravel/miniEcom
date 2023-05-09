@@ -26,6 +26,8 @@ class ProductStoreRequest extends BaseRequest
             'status' => ['required', 'in:1,2'],
             'discount' => ['nullable'],
             'description' => ['nullable'],
+            'tags' => ['required'],
+            'product_recevied' => ['required'],
         ];
     }
 }

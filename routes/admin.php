@@ -2,11 +2,14 @@
 
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\UserInformationController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ColorController;
 use App\Http\Controllers\Admin\SizeController;
+use App\Http\Controllers\Admin\ProductColorController;
+use App\Http\Controllers\Admin\ProductSizeController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->group(function () {
@@ -19,6 +22,12 @@ Route::middleware('auth')->group(function () {
         Route::get('/delete/{id?}', [UserController::class, 'delete'])->name('users.delete');
         Route::post('/', [UserController::class, 'store'])->name('users.store');
         Route::post('/update', [UserController::class, 'update'])->name('users.update');
+
+
+        Route::group(['prefix' => 'informations'], function () {
+            Route::post('/create', [UserInformationController::class, 'store'])->name('store');
+            Route::get('/detail/{id}', [UserInformationController::class, 'detail'])->name('detail');
+        });
     });
 
     Route::group(['prefix' => 'categories'], function () {
@@ -42,11 +51,26 @@ Route::middleware('auth')->group(function () {
         Route::post('/update', [ProductController::class, 'update'])->name('update');
         Route::post('/create-image', [ProductController::class, 'store_image'])->name('store_image');
         Route::post('/delete/{id}', [ProductController::class, 'delete'])->name('delete');
-    });
 
-    Route::group(['prefix' => 'order', 'as' => 'orders.'], function () {
-        Route::get('/', [OrderController::class, 'index'])->name('index');
-        Route::get('/data', [OrderController::class, 'data'])->name('data');
+        Route::group(['prefix' => 'color', 'as' => 'colors.'], function () {
+            Route::get('/', [ProductColorController::class, 'index'])->name('index');
+            Route::get('/data', [ProductColorController::class, 'data'])->name('data');
+            Route::get('/create', [ProductColorController::class, 'create'])->name('create');
+            Route::post('/create', [ProductColorController::class, 'store'])->name('store');
+            Route::get('/edit/{id}', [ProductColorController::class, 'edit'])->name('edit');
+            Route::post('/update', [ProductColorController::class, 'update'])->name('update');
+            Route::post('/delete/{id}', [ProductColorController::class, 'delete'])->name('delete');
+        });
+
+        Route::group(['prefix' => 'size', 'as' => 'sizes.'], function () {
+            Route::get('/', [ProductSizeController::class, 'index'])->name('index');
+            Route::get('/data', [ProductSizeController::class, 'data'])->name('data');
+            Route::get('/create', [ProductSizeController::class, 'create'])->name('create');
+            Route::post('/create', [ProductSizeController::class, 'store'])->name('store');
+            Route::get('/edit/{id}', [ProductSizeController::class, 'edit'])->name('edit');
+            Route::post('/update', [ProductSizeController::class, 'update'])->name('update');
+            Route::post('/delete/{id}', [ProductSizeController::class, 'delete'])->name('delete');
+        });
     });
 
     Route::group(['prefix' => 'color', 'as' => 'colors.'], function () {
@@ -58,6 +82,14 @@ Route::middleware('auth')->group(function () {
         Route::post('/update', [ColorController::class, 'update'])->name('update');
         Route::post('/delete/{id}', [ColorController::class, 'delete'])->name('delete');
     });
+
+    Route::group(['prefix' => 'order', 'as' => 'orders.'], function () {
+        Route::get('/', [OrderController::class, 'index'])->name('index');
+        Route::get('/data', [OrderController::class, 'data'])->name('data');
+        Route::get('/detail/{id}', [OrderController::class, 'detail'])->name('detail');
+    });
+
+    
 
     Route::group(['prefix' => 'size', 'as' => 'sizes.'], function () {
         Route::get('/', [SizeController::class, 'index'])->name('index');

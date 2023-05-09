@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class SizeStoreRequest extends FormRequest
+class SizeStoreRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,18 +26,11 @@ class SizeStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            /*'name' => ['nullable'],
+            'name' => ['nullable'],
             'size' => ['required'],
-            'parent_id' => ['required'],
-           */
+            
         ];
     }
 
-    protected function failedValidation(Validator $validator)
-    {
-        
-        throw new HttpResponseException(
-            back()->withErrors($validator->errors()->all())
-        );
-    }
+    
 }

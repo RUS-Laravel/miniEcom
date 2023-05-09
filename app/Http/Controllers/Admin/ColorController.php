@@ -7,48 +7,48 @@ use App\Http\Requests\Admin\ColorEditRequest;
 use App\Http\Requests\Admin\ColorStoreRequest;
 use Illuminate\Http\Request;
 use App\Models\Color;
-use App\Models\Product;
+
 
 class ColorController extends BaseController
 {
     public function index(){
-        return view('admin.products.colors.index');
+        return view('admin.colors.index');
     }
 
     public function data(){
-        /*$data = Color::with('product')->get();
+        $data = Color::all();
         return response()->json([
             'data'=>$data,
-            'table'=>view('admin.products.colors.table', compact('data'))->render()
-        ]);*/
+            'table'=>view('admin.colors.table', compact('data'))->render()
+        ]);
     }
 
     public function create(){
-        $products = Product::all();
-        return view('admin.products.colors.create', compact('products'));
+        return view('admin.colors.create');
     }
 
     public function store(ColorStoreRequest $request){
         //$res = Color::create($request->all());
-        /*foreach($request->name as $item=>$v){
+        foreach($request->name as $item=>$v){
             $data=array(
                 'color_name'=>$request->name[$item],
-                'product_id'=>$request->product_id
+                
             ); 
             $res = Color::create($data);
         }
-        return redirect()->route('admin.colors.index');*/
+        return redirect()->route('admin.colors.index');
     }
 
     public function edit($id)
     {
-       /* $color = Color::find($id);
-        $products = Product::all();
-        return view('admin.products.colors.edit', compact('color', 'products'));*/
+        $color = Color::find($id);
+        
+        return view('admin.colors.edit', compact('color'));
     }
 
     public function update(ColorEditRequest $request){
-        Color::where('id', $request->id)->update($request->only(app(Color::class)->getFillable()));
+        //Color::where('id', $request->id)->update($request->only(app(Color::class)->getFillable()));
+        $res = Color::where('id', $request->id)->update(['cat_name'=>$request->name]);
         return redirect()->route('admin.colors.index');
     }
 

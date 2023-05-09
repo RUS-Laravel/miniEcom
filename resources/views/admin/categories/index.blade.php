@@ -54,6 +54,7 @@
                     $edit_modal.find('[name="name"]').val(response.name)
                     $edit_modal.find('[name="description"]').val(response.description)
                     $edit_modal.find('[name="parent_id"]').val(response.parent_id)
+                    $edit_modal.find('[name="tags"]').val(response.tags)
                     if (response.status == 1)
                         $edit_modal.find('#customRadioEdit1').attr('checked', true)
                     else
@@ -100,6 +101,7 @@
                     description: $edit_modal.find('[name="description"]').val(),
                     status: $edit_modal.find('[name="status"]:checked').val(),
                     parent_id: $edit_modal.find('[name="parent_id"]').val(),
+                    tags: $edit_modal.find('[name="tags"]').val(),
                 },
                 success: function(response) {
                     console.log(response);

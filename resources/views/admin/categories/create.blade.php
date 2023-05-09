@@ -38,7 +38,16 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="field-3" class="control-label">Description</label>
+                                <label for="field-4" class="control-label">Tags</label>
+                                <input type="text" class="form-control" name="tags" placeholder="Tags">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="field-5" class="control-label">Description</label>
                                 <input type="text" class="form-control" name="description" placeholder="">
                             </div>
                         </div>

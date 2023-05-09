@@ -43,6 +43,20 @@
                 </li>
 
                 <li>
+                    <a href="{{ route('admin.colors.index') }}">
+                        <i class="mdi mdi-cart-outline"></i>
+                        <span> @lang('Colors') </span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ route('admin.sizes.index') }}">
+                        <i class="mdi mdi-cart-outline"></i>
+                        <span> @lang('Sizes') </span>
+                    </a>
+                </li>
+
+                <li>
                     <a href="{{ route('admin.products.index') }}">
                         <i class="mdi mdi-cart-outline"></i>
                         <span> @lang('Products') </span>

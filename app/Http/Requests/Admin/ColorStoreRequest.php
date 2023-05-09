@@ -4,9 +4,9 @@ namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
-class ColorStoreRequest extends FormRequest
+
+class ColorStoreRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,16 +27,9 @@ class ColorStoreRequest extends FormRequest
     {
         return [
             'name' => ['required'],
-            'parent_id' => ['required'],
            
         ];
     }
 
-    protected function failedValidation(Validator $validator)
-    {
-        
-        throw new HttpResponseException(
-            back()->withErrors($validator->errors()->all())
-        );
-    }
+   
 }

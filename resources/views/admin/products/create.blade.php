@@ -34,6 +34,10 @@
                         <input type="text" id="code" class="form-control" name="code" placeholder="Product Code">
                     </div>
                     <div class="form-group mb-3">
+                        <label for="recevied">Product recevied price<span class="text-danger">*</span></label>
+                        <input type="number" id="recevied" class="form-control" name="recevied" placeholder="Product recevied price" min="0">
+                    </div>
+                    <div class="form-group mb-3">
                         <label for="stock">Product stock<span class="text-danger">*</span></label>
                         <input type="number" id="stock" class="form-control" name="stock" placeholder="Product stock" min="0">
                     </div>
@@ -44,6 +48,10 @@
                     <div class="form-group mb-3">
                         <label for="price">Product price<span class="text-danger">*</span></label>
                         <input type="number" id="price" class="form-control" name="price" placeholder="Product Price" min="0">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="tags">Product tags<span class="text-danger">*</span></label>
+                        <input type="text" id="tags" class="form-control" name="tags" placeholder="Product tags">
                     </div>
                     <div class="form-group mb-3">
                         <label for="description">Product description</label>

@@ -5,6 +5,7 @@
         <div class="col-lg-12">
             <div class="card-box">
                 <button type="button" data-toggle="modal" data-target="#userInsertModal" class="btn btn-outline-success waves-effect waves-light">+ New User</button>
+                <button type="button" data-toggle="modal" data-target="#userInformationModal" class="btn btn-outline-success waves-effect waves-light">+ New User Information</button>
                 <p class="sub-header font-13">
                     
                 </p>
@@ -16,6 +17,7 @@
         </div>
     </div>
     @include('admin.users.create')
+    @include('admin.users.informations.create')
     @include('admin.users.edit')
 
 @endsection
@@ -29,6 +31,7 @@
     <script>
         let $user_insert_modal = $('#userInsertModal');
         let $user_edit_modal = $('#userEditModal');
+        let $user_information_modal = $('#userInformationModal');
 
         $(document).ready(function() {
             table();
@@ -57,6 +60,46 @@
             })
         }
         user_fetch()*/
+        $(document.body).on('click','[data-information="user-information-button"]', function(){
+            $.ajax({
+                url: '{{route("admin.users.informations.store")}}',
+                method: 'POST',
+                data: {
+                    phone: $user_information_modal.find('[name="phone"]').val(),
+                    address: $user_information_modal.find('[name="address"]').val(),
+                    
+                },
+                success: function(response){
+                    var err = ''
+                    console.log(response)
+                    if(response.status){
+                        Swal.fire(
+                            'Notification',
+                            response.message,
+                            'success'
+                        ).then(($result) => {
+                            $user_information_modal.modal('hide')
+                            table();
+                        })
+                    }else{
+                        Swal.fire(
+                            response.message,
+                            response.data,
+                            'error'
+                        ).then(($result) => {
+                            $user_information_modal.modal('hide')
+                            table();
+                        })
+                        $.each(response.data, function(key, err_message){
+                                err = err + '<li class="alert alert-warning py-1">'+err_message+'</li>'
+                            });
+                        
+                        $("#erorrs").html(err);
+                    }
+                }
+            })
+        })
+
         $(document.body).on('click','[data-insert="user-insert-button"]', function(){
             $.ajax({
                 url: '{{route("admin.users.store")}}',

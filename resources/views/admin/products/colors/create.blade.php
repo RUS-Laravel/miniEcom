@@ -4,11 +4,11 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="card-box">
-                <a href="{{ route('admin.colors.index') }}" class="btn btn-outline-success waves-effect waves-light mb-1">Colors</a>
-                <form action="{{ route('admin.colors.store') }}" method="post">
+                
+                <form action="{{ route('admin.products.colors.store') }}" method="post">
                     @csrf
                     <div class="form-group">
-                        <label>Product</label> <br />
+                        <label>Product<span class="text-danger">*</span></label> <br />
                         <select id="selectize-select" name="product_id">
                             <option data-display="Select" value="">Choose Product</option>
                             @foreach ($products as $product)
@@ -17,10 +17,12 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Color</label> <br />
-                        <select class="form-control select2-multiple" data-toggle="select2" multiple="multiple" data-placeholder="Choose Color">
-                                <option value="AK">Alaska</option>
-                                <option value="HI">Hawaii</option>
+                        <label>Color<span class="text-danger">*</span></label> <br />
+                        <select class="form-control select2-multiple" data-toggle="select2" multiple="multiple" name="color_id[]" data-placeholder="Choose Color">
+                            @foreach ($colors as $color)
+                                <option value="{{$color->id}}">{{$color->color_name}}</option>
+                            @endforeach
+                                 
                         </select> 
                     </div>                 
                     <button type="submit" class="btn btn-primary waves-effect waves-light" id="submit_all">Create</button>
