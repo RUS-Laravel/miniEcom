@@ -30,6 +30,8 @@ class BuyRequest extends FormRequest
             'address' => ['required'],
             'telephone' => ['required'],
             'payment_type' => ['required'],
+            'product_color_id' => ['required'],
+            'product_size_id' => ['required'],
         ];
     }
 

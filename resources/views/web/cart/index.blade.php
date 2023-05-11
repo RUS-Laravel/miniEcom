@@ -25,8 +25,11 @@
                                     @foreach (Cart::content() as $content)
                                         <tr class="cart_item">
                                             <td class="product-thumbnail">
-                                                <a href="{{ route('cart.show.product', $content->rowId) }}">
-                                                    <img src="{{ url('img/shop/shop_item_3.jpg') }}" alt="">
+                                                <a href="{{ route('product.detail', [
+                                                    'slug' => $content->options->slug ?? '',
+                                                    'id' => $content->id,
+                                                ]) }}">
+                                                    <img src="{{ url($content->options->image) }}" alt="">
                                                 </a>
                                             </td>
                                             <td class="product-name">
@@ -53,15 +56,15 @@
                                                 <div class="quantity buttons_added">
                                                     <form>
                                                         @csrf
-                                                    <input type="number" step="1" min="0" value="{{ $content->qty }}" title="qty" data-id="{{ $content->rowId }}" name="qty" data-control="qty" data-url="{{ route('cart.update') }}" class="input-text qty text">
-                                                    <div class="quantity-adjust">
-                                                        <a href="#" class="plus">
-                                                            <i class="fa fa-angle-up"></i>
-                                                        </a>
-                                                        <a href="#" class="minus">
-                                                            <i class="fa fa-angle-down"></i>
-                                                        </a>
-                                                    </div>
+                                                        <input type="number" step="1" min="0" value="{{ $content->qty }}" title="qty" data-id="{{ $content->rowId }}" name="qty" data-control="qty" data-url="{{ route('cart.update') }}" class="input-text qty text">
+                                                        <div class="quantity-adjust">
+                                                            <a href="#" class="plus">
+                                                                <i class="fa fa-angle-up"></i>
+                                                            </a>
+                                                            <a href="#" class="minus">
+                                                                <i class="fa fa-angle-down"></i>
+                                                            </a>
+                                                        </div>
                                                     </form>
                                                 </div>
                                             </td>
@@ -136,7 +139,7 @@
                     @if (auth('client')->check())
                         @include('web.cart.form')
                     @else
-                        <a class="btn btn-info btn-stroke mb-10 btn-block pt-30 pb-30" href="{{ route('login.account') }}">Login</a>
+                        <a class="btn btn-info btn-stroke mb-10 btn-block pt-30 pb-30" href="{{ route('login.account') }}"><span>Login</span></a>
                     @endif
                 </div>
         </section> <!-- end cart -->
@@ -157,7 +160,8 @@
                 method: 'POST',
                 data: {
                     id: id,
-                    qty: qty
+                    qty: qty,
+                    _token: '{{ csrf_token() }}'
                 },
                 success: function(response) { //console.log(response);
                     window.location.reload();

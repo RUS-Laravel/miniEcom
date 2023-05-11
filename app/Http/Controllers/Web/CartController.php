@@ -16,15 +16,18 @@ class CartController extends Controller
 {
     public function index()
     {
-        $userInformations = UserInformation::where('user_id',Auth::user('client')->id)->get();
-        return view('web.cart.index',compact('userInformations'));
+        $userInformations = UserInformation::where('user_id', auth('client')->id())->get();
+        return view('web.cart.index', compact('userInformations'));
     }
 
     public function addToCart()
     {
         $product = Product::find(request('id'));
         $row = Cart::add($product->id, $product->title, request('quantity'), $product->price, 0, [
-            'slug' => $product->slug, 'color'=>request('color_id'), 'size'=>request('size_id')
+            'slug' => $product->slug,
+            'color' => request('color_id'),
+            'size' => request('size_id'),
+            'image' => (isset($product->image->path) and isset($product->image->name)) ? $product->image->path . $product->image->name : ""
         ]);
         Cart::setDiscount($row->rowId, $product->discount);
         return redirect()->route('cart.index');
@@ -32,15 +35,15 @@ class CartController extends Controller
 
     public function update_cart(Request $request)
     {
-        $rowId = $request->id;
-        $qty = $request->qty;
-        dd($rowId.'-'.$qty);
-        //$result = Cart::update($rowId, ['qty' => $qty]);
-       
-       /* return response()->json([
-            'message' => $result ? 'Cart Updated' : 'Error',
-            'status' => (bool)$result
-        ]);*/
+        //     $rowId = $request->id;
+        //     $qty = $request->qty;
+        //     dd($rowId.'-'.$qty);
+        //     //$result = Cart::update($rowId, ['qty' => $qty]);
+
+        //    /* return response()->json([
+        //         'message' => $result ? 'Cart Updated' : 'Error',
+        //         'status' => (bool)$result
+        //     ]);*/
     }
 
     public function show_product($rowId)
@@ -68,8 +71,8 @@ class CartController extends Controller
                     'product_id' => $item->id,
                     'price' => $item->price,
                     'quantity' => $item->qty,
-                    'product_color_id'=>$item->color,
-                    'product_size_id'=>$item->size
+                    'product_color_id' => $item->options->color,
+                    'product_size_id' => $item->options->size,
                 ]);
             }
             Cart::destroy();

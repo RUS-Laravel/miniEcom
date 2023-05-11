@@ -79,6 +79,11 @@ class Product extends Model
         return $this->morphMany(Image::class, 'imageable');
     }
 
+    public function image()
+    {
+        return $this->morphOne(Image::class, 'imageable')->latest();
+    }
+
     public function scopeActive($query)
     {
         return $query->where('status', 1);

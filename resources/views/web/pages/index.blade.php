@@ -7,9 +7,16 @@
             @foreach ($products as $product)
                 <div class="product-item hover-trigger">
                     <div class="product-img">
-                        <a href="#">
-                            <img src="{{ url('img/empty.png') }}" alt="">
-                        </a>
+                        @if ($product->images->count())
+                            <a href="#">
+                                <img src="{{ url($product->images->last()->path . $product->images->first()->name) }}" alt="">
+                            </a>
+                        @else
+                            <a href="#">
+                                <img src="{{ url('img/empty.png') }}" alt="">
+                            </a>
+                        @endif
+
                         @if ($product->discount)
                             <div class="product-label">
                                 <span class="sale">sale</span>

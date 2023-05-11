@@ -27,10 +27,10 @@ class ProductController extends BaseController
             //->with('color:id,color_name')
             //->with('size:id,size_name')
             ->first();
-        $colors = Color_Products::with('color:id,color_name')->where('product_id',$id)->get();
+        $colors = Color_Products::with('color:id,color_name')->where('product_id', $id)->get();
         $sizes = Product_Size::with('size:id,size_name,size')->get();
-        
-        return view('admin.products.detail', compact('product','colors','sizes'));
+
+        return view('admin.products.detail', compact('product', 'colors', 'sizes'));
     }
 
     public function create()
@@ -41,24 +41,29 @@ class ProductController extends BaseController
 
     public function store_image(ImageStoreRequest $request)
     {
-        $image = $request->file('file');
-        $imageName = time() . rand(1, 100) . '.' . $image->extension();
-        $path = public_path('images/products/');
-        $image->move($path, $imageName);
-        
-        $res = Product::create($request->all());
-         $res->images()->create([
-             'name' => $imageName,
-             'path' => $path
-         ]);
-        return response()->json([
-            'message' => $res ? 'Image inserted' : 'Error',
-            'status' => (bool)$res
-        ]);
-        /*return response()->json([
-            'success' => $imageName ?? null,
-            '$image' => $image
-        ]);*/
+        $result = Product::find($request->product_id);
+
+        if ($result) {
+            $image = $request->file('file');
+            $imageName = time() . rand(1, 100) . '.' . $image->extension();
+            $path = public_path('images/products/');
+            $image->move($path, $imageName);
+
+            $result->images()->create([
+                'name' => $imageName,
+                'path' => $path
+            ]);
+
+            return response()->json([
+                'message' => $result ? 'Image inserted' : 'Error',
+                'status' => (bool)$result
+            ]);
+        } else {
+            return response()->json([
+                'message' => "Please Create Product",
+                'status' => false
+            ]);
+        }
     }
 
     public function data(Request $request)

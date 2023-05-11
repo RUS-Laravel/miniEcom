@@ -5,7 +5,7 @@
         <div class="col-lg-6">
             <div class="card-box">
                 <h5 class="text-uppercase bg-light p-2 mt-0 mb-3">General</h5>
-                
+
                 <form action="{{ route('admin.products.store') }}" method="post">
                     @csrf
                     <div class="form-group">
@@ -70,16 +70,17 @@
                     </div>
 
                 </form>
-             
+
             </div>
         </div>
 
         <div class="col-lg-6">
-                                
+
             <div class="card-box">
                 <h5 class="text-uppercase mt-0 mb-3 bg-light p-2">Product Images</h5>
                 <form action="{{ route('admin.products.store.image') }}" method="POST" class="dropzone" id="productDropzone" data-plugin="dropzone" data-previews-container="#file-previews"
                       data-upload-preview-template="#uploadPreviewTemplate" enctype="multipart/form-data">
+                    <input type="hidden" name="product_id" value="">
                     @csrf
 
                     <div class="fallback">
@@ -139,7 +140,7 @@
 @endpush
 @push('css-lib')
     <link href="{{ url('assets/libs/selectize/css/selectize.bootstrap3.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{url('assets/libs/summernote/summernote-bs4.min.css')}}" rel="stylesheet" type="text/css" />
+    <link href="{{ url('assets/libs/summernote/summernote-bs4.min.css') }}" rel="stylesheet" type="text/css" />
 @endpush
 @push('css')
     <!-- Sweet Alert-->
@@ -149,76 +150,53 @@
     <script src="{{ url('assets/libs/dropzone/min/dropzone.min.js') }}"></script>
 
     <script type="text/javascript">
-
-    Dropzone.options.productDropzone = {
+        Dropzone.options.productDropzone = {
             autoProcessQueue: true,
             clickable: true,
             paramName: "file", // The name that will be used to transfer the file
             maxFilesize: 2, // MB
-            /*dictFileTooBig: '@lang('dropzone.error.max_size',['size'=>2])',
+            /*
+            dictFileTooBig: '@lang('dropzone.error.max_size', ['size' => 2])',
             dictDefaultMessage: '@lang('dropzone.message.drop_upload')',
             dictRemoveFile: '@lang('dropzone.message.remove')',
             dictCancelUpload: '@lang('dropzone.message.cancel')',
             dictInvalidFileType: '@lang('dropzone.message.dictInvalidFileType')',
-            dictMaxFilesExceeded: '@lang('dropzone.message.dictMaxFilesExceeded',['param'=>6])',*/
+            dictMaxFilesExceeded: '@lang('dropzone.message.dictMaxFilesExceeded', ['param' => 6])',
+            */
             acceptedFiles: ".jpeg,.jpg,.png,.gif",
             addRemoveLinks: false,
             parallelUploads: 6,
             maxFiles: 6,
             cache: false,
+
             success: function(file, response) {
-                 console.log(response);
-             },
-             error: function(file, response) {
-                 return false;
-             },
-            removedfile: function (file) {
+                if (response.status === false) {
+                    alert(response.message)
+                    $(".dz-preview").remove();
+                }
+            },
+            error: function(file, response) {
+                return false;
+            },
+            removedfile: function(file) {
                 //let name = file.previewElement.id;
                 //console.log(name);
-            //     let _ref;
-            //     return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
-             },
+                //     let _ref;
+                //     return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
+            },
 
-            init: function () {
-                
+            init: function() {
+
                 // var submitButton = document.querySelector(".js-button-product-submit");
                 // myDropzone = this;
                 // submitButton.addEventListener("click", function () {
-                   
-
+                //
                 // });
             }
         };
-
-
-        // Dropzone.autoDiscover = false;
-        // Dropzone.options.mydropzone = {
-        //     /*paramName: "file",
-        //     uploadMultiple: true,*/
-        //     autoProcessQueue: false,
-        //     maxFilesize: 8,
-        //     //addRemoveLinks: false,
-        //     //previewsContainer: "div#file-previews",
-        //     timeout: 5000,
-        //     acceptedFiles: ".jpeg,.jpg,.png,.gif",
-        //     success: function(file, response) {
-        //         console.log(response);
-        //     },
-        //     error: function(file, response) {
-        //         return false;
-        //     }
-        //     /* init:function(){
-        //          var submitButton = document.querySelector('#submit_all');
-        //          var myDropzone = this;
-        //          submitButton.addEventListener('click', function(){
-        //              myDropzone.processQueue();
-        //          });
-                
-        //      }*/
-        // }
     </script>
     <!-- Summernote js -->
-    <script src="{{url('assets/libs/summernote/summernote-bs4.min.js')}}"></script>
+    <script src="{{ url('assets/libs/summernote/summernote-bs4.min.js') }}"></script>
     <!-- Init js-->
     <script src="{{ url('assets/js/pages/form-fileuploads.init.js') }}"></script>
 @endpush

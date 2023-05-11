@@ -25,8 +25,8 @@ Route::middleware('auth')->group(function () {
 
 
         Route::group(['prefix' => 'informations'], function () {
-            Route::post('/create', [UserInformationController::class, 'store'])->name('store');
-            Route::get('/detail/{id}', [UserInformationController::class, 'detail'])->name('detail');
+            Route::post('/create', [UserInformationController::class, 'store'])->name('users.informations.store');
+            Route::get('/detail/{id}', [UserInformationController::class, 'detail'])->name('users.informations.detail');
         });
     });
 
