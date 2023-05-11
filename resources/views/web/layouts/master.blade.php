@@ -88,7 +88,11 @@
             <ul class="top-bar-acc">
               <li class="top-bar-link"><a href="#">My Wishlist</a></li>
               <li class="top-bar-link"><a href="#">Newsletter</a></li>
-              <li class="top-bar-link"><a href="{{route('login.account')}}">Login</a></li>                 
+              @if (auth('client')->check())
+                <li class="top-bar-link"><a href="{{route('client.logout')}}">Logout </a></li> 
+              @else
+                <li class="top-bar-link"><a href="{{route('login.account')}}">Login</a></li> 
+              @endif                
             </ul>
 
           </div>
@@ -196,7 +200,14 @@
                     <div class="widget footer-links">
                       <h5 class="widget-title bottom-line left-align grey">Account</h5>
                       <ul class="list-no-dividers">                  
-                        <li><a href="#">My account</a></li>
+                        <li><a href="{{route('client.index')}}">
+                          @if (auth('client')->check())
+                            {{auth('client')->user()->name}}
+                          @else
+                              My account
+                          @endif
+                          
+                        </a></li>
                         <li><a href="#">Wishlist</a></li>
                         <li><a href="#">Order history</a></li>
                         <li><a href="#">Specials</a></li>

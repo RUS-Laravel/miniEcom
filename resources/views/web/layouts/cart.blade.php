@@ -1,6 +1,12 @@
 <ul>
     <li class="nav-register">
-        <a href="#">My Account</a>
+        <a href="{{route('client.index')}}">
+            @if (auth('client')->check())
+                {{auth('client')->user()->name}}
+            @else
+                My account
+            @endif            
+         </a>
     </li>
     <li class="nav-search-wrap style-2 hidden-sm hidden-xs">
         <a href="#" class="nav-search search-trigger">

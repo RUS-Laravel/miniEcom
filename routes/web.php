@@ -27,12 +27,13 @@ Route::prefix('auth')->group(function () {
 
 Route::get('category/{id?}', [CategoryController::class, 'catalog'])->name('catalog.show');
 Route::get('/product/{slug}_{id}', [ProductController::class, 'detail'])->name('product.detail');
+Route::get('product/{tag}', [ProductController::class, 'tag'])->name('product.tag');
 
 Route::prefix('cart')->group(function () {
     Route::get('/', [CartController::class, 'index'])->name('cart.index');
     Route::get('product/{rowId}', [CartController::class, 'show_product'])->name('cart.show.product');
     Route::post('add-to-cart', [CartController::class, 'addToCart'])->name('cart.addToCart');
-    Route::post('cart-update/{rowId}', [CartController::class, 'update_cart'])->name('cart.update');
+    Route::post('cart-update', [CartController::class, 'update_cart'])->name('cart.update');
     Route::post('buy', [CartController::class, 'buy'])->name('cart.buy');
     Route::get('remove-item/{rowId}', [CartController::class, 'remove'])->name('cart.remove');
 });

@@ -34,9 +34,14 @@
             </li>
         @endforeach
 
-        <li class="mobile-links hidden-lg hidden-md">
-            <a href="#">My Account</a>
-        </li>
+        <li class="mobile-links hidden-lg hidden-md"><a href="{{route('client.index')}}">
+            @if (auth('client')->check())
+                {{auth('client')->user()->name}}
+            @else
+                My account
+            @endif
+            
+        </a></li>
 
         <!-- Mobile search -->
         <li id="mobile-search" class="hidden-lg hidden-md">

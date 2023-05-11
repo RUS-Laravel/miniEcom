@@ -78,7 +78,7 @@
                                 
             <div class="card-box">
                 <h5 class="text-uppercase mt-0 mb-3 bg-light p-2">Product Images</h5>
-                <form action="{{ route('admin.products.store_image') }}" method="post" class="dropzone" id="productDropzone" data-plugin="dropzone" data-previews-container="#file-previews"
+                <form action="{{ route('admin.products.store.image') }}" method="POST" class="dropzone" id="productDropzone" data-plugin="dropzone" data-previews-container="#file-previews"
                       data-upload-preview-template="#uploadPreviewTemplate" enctype="multipart/form-data">
                     @csrf
 
@@ -149,29 +149,38 @@
     <script src="{{ url('assets/libs/dropzone/min/dropzone.min.js') }}"></script>
 
     <script type="text/javascript">
+
     Dropzone.options.productDropzone = {
             autoProcessQueue: true,
             clickable: true,
             paramName: "file", // The name that will be used to transfer the file
             maxFilesize: 2, // MB
-            dictFileTooBig: '@lang('dropzone.error.max_size',['size'=>2])',
+            /*dictFileTooBig: '@lang('dropzone.error.max_size',['size'=>2])',
             dictDefaultMessage: '@lang('dropzone.message.drop_upload')',
             dictRemoveFile: '@lang('dropzone.message.remove')',
             dictCancelUpload: '@lang('dropzone.message.cancel')',
             dictInvalidFileType: '@lang('dropzone.message.dictInvalidFileType')',
-            dictMaxFilesExceeded: '@lang('dropzone.message.dictMaxFilesExceeded',['param'=>6])',
-            acceptedFiles: ".jpeg,.jpg,.png,.webp",
+            dictMaxFilesExceeded: '@lang('dropzone.message.dictMaxFilesExceeded',['param'=>6])',*/
+            acceptedFiles: ".jpeg,.jpg,.png,.gif",
             addRemoveLinks: false,
             parallelUploads: 6,
             maxFiles: 6,
             cache: false,
+            success: function(file, response) {
+                 console.log(response);
+             },
+             error: function(file, response) {
+                 return false;
+             },
             removedfile: function (file) {
-
+                //let name = file.previewElement.id;
+                //console.log(name);
             //     let _ref;
             //     return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
              },
 
             init: function () {
+                
                 // var submitButton = document.querySelector(".js-button-product-submit");
                 // myDropzone = this;
                 // submitButton.addEventListener("click", function () {

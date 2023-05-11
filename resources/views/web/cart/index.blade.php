@@ -51,7 +51,9 @@
 
                                             <td class="product-quantity">
                                                 <div class="quantity buttons_added">
-                                                    <input type="number" step="1" min="0" value="{{ $content->qty }}" title="Qty" data-id="{{ $content->rowId }}" name="qty" data-control="qty" data-url="{{ route('cart.update', $content->rowId) }}" class="input-text qty text">
+                                                    <form>
+                                                        @csrf
+                                                    <input type="number" step="1" min="0" value="{{ $content->qty }}" title="qty" data-id="{{ $content->rowId }}" name="qty" data-control="qty" data-url="{{ route('cart.update') }}" class="input-text qty text">
                                                     <div class="quantity-adjust">
                                                         <a href="#" class="plus">
                                                             <i class="fa fa-angle-up"></i>
@@ -60,6 +62,7 @@
                                                             <i class="fa fa-angle-down"></i>
                                                         </a>
                                                     </div>
+                                                    </form>
                                                 </div>
                                             </td>
                                             <td class="product-subtotal">
@@ -146,7 +149,9 @@
         $(document).on('change', '[data-control="qty"]', function() {
             var qty = $('input[name="qty"]').val();
             var id = $(this).data('id');
-            //console.log($(this).data('url'));
+            /*console.log($(this).data('url'));
+            console.log(id);
+            console.log(qty);*/
             $.ajax({
                 url: $(this).data('url'),
                 method: 'POST',

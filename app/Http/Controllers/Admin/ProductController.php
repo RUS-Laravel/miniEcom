@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ProductStoreRequest;
+use App\Http\Requests\Admin\ImageStoreRequest;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Image;
 use App\Models\Color_Products;
 use App\Models\Product_Size;
 
@@ -27,7 +29,7 @@ class ProductController extends BaseController
             ->first();
         $colors = Color_Products::with('color:id,color_name')->where('product_id',$id)->get();
         $sizes = Product_Size::with('size:id,size_name,size')->get();
-        // dd($product);die;
+        
         return view('admin.products.detail', compact('product','colors','sizes'));
     }
 
@@ -37,15 +39,26 @@ class ProductController extends BaseController
         return view('admin.products.create', compact('parents'));
     }
 
-    public function store_image(ProductStoreRequest $request)
+    public function store_image(ImageStoreRequest $request)
     {
         $image = $request->file('file');
         $imageName = time() . rand(1, 100) . '.' . $image->extension();
-        $image->move(public_path('images/products'), $imageName);
+        $path = public_path('images/products/');
+        $image->move($path, $imageName);
+        
+        $res = Product::create($request->all());
+         $res->images()->create([
+             'name' => $imageName,
+             'path' => $path
+         ]);
         return response()->json([
+            'message' => $res ? 'Image inserted' : 'Error',
+            'status' => (bool)$res
+        ]);
+        /*return response()->json([
             'success' => $imageName ?? null,
             '$image' => $image
-        ]);
+        ]);*/
     }
 
     public function data(Request $request)

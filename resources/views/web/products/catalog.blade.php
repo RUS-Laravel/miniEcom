@@ -179,26 +179,17 @@
                 <div class="widget filter-by-color">
                   <h3 class="widget-title heading uppercase relative bottom-line full-grey">Color</h3>
                   <ul class="color-select list-dividers">
-                    <li>
-                      <input type="checkbox" class="input-checkbox" id="green-color" name="green-color">
-                      <label for="green-color" class="checkbox-label">Green</label>
-                    </li>
-                    <li>
-                      <input type="checkbox" class="input-checkbox" id="red-color" name="red-color">
-                      <label for="red-color" class="checkbox-label">Red</label>
-                    </li>
-                    <li>
-                      <input type="checkbox" class="input-checkbox" id="blue-color" name="blue-color">
-                      <label for="blue-color" class="checkbox-label">Blue</label>
-                    </li>
-                    <li>
-                      <input type="checkbox" class="input-checkbox" id="white-color" name="white-color">
-                      <label for="white-color" class="checkbox-label">White</label>
-                    </li>
-                    <li>
-                      <input type="checkbox" class="input-checkbox" id="black-color" name="black-color">
-                      <label for="black-color" class="checkbox-label">Black</label>
-                    </li>
+                    @foreach ($products as $product)
+                      @foreach ($product_colors as $color)
+                        @if ($product->id == $color->product_id)
+                          <li>
+                            <input type="checkbox" class="input-checkbox" id="{{$color->color->color_name}}-color" name="{{$color->color->color_name}}-color">
+                            <label for="{{$color->color->color_name}}-color" class="checkbox-label">{{$color->color->color_name}}</label>
+                          </li>
+                        @endif  
+                      @endforeach
+                    @endforeach
+                   
                   </ul>
                 </div>
   
@@ -206,26 +197,21 @@
                 <div class="widget filter-by-size">
                   <h3 class="widget-title heading uppercase relative bottom-line full-grey">Size</h3>
                   <ul class="size-select list-dividers">
-                    <li>
-                      <input type="checkbox" class="input-checkbox" id="small-size" name="small-size">
-                      <label for="small-size" class="checkbox-label">S</label>
-                    </li>
-                    <li>
-                      <input type="checkbox" class="input-checkbox" id="medium-size" name="medium-size">
-                      <label for="medium-size" class="checkbox-label">M</label>
-                    </li>
-                    <li>
-                      <input type="checkbox" class="input-checkbox" id="large-size" name="large-size">
-                      <label for="large-size" class="checkbox-label">L</label>
-                    </li>
-                    <li>
-                      <input type="checkbox" class="input-checkbox" id="xlarge-size" name="xlarge-size">
-                      <label for="xlarge-size" class="checkbox-label">XL</label>
-                    </li>
-                    <li>
-                      <input type="checkbox" class="input-checkbox" id="xxlarge-size" name="xxlarge-size">
-                      <label for="xxlarge-size" class="checkbox-label">XXL</label>
-                    </li>
+                    @foreach ($products as $product)
+                      @foreach ($product_colors as $color)
+                        @if ($product->id == $color->product_id)
+                          @foreach ($product_sizes as $size)
+                            @if ($size->product_color_id == $color->id)
+                              <li>
+                                <input type="checkbox" class="input-checkbox" id="{{$size->size->size}}-size" name="{{$size->size->size}}-size">
+                                <label for="{{$size->size->size}}-size" class="checkbox-label">{{$size->size->size}}</label>
+                              </li>
+                            @endif                 
+                          @endforeach
+                        @endif
+                      @endforeach
+                    @endforeach
+                   
                   </ul>
                 </div>
                 
@@ -263,17 +249,13 @@
                 <!-- Tags -->
                 <div class="widget tags clearfix">
                   <h3 class="widget-title heading uppercase relative bottom-line full-grey">Tags</h3>
-                  <a href="#">Multi-purpose</a>
-                  <a href="#">Creative</a>
-                  <a href="#">Elegant</a>
-                  <a href="#">Clean</a>
-                  <a href="#">Modern</a>
-                  <a href="#">Responsive</a>
-                  <a href="#">E-commerce</a>
-                  <a href="#">WordPress</a>
-                  <a href="#">Woocommerce</a>
-                  <a href="#">Store</a>
-                  <a href="#">Business</a>
+                  @php
+                    $explode_tags = explode(",", $category->tags);
+                  @endphp
+                  @foreach ($explode_tags as $tag)
+                    <a href="{{route('product.tag',$tag)}}">{{$tag ?? ''}}</a>
+                  @endforeach
+                  
                 </div>
   
               </aside> <!-- end sidebar -->

@@ -28,6 +28,8 @@ class ProductStoreRequest extends BaseRequest
             'description' => ['nullable'],
             'tags' => ['required'],
             'product_recevied' => ['required'],
+
+        
         ];
     }
 }

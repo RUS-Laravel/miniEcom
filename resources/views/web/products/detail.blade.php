@@ -90,18 +90,27 @@
 
                         <div class="color-swatches clearfix">
                             <span>Color:</span>
-                            <a href="#" class="swatch-violet"></a>
-                            <a href="#" class="swatch-black"></a>
-                            <a href="#" class="swatch-cream"></a>
+                            
+                            @foreach ($colors as $color)
+                         
+                                @if ($product->id == $color->product_id)
+                                    <a href="#" class="swatch-{{$color->color->color_name}}">{{$color->color->color_name}}</a>
+                                @endif  
+                            @endforeach
                         </div>
 
                         <div class="size-options clearfix">
                             <span>Size:</span>
-                            <a href="#" class="size-xs selected">XS</a>
-                            <a href="#" class="size-s">S</a>
-                            <a href="#" class="size-m">M</a>
-                            <a href="#" class="size-l">L</a>
-                            <a href="#" class="size-xl">XL</a>
+                            @foreach ($colors as $color)   
+                                @if ($product->id == $color->product_id)
+                                    @foreach ($sizes as $size)
+                                        @if ($color->id == $size->product_color_id)
+                                            <a href="#" class="size-{{$size->size->size}} selected">{{$size->size->size}}</a>
+                                        @endif
+                                    @endforeach 
+                                @endif                              
+                            @endforeach
+                               
                         </div>
 
                         <div class="product-actions">
@@ -128,7 +137,14 @@
                         <div class="product_meta">
                             <span class="sku">SKU: <a href="">{{ $product->code }}</a></span>
                             <span class="brand_as">Category: <a href="{{ route('catalog.show', $product->category_id) }}">{{ $product->category->name }}</a></span>
-                            <span class="posted_in">Tags: <a href="#">Sport, T-shirt, Blue</a></span>
+                            <span class="posted_in">Tags: 
+                                @php
+                                    $explode_tags = explode(",", $product->tags);
+                                @endphp
+                                @foreach ($explode_tags as $tag)
+                                    <a href="{{route('product.tag',$tag)}}">{{$tag}} </a>,
+                                @endforeach
+                                </span>
                         </div>
 
                         <!-- Accordion -->
@@ -156,11 +172,28 @@
                                             <tbody>
                                                 <tr>
                                                     <th>Size:</th>
-                                                    <td>EU 41 (US 8), EU 42 (US 9), EU 43 (US 10), EU 45 (US 12)</td>
+                                                    <td>
+                                                        @foreach ($colors as $color)   
+                                                            @if ($product->id == $color->product_id)
+                                                                @foreach ($sizes as $size)
+                                                                    @if ($color->id == $size->product_color_id)
+                                                                        {{$size->size->size_name}},
+                                                                    @endif
+                                                                @endforeach 
+                                                            @endif                              
+                                                        @endforeach
+                                                    </td>
                                                 </tr>
                                                 <tr>
                                                     <th>Colors:</th>
-                                                    <td>Violet, Black, Blue</td>
+                                                    <td>
+                                                        @foreach ($colors as $color)
+                         
+                                                            @if ($product->id == $color->product_id)
+                                                                {{$color->color->color_name}},
+                                                            @endif  
+                                                        @endforeach
+                                                    </td>
                                                 </tr>
                                                 <tr>
                                                     <th>Stock:</th>
