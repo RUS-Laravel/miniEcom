@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Web\BuyRequest;
+use App\Models\Color;
+use App\Models\Size;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Facades\Auth;
 
@@ -25,8 +27,8 @@ class CartController extends Controller
         $product = Product::find(request('id'));
         $row = Cart::add($product->id, $product->title, request('quantity'), $product->price, 0, [
             'slug' => $product->slug,
-            'color' => request('color_id'),
-            'size' => request('size_id'),
+            'color' => Color::find(request('color_id')) ?? "",
+            'size' => Size::find(request('size_id')) ?? "",
             'image' => (isset($product->image->path) and isset($product->image->name)) ? $product->image->path . $product->image->name : ""
         ]);
         Cart::setDiscount($row->rowId, $product->discount);
@@ -35,12 +37,12 @@ class CartController extends Controller
 
     public function update_cart(Request $request)
     {
-             $rowId = $request->id;
-             $qty = $request->qty;
-             
-             $result = Cart::update($rowId, ['qty' => $qty]);
-            return redirect()->back();
-             /*return response()->json([
+        $rowId = $request->id;
+        $qty = $request->qty;
+
+        $result = Cart::update($rowId, ['qty' => $qty]);
+        return redirect()->back();
+        /*return response()->json([
                 'message' => $result ? 'Cart Updated' : 'Error',
                 'status' => (bool)$result
              ]);*/
@@ -71,8 +73,8 @@ class CartController extends Controller
                     'product_id' => $item->id,
                     'price' => $item->price,
                     'quantity' => $item->qty,
-                    'product_color_id' => $item->options->color,
-                    'product_size_id' => $item->options->size,
+                    'product_color_id' => $item->options->color->id ?? "",
+                    'product_size_id' => $item->options->size->id ?? "",
                 ]);
             }
             Cart::destroy();

@@ -37,10 +37,10 @@
                                                     'slug' => $content->options->slug ?? '',
                                                     'id' => $content->id,
                                                 ]) }}">{{ $content->name }}</a>
-                                                {{-- <ul>
-                                                    <li>Size: XL</li>
-                                                    <li>Color: White</li>
-                                                </ul> --}}
+                                                <ul>
+                                                    <li>Size: {{ $content->options->size->size ?? '' }}</li>
+                                                    <li>Color: {{ $content->options->color->color_name ?? '' }}</li>
+                                                </ul>
                                             </td>
                                             @if ($content->discount())
                                                 <td class="product-price">

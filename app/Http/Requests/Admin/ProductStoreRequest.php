@@ -9,7 +9,7 @@ class ProductStoreRequest extends BaseRequest
     protected function prepareForValidation()
     {
         $this->merge([
-            'slug' => $this->title // str($this->title)->slug()->toString()
+            'slug' => str($this->title)->slug()->toString()
         ]);
     }
 
@@ -28,8 +28,6 @@ class ProductStoreRequest extends BaseRequest
             'description' => ['nullable'],
             'tags' => ['required'],
             'product_recevied' => ['required'],
-
-        
         ];
     }
 }

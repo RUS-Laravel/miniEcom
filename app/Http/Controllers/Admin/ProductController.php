@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ProductStoreRequest;
 use App\Http\Requests\Admin\ImageStoreRequest;
+use App\Http\Requests\Admin\ProductUpdateRequest;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Product;
@@ -66,22 +67,22 @@ class ProductController extends BaseController
         }
     }
 
-   
+
     public function delete_image($id)
     {
         $res = Image::find($id);
-        if (file_exists(public_path('images/products/'.$res->name))){
-            $filedeleted = unlink(public_path('images/products/'.$res->name));
+        if (file_exists(public_path('images/products/' . $res->name))) {
+            $filedeleted = unlink(public_path('images/products/' . $res->name));
             if ($filedeleted) {
                 $res->delete();
                 return redirect()->back();
             }
-         } else {
+        } else {
             echo 'Unable to delete the given file';
-         }
+        }
     }
 
-   /* public function productId()
+    /* public function productId()
     {
         $res = Product::orderBy('id','desc')->limit(1);
         return response()->json(['data'=>$res]);
@@ -128,15 +129,14 @@ class ProductController extends BaseController
             'path' => 'images/products/'
          ]);*/
         //return redirect()->route('admin.products.index');
-        if($response){
-            $res = Product::orderBy('id','desc')->limit(1)->first();
+        if ($response) {
+            $res = Product::orderBy('id', 'desc')->limit(1)->first();
             return response()->json([
                 'message' => $response ? 'Product inserted' : 'Error',
                 'status' => (bool)$response,
                 'product' => $res
             ]);
         }
-       
     }
 
     public function edit($id)
@@ -148,7 +148,7 @@ class ProductController extends BaseController
         return view('admin.products.edit', compact('parents', 'product'));
     }
 
-    public function update(ProductStoreRequest $request)
+    public function update(ProductUpdateRequest $request)
     {
         Product::where('id', $request->id)->update($request->only(app(Product::class)->getFillable()));
         return redirect()->route('admin.products.index');

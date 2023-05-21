@@ -11,7 +11,7 @@
                     <div class="col-md-6 col-xs-12 product-slider mb-60">
 
                         <div class="flickity flickity-slider-wrap mfp-hover shadow-sm" id="gallery-main">
-                            @if ($product->images->count())
+                            @if ($product and !is_null($product->images) and $product->images->count())
                                 @foreach ($product->images as $image)
                                     <a href="{{ url($image->path . $image->name) }}" class="lightbox-img">
                                         <img src="{{ url($image->path . $image->name) }}" alt="" />
@@ -31,7 +31,7 @@
                         </div> <!-- end gallery main -->
 
                         <div class="gallery-thumbs">
-                            @foreach ($product->images as $image)
+                            @foreach ($product->images ?? [] as $image)
                                 <div class="gallery-cell">
                                     <img src="{{ url($image->path . $image->name) }}" alt="" />
                                 </div>
@@ -67,26 +67,18 @@
 
                         <div class="color-swatches clearfix">
                             <span>Color:</span>
-
-                            @foreach ($colors as $color)
-                                @if ($product->id == $color->product_id)
-                                    <input type="radio" name="color_id" value="{{$color->color->id}}"/><a href="#" class="swatch-{{ $color->color->color_name }}">{{ $color->color->color_name }}</a>
-                                @endif
-                            @endforeach
+                            <select name="color_id" id="color_id">
+                                @foreach ($product->colors ?? [] as $color)
+                                    <option value="{{ $color->color->id }}" {{ $loop->first ? 'selected' : '' }}>{{ $color->color->color_name }}</option>
+                                @endforeach
+                            </select>
                         </div>
 
                         <div class="size-options clearfix">
                             <span>Size:</span>
-                            @foreach ($colors as $color)
-                                @if ($product->id == $color->product_id)
-                                    @foreach ($sizes as $size)
-                                        @if ($color->id == $size->product_color_id)
-                                        <input type="radio" name="size_id" value="{{$size->size->id}}"/><a href="#" class="size-{{ $size->size->size }} selected">{{ $size->size->size }}</a>
-                                        @endif
-                                    @endforeach
-                                @endif
-                            @endforeach
-
+                            <div data-control="product-size">
+                                @include('web.products.size')
+                            </div>
                         </div>
 
                         <div class="product-actions">
@@ -94,19 +86,11 @@
 
                             <div class="quantity buttons_added">
                                 <input type="number" step="1" min="0" value="1" title="Qty" name="quantity" class="input-text qty text" />
-                                <div class="quantity-adjust">
-                                    <a href="#" class="plus">
-                                        <i class="fa fa-angle-up"></i>
-                                    </a>
-                                    <a href="#" class="minus">
-                                        <i class="fa fa-angle-down"></i>
-                                    </a>
-                                </div>
                             </div>
                             <input type="hidden" name="id" value="{{ $product->id }}">
                             <button type="submit" class="btn btn-dark btn-lg add-to-cart"><span>Add to Cart</span></button>
 
-                            <a href="javascript:void(0)" data-url="{{route('product.add_wishlist', $product->id)}}" data-insert="wishList" class="product-add-to-wishlist"><i class="fa fa-heart"></i></a>
+                            <a href="javascript:void(0)" data-url="{{ route('product.add_wishlist', $product->id) }}" data-insert="wishList" class="product-add-to-wishlist"><i class="fa fa-heart"></i></a>
                         </div>
 
 
@@ -114,10 +98,10 @@
                             <span class="sku">SKU: <a href="">{{ $product->code }}</a></span>
                             <span class="brand_as">Category: <a href="{{ route('catalog.show', $product->category_id) }}">{{ $product->category->name }}</a></span>
                             <span class="posted_in">Tags:
-                                @php
+                                {{-- @php
                                     $explode_tags = explode(',', $product->tags);
-                                @endphp
-                                @foreach ($explode_tags as $tag)
+                                @endphp --}}
+                                @foreach ($product->etags ?? [] as $tag)
                                     <a href="{{ route('product.tag', $tag) }}">{{ $tag }} </a>,
                                 @endforeach
                             </span>
@@ -149,24 +133,18 @@
                                                 <tr>
                                                     <th>Size:</th>
                                                     <td>
-                                                        @foreach ($colors as $color)
-                                                            @if ($product->id == $color->product_id)
-                                                                @foreach ($sizes as $size)
-                                                                    @if ($color->id == $size->product_color_id)
-                                                                        {{ $size->size->size_name }},
-                                                                    @endif
-                                                                @endforeach
-                                                            @endif
+                                                        @foreach ($product->colors ?? [] as $colors)
+                                                            @foreach ($colors->sizes ?? [] as $size)
+                                                                {{ $size->size->size_name }},
+                                                            @endforeach
                                                         @endforeach
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <th>Colors:</th>
                                                     <td>
-                                                        @foreach ($colors as $color)
-                                                            @if ($product->id == $color->product_id)
-                                                               {{ $color->color->color_name }}
-                                                            @endif
+                                                        @foreach ($product->colors ?? [] as $color)
+                                                            {{ $color->color->color_name }}
                                                         @endforeach
                                                     </td>
                                                 </tr>
@@ -195,19 +173,19 @@
                                                             <li>
                                                                 <div class="review-body">
                                                                     <div class="review-content">
-                                                                        <p class="review-author"><strong> {{$user->name}} </strong> - {{$rating->created_at}}</p>
+                                                                        <p class="review-author"><strong> {{ $user->name }} </strong> - {{ $rating->created_at }}</p>
                                                                         <div class="rating">
-                                                                            @for($i=1; $i<=$rating->star_rating; $i++) 
+                                                                            @for ($i = 1; $i <= $rating->star_rating; $i++)
                                                                                 <a href="#"></a>
                                                                             @endfor
-                                                                            
+
                                                                         </div>
-                                                                        <p> {{$rating->comments}} </p>
+                                                                        <p> {{ $rating->comments }} </p>
                                                                     </div>
                                                                 </div>
                                                             </li>
                                                         @endif
-                                                    @endforeach      
+                                                    @endforeach
                                                 @endforeach
                                                 <li>
                                                     <div class="review-body">
@@ -225,14 +203,15 @@
                                                 <p class="h5">Mehsul haqqinda reyinizi bildirin...</p>
                                                 <form>
                                                     @csrf
-                                                    <input type="hidden" name="product_id" value="{{$product->id}}">
-                                                    <input type="hidden"name="user_id" value="{{auth('client')->user()->id}}">
+                                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                                    <input type="hidden" name="user_id" value="{{ auth('client')->user()->id }}">
+                                                    <input type="hidden" name="rating" value="0">
                                                     <div class="stars" data-star="rating">
-                                                        <i class="fa-solid fa-star" data-id="1"></i>
-                                                        <i class="fa-solid fa-star" data-id="2"></i>
-                                                        <i class="fa-solid fa-star" data-id="3"></i>
-                                                        <i class="fa-solid fa-star" data-id="4"></i>
-                                                        <i class="fa-solid fa-star" data-id="5"></i>
+                                                        <i class="fa-solid fa-star" data-control="rating" data-id="1" data-value="1"></i>
+                                                        <i class="fa-solid fa-star" data-control="rating" data-id="2" data-value="2"></i>
+                                                        <i class="fa-solid fa-star" data-control="rating" data-id="3" data-value="3"></i>
+                                                        <i class="fa-solid fa-star" data-control="rating" data-id="4" data-value="4"></i>
+                                                        <i class="fa-solid fa-star" data-control="rating" data-id="5" data-value="5"></i>
                                                     </div>
                                                     <br>
                                                     <textarea id="comment" name="comment" rows="5" class="form-control" placeholder="Sizin reyiniz.."></textarea>
@@ -241,7 +220,7 @@
                                                 </form>
                                             @endif
                                             <hr>
-                                            
+
                                         </div> <!--  end reviews -->
                                     </div>
                                 </div>
@@ -268,54 +247,71 @@
 
 @push('css')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
-   
-@push('js')
-   
-    <script>
-        
-        // ---- ---- Const ---- ---- //
-        const stars = document.querySelectorAll('.stars i');
-        //const starsNone = document.querySelector('.rating-box');
 
-        // ---- ---- Stars ---- ---- //
-        stars.forEach((star, index1) => {
-        star.addEventListener('click', () => {
-            stars.forEach((star, index2) => {
-            // ---- ---- Active Star ---- ---- //
-            index1 >= index2
-                ? star.classList.add('active')
-                : star.classList.remove('active');
+    @push('js')
+
+        <script>
+            // ---- ---- Const ---- ---- //
+            const stars = document.querySelectorAll('.stars i');
+            //const starsNone = document.querySelector('.rating-box');
+
+            // ---- ---- Stars ---- ---- //
+            stars.forEach((star, index1) => {
+                star.addEventListener('click', () => {
+                    stars.forEach((star, index2) => {
+                        // ---- ---- Active Star ---- ---- //
+                        index1 >= index2 ?
+                            star.classList.add('active') :
+                            star.classList.remove('active');
+                    });
+                });
             });
-        });
-        });
 
+            $(document.body).on('click', '[data-control="rating"]', function() {
+                $('[name="rating"]').val($(this).data('value'))
+            });
 
-        $(document.body).on('click','[data-insert="comment-button"]', function(){
-            $.ajax({
-                url: '{{route("product.rating")}}',
-                method: 'POST',
-                data: {
-                    product_id: $('[name="product_id"]').val(),
-                    user_id: $('[name="user_id"]').val(),
-                    comment: $('[name="comment"]').val(),
-                    rating:  $('[data-star="rating"]').data('id'),
-                    _token: '{{ csrf_token() }}'
-                },
-                success: function(response){ 
-                    console.log(response);
-                    //window.location.reload();
-                }
+            $(document.body).on('click', '[data-insert="comment-button"]', function() {
+                $.ajax({
+                    url: '{{ route('product.rating') }}',
+                    method: 'POST',
+                    data: {
+                        product_id: $('[name="product_id"]').val(),
+                        user_id: $('[name="user_id"]').val(),
+                        comment: $('[name="comment"]').val(),
+                        rating: $('[name="rating"]').val(),
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        console.log(response);
+                        //window.location.reload();
+                    }
+                })
             })
-        })
 
-        $(document.body).on('click','[data-insert="wishList"]', function(){
-            $.ajax({
-                url: $(this).data('url'),
-                success: function(response){ 
-                    console.log(response);
-                    //window.location.reload();
-                }
+            $(document.body).on('change', '[name="color_id"]', function() {
+                $.ajax({
+                    url: '{{ route('product.sizes') }}',
+                    method: 'POST',
+                    data: {
+                        product_id: '{{ $product->id ?? '' }}',
+                        color_id: $(this).val(),
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        $('[data-control="product-size"]').html(response.blade)
+                    }
+                })
             })
-        })
-    </script>
-@endpush
+
+            $(document.body).on('click', '[data-insert="wishList"]', function() {
+                $.ajax({
+                    url: $(this).data('url'),
+                    success: function(response) {
+                        console.log(response);
+                        //window.location.reload();
+                    }
+                })
+            })
+        </script>
+    @endpush

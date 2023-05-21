@@ -24,5 +24,9 @@ class Color_Products extends Model
         return $this->hasOne(Color::class, 'id', 'color_id');
     }
 
+    public function sizes()
+    {
+        return $this->hasMany(Product_Size::class,'product_color_id','id');
+    }
 
 }

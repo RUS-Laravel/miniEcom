@@ -12,7 +12,7 @@ class Product extends Model
     protected $table = "products";
 
     protected $fillable = [
-        'title', 'description', 'slug', 'code', 'status', 'category_id', 'stock', 'price', 'discount','tags','product_recevied'
+        'title', 'description', 'slug', 'code', 'status', 'category_id', 'stock', 'price', 'discount', 'tags', 'product_recevied'
     ];
 
     protected $appends = ['total', 'total_formatted', 'diff'];
@@ -25,6 +25,11 @@ class Product extends Model
     public function setSlugAttribute($value)
     {
         return $this->attributes['slug'] = str($value)->slug();
+    }
+
+    public function getEtagsAttribute()
+    {
+        return  explode(',', $this->tags);
     }
 
     // public function slug()
@@ -60,7 +65,7 @@ class Product extends Model
         return  number_format($this->price - ($this->price * $this->discount / 100), 2) . " AZN";
     }
 
-   
+
 
     // public function total(): Attribute
     // {
@@ -94,6 +99,11 @@ class Product extends Model
         return $this->hasOne(Color_Products::class, 'product_id', 'id');
     }
 
+    public function colors()
+    {
+        return $this->hasMany(Color_Products::class, 'product_id', 'id');
+    }
+
     public function review_rating(): HasMany
     {
         return $this->hasMany(ReviewRating::class, 'product_id', 'id');
@@ -103,5 +113,9 @@ class Product extends Model
     {
         return $this->hasMany(WishList::class, 'product_id', 'id');
     }
-    
+
+    public function order()
+    {
+        return $this->hasMany(Order::class, 'product_id', 'id');
+    }
 }

@@ -34,7 +34,7 @@
                     </div>
                     <div class="form-group mb-3">
                         <label for="recevied">Product recevied price<span class="text-danger">*</span></label>
-                        <input type="number" id="recevied" class="form-control" name="recevied" value="{{ $product->product_recevied }}" min="0">
+                        <input type="number" id="recevied" class="form-control" name="product_recevied" value="{{ $product->product_recevied }}" min="0">
                     </div>
                     <div class="form-group mb-3">
                         <label for="stock">Product stock</label>
