@@ -94,5 +94,14 @@ class Product extends Model
         return $this->hasOne(Color_Products::class, 'product_id', 'id');
     }
 
+    public function review_rating(): HasMany
+    {
+        return $this->hasMany(ReviewRating::class, 'product_id', 'id');
+    }
+
+    public function wish(): HasMany
+    {
+        return $this->hasMany(WishList::class, 'product_id', 'id');
+    }
     
 }

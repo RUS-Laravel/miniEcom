@@ -49,7 +49,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/data', [ProductController::class, 'data'])->name('data');
         Route::get('/edit/{id}', [ProductController::class, 'edit'])->name('edit');
         Route::post('/update', [ProductController::class, 'update'])->name('update');
+        //Route::get('/productId', [ProductController::class, 'productId'])->name('productId.image');
         Route::post('/create-image', [ProductController::class, 'store_image'])->name('store.image');
+       
+        Route::get('/delete-image/{id}', [ProductController::class, 'delete_image'])->name('delete.image');
         Route::post('/delete/{id}', [ProductController::class, 'delete'])->name('delete');
 
 

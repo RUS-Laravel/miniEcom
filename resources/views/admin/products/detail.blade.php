@@ -8,6 +8,14 @@
                 <div class="col-lg-5">
 
                     <div class="tab-content pt-0">
+                        @if ($product->images->count())
+                            @foreach ($product->images as $image)
+                                <div class="tab-pane active show" id="product-{{$image->id}}-item">
+                                    <img src="{{ url($image->path . $image->name) }}" alt="{{$image->name}}" class="img-fluid mx-auto d-block rounded">
+                                </div>
+                            @endforeach 
+                        @endif
+                        
                         <div class="tab-pane active show" id="product-1-item">
                             <img src="{{url('assets/images/products/product-9.jpg')}}" alt="" class="img-fluid mx-auto d-block rounded">
                         </div>
@@ -23,8 +31,18 @@
                     </div>
 
                     <ul class="nav nav-pills nav-justified">
+                        @if ($product->images->count())
+                            @foreach ($product->images as $image)
+                            <li class="nav-item">
+                                <a href="#product-{{$image->id}}-item" data-toggle="tab" aria-expanded="false" class="nav-link product-thumb active show">
+                                    <img src="{{ url($image->path . $image->name) }}" alt="{{$image->name}}" class="img-fluid mx-auto d-block rounded">
+                                </a>
+                            </li>
+                            @endforeach
+                        @endif
+                        
                         <li class="nav-item">
-                            <a href="#product-1-item" data-toggle="tab" aria-expanded="false" class="nav-link product-thumb active show">
+                            <a href="#product-9-item" data-toggle="tab" aria-expanded="false" class="nav-link product-thumb active show">
                                 <img src="{{url('assets/images/products/product-9.jpg')}}" alt="" class="img-fluid mx-auto d-block rounded">
                             </a>
                         </li>
@@ -67,7 +85,7 @@
                             
                             
                             <h4><span class="badge bg-soft-success text-success mb-4">Instock -> {{$product->stock}}</span></h4>
-                            <p class="text-muted mb-4">{{$product->description}}</p>
+                            <p class="text-muted mb-4">{!!$product->description!!}</p>
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <div>

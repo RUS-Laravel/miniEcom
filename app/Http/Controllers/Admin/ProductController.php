@@ -48,7 +48,7 @@ class ProductController extends BaseController
             $imageName = time() . rand(1, 100) . '.' . $image->extension();
             $path = public_path('images/products/');
             $image->move($path, $imageName);
-
+            //return $result;die;
             $result->images()->create([
                 'name' => $imageName,
                 'path' => $path
@@ -65,6 +65,28 @@ class ProductController extends BaseController
             ]);
         }
     }
+
+   
+    public function delete_image($id)
+    {
+        $res = Image::find($id);
+        if (file_exists(public_path('images/products/'.$res->name))){
+            $filedeleted = unlink(public_path('images/products/'.$res->name));
+            if ($filedeleted) {
+                $res->delete();
+                return redirect()->back();
+            }
+         } else {
+            echo 'Unable to delete the given file';
+         }
+    }
+
+   /* public function productId()
+    {
+        $res = Product::orderBy('id','desc')->limit(1);
+        return response()->json(['data'=>$res]);
+     
+    }*/
 
     public function data(Request $request)
     {
@@ -100,12 +122,21 @@ class ProductController extends BaseController
     public function store(ProductStoreRequest $request)
     {
         //return self::json_response(data: $request->all());
-        $res = Product::create($request->all());
+        $response = Product::create($request->all());
         /*$res->image()->create([
             'name' => $imageName,
             'path' => 'images/products/'
          ]);*/
-        return redirect()->route('admin.products.index');
+        //return redirect()->route('admin.products.index');
+        if($response){
+            $res = Product::orderBy('id','desc')->limit(1)->first();
+            return response()->json([
+                'message' => $response ? 'Product inserted' : 'Error',
+                'status' => (bool)$response,
+                'product' => $res
+            ]);
+        }
+       
     }
 
     public function edit($id)

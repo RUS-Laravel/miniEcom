@@ -28,6 +28,8 @@ Route::prefix('auth')->group(function () {
 Route::get('category/{id?}', [CategoryController::class, 'catalog'])->name('catalog.show');
 Route::get('/product/{slug}_{id}', [ProductController::class, 'detail'])->name('product.detail');
 Route::get('product/{tag}', [ProductController::class, 'tag'])->name('product.tag');
+Route::post('product/rating', [ProductController::class, 'review_rating'])->name('product.rating');
+Route::get('product/add-wishlist/{id}', [ProductController::class, 'wishlist_add'])->name('product.add_wishlist');
 
 Route::prefix('cart')->group(function () {
     Route::get('/', [CartController::class, 'index'])->name('cart.index');

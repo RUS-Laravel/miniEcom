@@ -60,4 +60,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserInformation::class, 'user_id', 'id');
     }
+
+    public function review_rating(): HasMany
+    {
+        return $this->hasMany(ReviewRating::class, 'user_id', 'id');
+    }
+
+    public function wish(): HasMany
+    {
+        return $this->hasMany(WishList::class, 'user_id', 'id');
+    }
 }

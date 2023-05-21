@@ -70,7 +70,7 @@
 
                             @foreach ($colors as $color)
                                 @if ($product->id == $color->product_id)
-                                    <a href="#" class="swatch-{{ $color->color->color_name }}">{{ $color->color->color_name }}</a>
+                                    <input type="radio" name="color_id" value="{{$color->color->id}}"/><a href="#" class="swatch-{{ $color->color->color_name }}">{{ $color->color->color_name }}</a>
                                 @endif
                             @endforeach
                         </div>
@@ -81,7 +81,7 @@
                                 @if ($product->id == $color->product_id)
                                     @foreach ($sizes as $size)
                                         @if ($color->id == $size->product_color_id)
-                                            <a href="#" class="size-{{ $size->size->size }} selected">{{ $size->size->size }}</a>
+                                        <input type="radio" name="size_id" value="{{$size->size->id}}"/><a href="#" class="size-{{ $size->size->size }} selected">{{ $size->size->size }}</a>
                                         @endif
                                     @endforeach
                                 @endif
@@ -106,7 +106,7 @@
                             <input type="hidden" name="id" value="{{ $product->id }}">
                             <button type="submit" class="btn btn-dark btn-lg add-to-cart"><span>Add to Cart</span></button>
 
-                            <a href="#" class="product-add-to-wishlist"><i class="fa fa-heart"></i></a>
+                            <a href="javascript:void(0)" data-url="{{route('product.add_wishlist', $product->id)}}" data-insert="wishList" class="product-add-to-wishlist"><i class="fa fa-heart"></i></a>
                         </div>
 
 
@@ -165,7 +165,7 @@
                                                     <td>
                                                         @foreach ($colors as $color)
                                                             @if ($product->id == $color->product_id)
-                                                                {{ $color->color->color_name }},
+                                                               {{ $color->color->color_name }}
                                                             @endif
                                                         @endforeach
                                                     </td>
@@ -189,6 +189,26 @@
                                     <div class="panel-body">
                                         <div class="reviews">
                                             <ul class="reviews-list">
+                                                @foreach ($product->review_rating as $rating)
+                                                    @foreach ($users as $user)
+                                                        @if ($rating->user_id == $user->id)
+                                                            <li>
+                                                                <div class="review-body">
+                                                                    <div class="review-content">
+                                                                        <p class="review-author"><strong> {{$user->name}} </strong> - {{$rating->created_at}}</p>
+                                                                        <div class="rating">
+                                                                            @for($i=1; $i<=$rating->star_rating; $i++) 
+                                                                                <a href="#"></a>
+                                                                            @endfor
+                                                                            
+                                                                        </div>
+                                                                        <p> {{$rating->comments}} </p>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                        @endif
+                                                    @endforeach      
+                                                @endforeach
                                                 <li>
                                                     <div class="review-body">
                                                         <div class="review-content">
@@ -200,9 +220,28 @@
                                                         </div>
                                                     </div>
                                                 </li>
-
-
                                             </ul>
+                                            @if (auth('client')->user())
+                                                <p class="h5">Mehsul haqqinda reyinizi bildirin...</p>
+                                                <form>
+                                                    @csrf
+                                                    <input type="hidden" name="product_id" value="{{$product->id}}">
+                                                    <input type="hidden"name="user_id" value="{{auth('client')->user()->id}}">
+                                                    <div class="stars" data-star="rating">
+                                                        <i class="fa-solid fa-star" data-id="1"></i>
+                                                        <i class="fa-solid fa-star" data-id="2"></i>
+                                                        <i class="fa-solid fa-star" data-id="3"></i>
+                                                        <i class="fa-solid fa-star" data-id="4"></i>
+                                                        <i class="fa-solid fa-star" data-id="5"></i>
+                                                    </div>
+                                                    <br>
+                                                    <textarea id="comment" name="comment" rows="5" class="form-control" placeholder="Sizin reyiniz.."></textarea>
+                                                    <br>
+                                                    <button type="button" class="btn btn-primary" data-insert="comment-button">New comment</button>
+                                                </form>
+                                            @endif
+                                            <hr>
+                                            
                                         </div> <!--  end reviews -->
                                     </div>
                                 </div>
@@ -226,3 +265,57 @@
     </form>
     @include('web.layouts.related')
 @endsection
+
+@push('css')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+   
+@push('js')
+   
+    <script>
+        
+        // ---- ---- Const ---- ---- //
+        const stars = document.querySelectorAll('.stars i');
+        //const starsNone = document.querySelector('.rating-box');
+
+        // ---- ---- Stars ---- ---- //
+        stars.forEach((star, index1) => {
+        star.addEventListener('click', () => {
+            stars.forEach((star, index2) => {
+            // ---- ---- Active Star ---- ---- //
+            index1 >= index2
+                ? star.classList.add('active')
+                : star.classList.remove('active');
+            });
+        });
+        });
+
+
+        $(document.body).on('click','[data-insert="comment-button"]', function(){
+            $.ajax({
+                url: '{{route("product.rating")}}',
+                method: 'POST',
+                data: {
+                    product_id: $('[name="product_id"]').val(),
+                    user_id: $('[name="user_id"]').val(),
+                    comment: $('[name="comment"]').val(),
+                    rating:  $('[data-star="rating"]').data('id'),
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response){ 
+                    console.log(response);
+                    //window.location.reload();
+                }
+            })
+        })
+
+        $(document.body).on('click','[data-insert="wishList"]', function(){
+            $.ajax({
+                url: $(this).data('url'),
+                success: function(response){ 
+                    console.log(response);
+                    //window.location.reload();
+                }
+            })
+        })
+    </script>
+@endpush

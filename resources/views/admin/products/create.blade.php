@@ -6,7 +6,7 @@
             <div class="card-box">
                 <h5 class="text-uppercase bg-light p-2 mt-0 mb-3">General</h5>
 
-                <form action="{{ route('admin.products.store') }}" method="post">
+                <form action="{{ route('admin.products.store') }}" method="post" id="productInsert">
                     @csrf
                     <div class="form-group">
                         <label>Category
@@ -35,7 +35,7 @@
                     </div>
                     <div class="form-group mb-3">
                         <label for="recevied">Product recevied price<span class="text-danger">*</span></label>
-                        <input type="number" id="recevied" class="form-control" name="recevied" placeholder="Product recevied price" min="0">
+                        <input type="number" id="recevied" class="form-control" name="product_recevied" placeholder="Product recevied price" min="0">
                     </div>
                     <div class="form-group mb-3">
                         <label for="stock">Product stock<span class="text-danger">*</span></label>
@@ -55,7 +55,7 @@
                     </div>
                     <div class="form-group mb-3">
                         <label for="description">Product description</label>
-                        <textarea class="form-control" id="product-description" rows="5" placeholder="Please enter description"></textarea>
+                        <textarea class="form-control" id="product-description" name="description" rows="5" placeholder="Please enter description"></textarea>
                     </div>
                     <div class="form-group mb-3">
                         <label>Status<span class="text-danger">*</span></label>
@@ -80,7 +80,7 @@
                 <h5 class="text-uppercase mt-0 mb-3 bg-light p-2">Product Images</h5>
                 <form action="{{ route('admin.products.store.image') }}" method="POST" class="dropzone" id="productDropzone" data-plugin="dropzone" data-previews-container="#file-previews"
                       data-upload-preview-template="#uploadPreviewTemplate" enctype="multipart/form-data">
-                    <input type="hidden" name="product_id" value="">
+                      <input type="hidden" name="product_id" data-product="productId" value="">
                     @csrf
 
                     <div class="fallback">
@@ -103,7 +103,7 @@
     <div class="row">
         <div class="col-12">
             <div class="text-center mb-3">
-                <button type="submit" class="btn btn-primary waves-effect waves-light" id="submit_all">Create</button>
+                <button type="button" data-insert="productInsertButton" class="btn btn-primary waves-effect waves-light" id="submit_all">Create</button>
                 <button type="button" class="btn w-sm btn-danger waves-effect waves-light">Delete</button>
             </div>
         </div> <!-- end col -->
@@ -150,7 +150,7 @@
     <script src="{{ url('assets/libs/dropzone/min/dropzone.min.js') }}"></script>
 
     <script type="text/javascript">
-        Dropzone.options.productDropzone = {
+         Dropzone.options.productDropzone = {
             autoProcessQueue: true,
             clickable: true,
             paramName: "file", // The name that will be used to transfer the file
@@ -170,10 +170,10 @@
             cache: false,
 
             success: function(file, response) {
-                if (response.status === false) {
-                    alert(response.message)
-                    $(".dz-preview").remove();
-                }
+                //if (response.status === false) {
+                    console.log(response);
+                    this.removeFile(file);
+                //}
             },
             error: function(file, response) {
                 return false;
@@ -206,5 +206,71 @@
     <script>
         $("#selectize-select").selectize();
         $('#product-description').summernote();
+
+        let $product_insert = $('#productInsert');
+
+        /*$(document).ready(function() {
+            productId();
+        });
+
+        function productId() {
+            $.ajax({
+                url: "{{ route('admin.products.productId.image') }}",
+                success: function(response) {
+                    if (response.data) {
+                        console.log(response.data);
+                        $('[data-product="productId"]').val(response.data)
+                    }
+                }
+            });
+        }*/
+
+        $(document.body).on('click','[data-insert="productInsertButton"]', function(){
+            $.ajax({
+                url: '{{route("admin.products.store")}}',
+                method: 'POST',
+                data: {
+                    category_id: $product_insert.find('[name="category_id"]').val(),
+                    title: $product_insert.find('[name="title"]').val(),
+                    code: $product_insert.find('[name="code"]').val(),
+                    product_recevied: $product_insert.find('[name="product_recevied"]').val(),
+                    stock: $product_insert.find('[name="stock"]').val(),
+                    discount: $product_insert.find('[name="discount"]').val(),
+                    price: $product_insert.find('[name="price"]').val(),
+                    tags: $product_insert.find('[name="tags"]').val(),
+                    description: $product_insert.find('[name="description"]').val(),
+                    status: $product_insert.find('[name="status"]:checked').val(),
+                },
+                success: function(response){
+                    var err = ''
+                    console.log(response);
+                    console.log(response.product.id);
+                    if(response.status){
+                        Swal.fire(
+                            'Notification',
+                            response.message,
+                            'success'
+                        ).then(($result) => {
+                            $product_insert[0].reset();
+                            //productId();
+                            $('[data-product="productId"]').val(response.product.id)
+                        })
+                    }else{
+                        Swal.fire(
+                            response.message,
+                            response.data,
+                            'error'
+                        ).then(($result) => {
+                            $product_insert[0].reset();
+                            //productId();
+                            $('[data-product="productId"]').val(response.product.id)
+                        })
+                        
+                    }
+                }
+            })
+        })
+
+       
     </script>
 @endpush

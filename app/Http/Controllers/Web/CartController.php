@@ -35,15 +35,15 @@ class CartController extends Controller
 
     public function update_cart(Request $request)
     {
-        //     $rowId = $request->id;
-        //     $qty = $request->qty;
-        //     dd($rowId.'-'.$qty);
-        //     //$result = Cart::update($rowId, ['qty' => $qty]);
-
-        //    /* return response()->json([
-        //         'message' => $result ? 'Cart Updated' : 'Error',
-        //         'status' => (bool)$result
-        //     ]);*/
+             $rowId = $request->id;
+             $qty = $request->qty;
+             
+             $result = Cart::update($rowId, ['qty' => $qty]);
+            return redirect()->back();
+             /*return response()->json([
+                'message' => $result ? 'Cart Updated' : 'Error',
+                'status' => (bool)$result
+             ]);*/
     }
 
     public function show_product($rowId)

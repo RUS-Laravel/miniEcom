@@ -3,6 +3,7 @@
         <tr>
             <th>#</th>
             <th>Category</th>
+            <th>Product Image</th>
             <th>Title</th>
             <th>Price</th>
             <th>Stock</th>
@@ -16,6 +17,13 @@
         <tr>
             <td>{{ $item->id }}</td>
             <td><span class="badge badge-soft-info">{{ $item->category->name ?? 'Parent Category' }}</span></td>
+            <td>
+                @if ($item->images->count())
+                    @foreach ($item->images as $image)
+                        <img src="{{ url($image->path . $image->name) }}" alt="{{$image->name}}" width="30px" height="30px">
+                    @endforeach
+                @endif
+            </td>
             <td>{{ $item->title }}</td>
             <td>{{ $item->price }}</td>
             <td>{{ $item->stock }}</td>
