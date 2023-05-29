@@ -88,8 +88,9 @@
                                 <input type="number" step="1" min="0" value="1" title="Qty" name="quantity" class="input-text qty text" />
                             </div>
                             <input type="hidden" name="id" value="{{ $product->id }}">
-                            <button type="submit" class="btn btn-dark btn-lg add-to-cart"><span>Add to Cart</span></button>
-
+                            <div data-control="query">
+                                
+                            </div>
                             <a href="javascript:void(0)" data-url="{{ route('product.add_wishlist', $product->id) }}" data-insert="wishList" class="product-add-to-wishlist"><i class="fa fa-heart"></i></a>
                         </div>
 
@@ -101,8 +102,10 @@
                                 {{-- @php
                                     $explode_tags = explode(',', $product->tags);
                                 @endphp --}}
+                                
                                 @foreach ($product->etags ?? [] as $tag)
-                                    <a href="{{ route('product.tag', $tag) }}">{{ $tag }} </a>,
+                                    <a href="{{route('product.tag', $tag)}}">{{ $tag }} </a>,
+                                   
                                 @endforeach
                             </span>
                         </div>
@@ -168,15 +171,14 @@
                                         <div class="reviews">
                                             <ul class="reviews-list">
                                                 @foreach ($product->review_rating as $rating)
-                                                    @foreach ($users as $user)
-                                                        @if ($rating->user_id == $user->id)
+                                                  
                                                             <li>
                                                                 <div class="review-body">
                                                                     <div class="review-content">
-                                                                        <p class="review-author"><strong> {{ $user->name }} </strong> - {{ $rating->created_at }}</p>
+                                                                        <p class="review-author"><strong> {{ $rating->user->name }} </strong> - {{ $rating->created_at }}</p>
                                                                         <div class="rating">
                                                                             @for ($i = 1; $i <= $rating->star_rating; $i++)
-                                                                                <a href="#"></a>
+                                                                                <a href="javascript:void(0)"></a>
                                                                             @endfor
 
                                                                         </div>
@@ -184,8 +186,7 @@
                                                                     </div>
                                                                 </div>
                                                             </li>
-                                                        @endif
-                                                    @endforeach
+                                                       
                                                 @endforeach
                                                 <li>
                                                     <div class="review-body">
@@ -206,12 +207,12 @@
                                                     <input type="hidden" name="product_id" value="{{ $product->id }}">
                                                     <input type="hidden" name="user_id" value="{{ auth('client')->user()->id }}">
                                                     <input type="hidden" name="rating" value="0">
-                                                    <div class="stars" data-star="rating">
-                                                        <i class="fa-solid fa-star" data-control="rating" data-id="1" data-value="1"></i>
-                                                        <i class="fa-solid fa-star" data-control="rating" data-id="2" data-value="2"></i>
-                                                        <i class="fa-solid fa-star" data-control="rating" data-id="3" data-value="3"></i>
-                                                        <i class="fa-solid fa-star" data-control="rating" data-id="4" data-value="4"></i>
-                                                        <i class="fa-solid fa-star" data-control="rating" data-id="5" data-value="5"></i>
+                                                    <div class="stars">
+                                                        <i class="fa-solid fa-star" data-control="rating" data-value="1"></i>
+                                                        <i class="fa-solid fa-star" data-control="rating" data-value="2"></i>
+                                                        <i class="fa-solid fa-star" data-control="rating" data-value="3"></i>
+                                                        <i class="fa-solid fa-star" data-control="rating" data-value="4"></i>
+                                                        <i class="fa-solid fa-star" data-control="rating" data-value="5"></i>
                                                     </div>
                                                     <br>
                                                     <textarea id="comment" name="comment" rows="5" class="form-control" placeholder="Sizin reyiniz.."></textarea>
@@ -251,6 +252,8 @@
     @push('js')
 
         <script>
+
+        
             // ---- ---- Const ---- ---- //
             const stars = document.querySelectorAll('.stars i');
             //const starsNone = document.querySelector('.rating-box');
@@ -299,19 +302,47 @@
                         _token: '{{ csrf_token() }}'
                     },
                     success: function(response) {
+                        console.log(response)
                         $('[data-control="product-size"]').html(response.blade)
+                        /*if(response != undefined){
+                            $('[data-control="query"]').html('<button type="submit" class="btn btn-dark btn-lg add-to-cart"><span>Add to Cart</span></button>')
+                        }else{
+                            $('[data-control="query"]').html('<button type="submit" class="btn btn-dark btn-lg add-to-cart"><span>Add Newsletter</span></button>')
+                        }*/
                     }
                 })
             })
+
+           /* $(document).ready(function() { 
+                console.log($('[name="color_id"]').find(':selected').val());
+                console.log($('[name="size_id"]').find(':selected').val())           
+                $.ajax({
+                url:  '{{ route('product.newsletter') }}',
+                data: {
+                    color: $('[name="color_id"]').find(':selected').val(),
+                    size: $('[name="size_id"]').find(':selected').val()
+                },
+                success: function(response) {
+                    console.log(response);
+                    if(response != undefined){
+                      $('[data-control="query"]').html('<button type="submit" class="btn btn-dark btn-lg add-to-cart"><span>Add to Cart</span></button>')
+                    }else{
+                        $('[data-control="query"]').html('<button type="submit" class="btn btn-dark btn-lg add-to-cart"><span>Add Newsletter</span></button>')
+                    }
+                }
+                });
+            });*/
 
             $(document.body).on('click', '[data-insert="wishList"]', function() {
                 $.ajax({
                     url: $(this).data('url'),
                     success: function(response) {
                         console.log(response);
-                        //window.location.reload();
+                        window.location.reload();
                     }
                 })
             })
+
+        
         </script>
     @endpush

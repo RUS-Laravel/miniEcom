@@ -4,46 +4,39 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
-use App\Models\Product_Size;
-use App\Models\Color_Products;
+use App\Models\Size;
 use App\Models\Category;
 use App\Models\Color;
 use App\Models\User;
 use App\Models\WishList;
+use App\Models\ReviewRating;
+use App\Models\Product_Size;
 use Illuminate\Http\Request;
+use App\Http\Requests\Web\ReviewRatingRequest;
 
-class ProductController extends Controller
+class ProductController extends BaseController
 {
-    public function __construct()
-    {
-        //view()->share('categories', Product::with('category:id,name')->active()->get());
-        //view()->share('cats', Category::with('categories')->get());
-    }
+
 
     public function detail($slug = null, $rowId = null)
     {
-        $product = Product::with('category:id,name')->with('review_rating', 'colors.sizes')->where([
+        $product = Product::with('category:id,name')->with('review_rating.user', 'colors.sizes')->where([
             'id' => $rowId,
             'slug' => $slug,
         ])->first();
         $sizes = $product->colors->first()->sizes ?? [];
 
-        $users = User::all();
-        return view('web.products.detail', compact('product', 'sizes', 'users'));
+        //$users = User::all();
+        return view('web.products.detail', compact('product', 'sizes'));
     }
 
-    public function tag($tag)
-    {
-        $products = Product::where('title', 'like', '%' . $tag . '%')->with('category:id,name,tags')->get();
-        $product_colors = Color_Products::with('color:id,color_name')->get();
-        $product_sizes = Product_Size::with('size:id,size')->get();
-        return view('web.products.cat_tag', compact('products', 'product_colors', 'product_sizes'));
-    }
+    
 
-    public function review_rating(Request $request)
+    public function review_rating(ReviewRatingRequest $request)
     {
-        // product rating store olacaq
-        return ($request->all());
+        $res = ReviewRating::create($request->all());
+        return redirect()->back();
+        //return $request->all();
     }
 
     public function sizes()
@@ -71,4 +64,26 @@ class ProductController extends Controller
         }
         return $res;
     }
+
+    public function wishList(){
+        $products = WishList::where('user_id',auth('client')->user()->id)->with('product','product.category','product.review_rating')->get();
+        return view('web.wishList.wishList', compact('products'));
+    }
+
+    public function tag($tag){
+        $products = Product::where('title', 'like', '%' . $tag . '%')
+                            ->where('status','1')
+                            ->with('category:id,name')
+                            ->with('review_rating') 
+                            ->get();
+        return view('web.products.tag',compact('products'));
+    }
+
+    /*public function newsletter(){
+        $color = request()->color;
+        $size = request()->size;
+
+        $res = Product_Size::where('size_id',$size)->where('product_color_id',$color)->first();
+        return response()->json($res);
+    }*/
 }

@@ -25,7 +25,7 @@
 
                         <div class="hover-overlay">
                             <div class="product-actions">
-                                <a href="#" class="product-add-to-wishlist">
+                                <a href="javascript:void(0)" class="product-add-to-wishlist" data-url="{{ route('product.add_wishlist', $product->id) }}" data-insert="wishList">
                                     <i class="fa fa-heart"></i>
                                 </a>
                             </div>
@@ -70,3 +70,16 @@
         </div> <!-- end products grid -->
     </div> <!-- end product grid wrap -->
 @endsection
+@push('js')
+    <script>
+      $(document.body).on('click', '[data-insert="wishList"]', function() {
+                $.ajax({
+                    url: $(this).data('url'),
+                    success: function(response) {
+                        console.log(response);
+                        window.location.reload();
+                    }
+                })
+            })
+    </script>
+  @endpush

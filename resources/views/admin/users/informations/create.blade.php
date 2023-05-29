@@ -1,8 +1,8 @@
 <div id="userInformationModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
     <div class="modal-dialog">
-        <form action="" method="POST">
+        <form action="{{route("admin.users.informations.store")}}'" method="POST">
             @csrf
-            <input type="hidden" class="form-control" name="user_id" value="{{ auth()->user()->id }}">
+
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">@lang('Create New User Information')</h4>
@@ -12,13 +12,23 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="field-1" class="control-label">Telephone</label>
+                                <label for="field-1" class="control-label">Users</label>
+                                <select name="user_id" class="form-control">
+                                    @foreach ($users as $user)
+                                        <option value="{{$user->id}}">{{$user->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="field-2" class="control-label">Telephone</label>
                                 <input type="telephone" class="form-control" name="phone" placeholder="Telephone">
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="field-2" class="control-label">Address</label>
+                                <label for="field-3" class="control-label">Address</label>
                                 <textarea class="form-control" name="address"></textarea>
                                
                             </div>

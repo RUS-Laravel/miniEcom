@@ -19,7 +19,7 @@
 
                     <div class="form-group">
                         <label>Size<span class="text-danger">*</span></label> <br />
-                        <select class="form-control select2-multiple" data-toggle="select2" multiple="multiple" name="size_id[]" data-placeholder="Choose Color">
+                        <select class="form-control select2-multiple" data-toggle="select2" multiple="multiple" name="size_id[]" data-placeholder="Choose Size">
                             @foreach ($sizes as $size)
                                 <option value="{{$size->id}}">{{$size->size}}</option>
                             @endforeach

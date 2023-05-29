@@ -44,6 +44,7 @@ Route::middleware('auth')->group(function () {
     Route::group(['prefix' => 'product', 'as' => 'products.'], function () {
         Route::get('/', [ProductController::class, 'index'])->name('index');
         Route::get('/detail/{id}', [ProductController::class, 'detail'])->name('detail');
+        Route::post('/select_sizes', [ProductController::class, 'sizes'])->name('select.sizes');
         Route::get('/create', [ProductController::class, 'create'])->name('create');
         Route::post('/create', [ProductController::class, 'store'])->name('store');
         Route::get('/data', [ProductController::class, 'data'])->name('data');

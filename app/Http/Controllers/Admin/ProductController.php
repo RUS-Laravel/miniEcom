@@ -10,8 +10,8 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Image;
-use App\Models\Color_Products;
-use App\Models\Product_Size;
+/*use App\Models\Color_Products;
+use App\Models\Product_Size;*/
 
 class ProductController extends BaseController
 {
@@ -25,13 +25,20 @@ class ProductController extends BaseController
     {
         $product = Product::where('id', $id)
             ->with('category:id,name')
-            //->with('color:id,color_name')
-            //->with('size:id,size_name')
+            ->with('review_rating.user', 'colors.sizes')
             ->first();
-        $colors = Color_Products::with('color:id,color_name')->where('product_id', $id)->get();
-        $sizes = Product_Size::with('size:id,size_name,size')->get();
+        $sizes = $product->colors->first()->sizes ?? [];
+        //$allsizes = $product->colors->sizes ?? [];
+        return view('admin.products.detail', compact('product', 'sizes'));
+    }
 
-        return view('admin.products.detail', compact('product', 'colors', 'sizes'));
+    public function sizes()
+    {
+        $sizes = Product::find(request('product_id'))->colors()
+            ->where('id', request('color_id'))->first()->sizes;
+        return response()->json([
+            'blade' => view('admin.products.select_size', compact('sizes'))->render()
+        ]);
     }
 
     public function create()

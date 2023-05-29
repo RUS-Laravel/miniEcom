@@ -86,7 +86,7 @@
             </ul>
 
             <ul class="top-bar-acc">
-              <li class="top-bar-link"><a href="#">My Wishlist</a></li>
+              <li class="top-bar-link"><a href="{{route('wishList.show')}}">My Wishlist</a></li>
               <li class="top-bar-link"><a href="#">Newsletter</a></li>
               @if (auth('client')->check())
                 <li class="top-bar-link"><a href="{{route('client.logout')}}">Logout </a></li> 

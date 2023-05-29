@@ -25,12 +25,15 @@ Route::prefix('auth')->group(function () {
     Route::get('/logout', [LoginController::class, 'logout'])->middleware('auth')->name('auth.logout');
 });
 
-Route::get('category/{id?}', [CategoryController::class, 'catalog'])->name('catalog.show');
+Route::get('category', [CategoryController::class, 'category'])->name('category.show');
+Route::get('catalog/{id}', [CategoryController::class, 'catalog'])->name('catalog.show');
 Route::get('/product/{slug}_{id}', [ProductController::class, 'detail'])->name('product.detail');
-Route::get('product/{tag}', [ProductController::class, 'tag'])->name('product.tag');
 Route::post('product/sizes', [ProductController::class, 'sizes'])->name('product.sizes');
 Route::post('product/rating', [ProductController::class, 'review_rating'])->name('product.rating');
 Route::get('product/add-wishlist/{id}', [ProductController::class, 'wishlist_add'])->name('product.add_wishlist');
+Route::get('product/wishlist', [ProductController::class, 'wishList'])->name('wishList.show');
+Route::get('product/{tag}', [ProductController::class, 'tag'])->name('product.tag');
+//Route::get('product/newsletter', [ProductController::class, 'newsletter'])->name('product.newsletter');
 
 Route::prefix('cart')->group(function () {
     Route::get('/', [CartController::class, 'index'])->name('cart.index');

@@ -69,9 +69,12 @@
                             <a href="#" class="text-primary">Jack & Jones</a>{{-- Brand --}}
                             <h4 class="mb-3">{{$product->title}} </h4>
                             <p class="text-muted float-left mr-3">
-                                <span class="mdi mdi-star text-warning"></span>
-                                <span class="mdi mdi-star text-warning"></span>
-                                <span class="mdi mdi-star text-warning"></span>
+                                @foreach ($product->review_rating as $rating)
+                                    @for ($i = 1; $i <= $rating->star_rating; $i++)
+                                        <span class="mdi mdi-star text-warning"></span>
+                                    @endfor
+                                    
+                                @endforeach
                                 <span class="mdi mdi-star text-warning"></span>
                                 <span class="mdi mdi-star"></span>
                             </p>
@@ -116,26 +119,20 @@
                                 
                                 <label class="my-1 mr-2" for="color">Color</label>
                                 <select class="custom-select my-1 mr-sm-3" id="color" name="color_id">
-                                    @foreach ($colors as $color)
-                                        <option value="{{$color->color->id}}">{{$color->color->color_name}}</option>
+                                    @foreach ($product->colors ?? [] as $color)
+                                        <option value="{{ $color->color->id }}" {{ $loop->first ? 'selected' : '' }}>{{ $color->color->color_name }}</option>
                                     @endforeach
                                     
                                 </select>
                             
                                 <label class="my-1 mr-2" for="sizeinput">Size</label>
-                                <select class="custom-select my-1 mr-sm-3" id="sizeinput" name="size_id">
-                                    @foreach ($sizes as $size)
-                                        @foreach ($colors as $color)
-                                            @if ($size->product_color_id == $color->id)
-                                                <option value="{{$size->size->id}}">{{$size->size->size}}--{{$size->size->size_name}}</option>
-                                            @endif  
-                                        @endforeach
-                                    @endforeach
-                                    
-                                </select>
+                                <div data-control="product-size">
+                                    @include('admin.products.select_size')
+                                </div>
+                                
                            
                             <div class="mt-3">
-                                <button type="button" class="btn btn-danger mr-2"><i class="mdi mdi-heart-outline"></i></button>
+                                <button type="button" class="btn btn-danger mr-2" data-url="{{ route('product.add_wishlist', $product->id) }}" data-insert="wishList"><i class="mdi mdi-heart-outline"></i></button>
                                 <button type="submit" class="btn btn-success waves-effect waves-light">
                                     <span class="btn-label"><i class="mdi mdi-cart"></i></span>Add to cart
                                 </button>
@@ -161,55 +158,36 @@
             <!-- end row -->
 
 
-            <div class="table-responsive mt-4">
-                <table class="table table-bordered table-centered mb-0">
-                    <thead class="thead-light">
-                        <tr>
-                            <th>Size</th>
-                            <th>Size Stock</th>
-                            <th>Color</th>
-                            <th>Color Stock</th>
-                            <th>Revenue</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                       @foreach ($sizes as $size)
-                           @foreach ($colors as $color)
-                                @if ($size->product_color_id == $color->id)  
-                                    <tr>
-                                        <td>
-                                            {{$size->size->size ?? '-'}}
-                                        </td>
-
-                                        <td>
-                                            <div class="row align-items-center no-gutters">
-                                                <div class="col-auto">
-                                                <span class="mr-2">{{$size->size->count() ?? '-'}}</span>
-                                                </div>
-                                            
-                                            </div>
-                                        </td>
-
-                                        <td>{{$color->color->color_name ?? ''}} </td>
-                                        <td>
-                                            <div class="row align-items-center no-gutters">
-                                                <div class="col-auto">
-                                                <span class="mr-2">{{$color->color->count() ?? '-'}}</span>
-                                                </div>
-                                            
-                                            </div>
-                                        </td>
-                                        <td>$1,89,547</td>
-                                    </tr>
-                                @endif
-                            @endforeach
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
 
         </div> <!-- end card-->
     </div> <!-- end col-->
 </div>
 <!-- end row-->
 @endsection
+@push('js')
+    <script>
+        $(document.body).on('change', '[name="color_id"]', function() {
+                $.ajax({
+                    url: '{{ route('admin.products.select.sizes') }}',
+                    method: 'POST',
+                    data: {
+                        product_id: '{{ $product->id ?? '' }}',
+                        color_id: $(this).val()           
+                    },
+                    success: function(response) {
+                        $('[data-control="product-size"]').html(response.blade)
+                    }
+                })
+            })
+
+            $(document.body).on('click', '[data-insert="wishList"]', function() {
+                $.ajax({
+                    url: $(this).data('url'),
+                    success: function(response) {
+                        console.log(response);
+                        window.location.reload();
+                    }
+                })
+            })
+    </script>
+@endpush

@@ -97,7 +97,7 @@
             });
         });
 
-        //SORT
+        //SORT 
 
         $(document).on('change', '#status-select', function() {
             var select = $(this).val();

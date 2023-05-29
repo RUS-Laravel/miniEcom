@@ -94,10 +94,10 @@ class Product extends Model
         return $query->where('status', 1);
     }
 
-    public function color_products(): HasOne
+   /* public function color_products(): HasOne
     {
         return $this->hasOne(Color_Products::class, 'product_id', 'id');
-    }
+    }*/
 
     public function colors()
     {

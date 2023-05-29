@@ -38,8 +38,9 @@
                 <a href="#">all</a>
               </div>
               <form class="ecommerce-ordering">
-                <select>
-                  <option value="default-sorting">Default Sorting</option>
+                @csrf
+                <select id="sort" name="sort">
+                  <option value="">Default Sorting</option>
                   <option value="price-low-to-high">Price: high to low</option>
                   <option value="price-high-to-low">Price: low to high</option>
                   <option value="by-popularity">By Popularity</option>
@@ -52,92 +53,10 @@
             <div class="row">
               <div class="col-md-9 catalogue-col right mb-50">
                 <div class="shop-catalogue grid-view">
-  
-                  <div class="row items-grid">
-                    @foreach ($products as $product)
-                      
-                    <div class="col-md-4 col-xs-6 product product-grid">
-                      <div class="product-item clearfix">
-                        <div class="product-img hover-trigger">
-                          <a href="{{$product->category_id}}">
-                            <img src="{{url('img/shop/shop_item_1.jpg')}}" alt="">
-                            <img src="{{url('img/shop/shop_item_back_1.jpg')}}" alt="" class="back-img">
-                          </a>
-                          @if ($product->discount)
-                            <div class="product-label">
-                              <span class="sale">sale</span>
-                            </div>
-                          @endif
-                          
-                          <div class="hover-2">                    
-                            <div class="product-actions">
-                              <a href="#" class="product-add-to-wishlist">
-                                <i class="fa fa-heart"></i>
-                              </a>
-                            </div>                        
-                          </div>
-                          <a href="{{ route('product.detail', [
-                            'slug' => $product->slug,
-                            'id' => $product->id,
-                        ]) }}" class="product-quickview">Quick View</a>
-                        </div>
-  
-                        <div class="product-details">
-                          <h3 class="product-title">
-                            <a href="{{ route('product.detail', [
-                              'slug' => $product->slug,
-                              'id' => $product->id,
-                          ]) }}">{{$product->title}}</a>
-                          </h3>
-                          <span class="category">
-                            <a href="{{$product->category_id}}">{{$product->category->name}}</a>
-                          </span>
-                        </div>
-  
-                        <span class="price">
-                          @if ($product->discount)
-                          <del>
-                            <span>{{$product->price_pretty}}</span>
-                          </del>
-                          @endif
-                          <ins>
-                            <span class="amount">{{$product->discount_price}}</span>
-                          </ins>                        
-                        </span>
-  
-                        <div class="product-description">
-                          <h3 class="product-title">
-                            <a href="{{ route('product.detail', [
-                              'slug' => $product->slug,
-                              'id' => $product->id,
-                          ]) }}">{{$product->title}}</a>
-                          </h3>
-                          <span class="price">
-                            @if ($product->discount)
-                              <del>
-                                <span>{{$product->price_pretty}}</span>
-                              </del>
-                            @endif
-                            
-                            <ins>
-                              <span class="amount">{{$product->discount_price}}</span>
-                            </ins>                        
-                          </span>
-                          <span class="rating">
-                            <a href="#">3 Reviews</a>
-                          </span>
-                          <div class="clear"></div>
-                          <p>{{$product->description}}</p>
-                          <a href="#" class="btn btn-dark btn-md left"><span>Add to Cart</span></a>
-                          <div class="product-add-to-wishlist">
-                            <a href="#"><i class="fa fa-heart"></i></a>
-                          </div>
-                        </div>                      
-  
-                      </div>
-                    </div> <!-- end product -->
-                    @endforeach
-  
+                  
+                  <input type="hidden" value="{{$id}}" name="id">
+                  <div class="row items-grid" data-control="category-data-table">
+                    
                   </div> <!-- end row -->
                 </div> <!-- end grid mode -->
                 
@@ -170,8 +89,8 @@
                   <div id="slider-range"></div>
                   <p>
                     <label for="amount">Price:</label>
-                    <input type="text" id="amount">
-                    <a href="#" class="btn btn-sm btn-stroke"><span>Filter</span></a>
+                    <input type="text" id="amount" name="amount">
+                    <a href="javascript:void(0)" data-insert="priceFilter" class="btn btn-sm btn-stroke"><span>Filter</span></a>
                   </p>
                 </div>
   
@@ -179,15 +98,12 @@
                 <div class="widget filter-by-color">
                   <h3 class="widget-title heading uppercase relative bottom-line full-grey">Color</h3>
                   <ul class="color-select list-dividers">
-                    @foreach ($products as $product)
-                      @foreach ($product_colors as $color)
-                        @if ($product->id == $color->product_id)
+                    @foreach ($colors as $color)
                           <li>
-                            <input type="checkbox" class="input-checkbox" id="{{$color->color->color_name}}-color" name="{{$color->color->color_name}}-color">
-                            <label for="{{$color->color->color_name}}-color" class="checkbox-label">{{$color->color->color_name}}</label>
+                            <input type="checkbox" class="input-checkbox" id="{{$color->color_name}}" name="color" value="{{$color->id}}">
+                            <label for="{{$color->color_name}}" class="checkbox-label">{{$color->color_name}}</label>
                           </li>
-                        @endif  
-                      @endforeach
+                      
                     @endforeach
                    
                   </ul>
@@ -197,19 +113,12 @@
                 <div class="widget filter-by-size">
                   <h3 class="widget-title heading uppercase relative bottom-line full-grey">Size</h3>
                   <ul class="size-select list-dividers">
-                    @foreach ($products as $product)
-                      @foreach ($product_colors as $color)
-                        @if ($product->id == $color->product_id)
-                          @foreach ($product_sizes as $size)
-                            @if ($size->product_color_id == $color->id)
+                    @foreach ($sizes as $size)
                               <li>
-                                <input type="checkbox" class="input-checkbox" id="{{$size->size->size}}-size" name="{{$size->size->size}}-size">
-                                <label for="{{$size->size->size}}-size" class="checkbox-label">{{$size->size->size}}</label>
+                                <input type="checkbox" class="input-checkbox" id="size" name="size" value="{{$size->id}}">
+                                <label for="size" class="checkbox-label">{{$size->size}}</label>
                               </li>
-                            @endif                 
-                          @endforeach
-                        @endif
-                      @endforeach
+                           
                     @endforeach
                    
                   </ul>
@@ -252,8 +161,10 @@
                   @php
                     $explode_tags = explode(",", $category->tags);
                   @endphp
+                  
                   @foreach ($explode_tags as $tag)
-                    <a href="{{route('product.tag',$tag)}}">{{$tag ?? ''}}</a>
+                    <a href="javascript:void(0)" data-value="{{$tag}}" data-click="tag">{{$tag ?? ''}}</a>
+                    <input type="hidden" value="" name="tag">
                   @endforeach
                   
                 </div>
@@ -265,4 +176,140 @@
         </section> <!-- end catalog -->
   
 @endsection
+@push('js')
+  <script>
+    $(document).ready(function() {
+            table();         
+        });
+
+    function table(data = {}) {     
+            $.ajax({
+                url:  '{{ route('category.show') }}',
+                data: data,
+                dataType: 'json',
+                success: function(response) {
+                    if (response.table !== undefined) {
+                      console.log(response);
+                        $('[data-control="category-data-table"]').html(response.table)
+                    }
+                }
+            });
+        }
+
+        //CATEGORY
+        $(document).ready(function() {
+            table({
+                id: $('[name="id"]').val(),
+                _token: '{{ csrf_token() }}'
+            });
+        });
+
+        //PRICE FILTER
+
+       /* $(document).on('click', '[data-insert="priceFilter]', function() {
+          console.log($('[name="amount"]').val());
+            table({
+                id: $('[name="id"]').val(),
+                _token: '{{ csrf_token() }}',
+                amount: $('[name="amount"]').val(),
+                color: $('[name="color"]').find(':checked').val(),
+                size: $('[name="size"]').find(':checked').val()
+            });
+        });*/
+
+        //TAG
+
+        $(document).on('click', '[data-click="tag"]', function() {
+          $('[name="tag"]').val($(this).data('value'))
+            table({
+                id: $('[name="id"]').val(),
+                _token: '{{ csrf_token() }}',
+                tag: $('[name="tag"]').val(),
+                
+            });
+        });
+
+        //COLOR 
+        $(document).on('click', '[name="color"]', function() {
+         
+            let colorCheckboxes = document.querySelectorAll('input[name="color"]:checked');
+            let colorValues = [];
+            colorCheckboxes.forEach((colorCheckbox) => {
+                colorValues.push(colorCheckbox.value);
+            });
+
+            let sizeCheckboxes = document.querySelectorAll('input[name="size"]:checked');
+            let sizeValues = [];
+            sizeCheckboxes.forEach((sizeCheckbox) => {
+                sizeValues.push(sizeCheckbox.value);
+            });
+            //console.log(colorValues)
+            table({
+              id: $('[name="id"]').val(),
+              _token: '{{ csrf_token() }}',
+              color:  colorValues,
+              size: sizeValues,
+              sort: $('[name="sort"]').find(':selected').val()
+            });
+        });
+       
+        //SIZE
+        $(document).on('click', '[name="size"]', function() {
+          let colorCheckboxes = document.querySelectorAll('input[name="color"]:checked');
+            let colorValues = [];
+            colorCheckboxes.forEach((colorCheckbox) => {
+                colorValues.push(colorCheckbox.value);
+            });
+
+            let sizeCheckboxes = document.querySelectorAll('input[name="size"]:checked');
+            let sizeValues = [];
+            sizeCheckboxes.forEach((sizeCheckbox) => {
+                sizeValues.push(sizeCheckbox.value);
+            });
+
+            table({
+              id: $('[name="id"]').val(),
+              _token: '{{ csrf_token() }}',
+              color:  colorValues,
+              size:   sizeValues,
+              sort: $('#sort').find(':selected').val()
+            });
+        });
+
+         //SORT 
+
+         $(document).on('change', '[name="sort"]', function() {
+          //console.log( $(this).val())
+          let colorCheckboxes = document.querySelectorAll('input[name="color"]:checked');
+            let colorValues = [];
+            colorCheckboxes.forEach((colorCheckbox) => {
+                colorValues.push(colorCheckbox.value);
+            });
+
+            let sizeCheckboxes = document.querySelectorAll('input[name="size"]:checked');
+            let sizeValues = [];
+            sizeCheckboxes.forEach((sizeCheckbox) => {
+                sizeValues.push(sizeCheckbox.value);
+            });
+
+            table({
+              id: $('[name="id"]').val(),
+              _token: '{{ csrf_token() }}',
+              color:  colorValues,
+              size: sizeValues,
+              sort: $(this).val()
+            });
+        });
+        
+        $(document.body).on('click', '[data-insert="wishList"]', function() {
+                $.ajax({
+                    url: $(this).data('url'),
+                    success: function(response) {
+                        console.log(response);
+                        window.location.reload();
+                    }
+                })
+            })
+  </script>
+@endpush
   

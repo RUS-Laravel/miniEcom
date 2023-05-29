@@ -61,16 +61,19 @@
         }
         user_fetch()*/
         $(document.body).on('click','[data-information="user-information-button"]', function(){
+            console.log($user_information_modal.find('[name="phone"]').val())
+            console.log($user_information_modal.find('[name="address"]').val())
+            console.log($user_information_modal.find('[name="user_id"]').val())
             $.ajax({
                 url: '{{route("admin.users.informations.store")}}',
                 method: 'POST',
                 data: {
                     phone: $user_information_modal.find('[name="phone"]').val(),
                     address: $user_information_modal.find('[name="address"]').val(),
-                    
+                    user_id : $user_information_modal.find('[name="user_id"]').val()
                 },
                 success: function(response){
-                    var err = ''
+                
                     console.log(response)
                     if(response.status){
                         Swal.fire(
@@ -90,11 +93,7 @@
                             $user_information_modal.modal('hide')
                             table();
                         })
-                        $.each(response.data, function(key, err_message){
-                                err = err + '<li class="alert alert-warning py-1">'+err_message+'</li>'
-                            });
-                        
-                        $("#erorrs").html(err);
+                       
                     }
                 }
             })

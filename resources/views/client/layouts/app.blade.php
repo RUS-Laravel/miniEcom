@@ -74,7 +74,7 @@
                             </div>
 
                             <!-- item-->
-                            <a href="javascript:void(0);" class="dropdown-item notify-item">
+                            <a href="{{ route('client.profiles.index') }}" class="dropdown-item notify-item">
                                 <i class="fe-user"></i>
                                 <span>@lang('My Account')</span>
                             </a>
