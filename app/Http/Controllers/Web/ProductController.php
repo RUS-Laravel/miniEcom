@@ -30,7 +30,7 @@ class ProductController extends BaseController
         return view('web.products.detail', compact('product', 'sizes'));
     }
 
-    
+
 
     public function review_rating(ReviewRatingRequest $request)
     {
@@ -50,33 +50,43 @@ class ProductController extends BaseController
 
     public function wishlist_add($id)
     {
-        if (WishList::where('product_id', $id)->where('user_id', auth('client')->user()->id)->where('wish', '1')->count()) {
-            $res = WishList::where('product_id', $id)
-                ->where('user_id', auth('client')->user()->id)
-                ->delete();
+        if (auth('client')->check()) {
+            if (WishList::where('product_id', $id)->where('user_id', auth('client')->id())->where('wish', '1')->count()) {
+                $res = WishList::where('product_id', $id)
+                    ->where('user_id', auth('client')->user()->id)
+                    ->delete();
+            } else {
+                $data = [
+                    'user_id' => auth('client')->id(),
+                    'product_id' => $id,
+                    'wish' => 1
+                ];
+                $res = WishList::create($data);
+            }
+            return $res;
         } else {
-            $data = [
-                'user_id' => auth('client')->user()->id,
-                'product_id' => $id,
-                'wish' => 1
-            ];
-            $res = WishList::create($data);
+            return redirect()->route('login.account');
         }
-        return $res;
     }
 
-    public function wishList(){
-        $products = WishList::where('user_id',auth('client')->user()->id)->with('product','product.category','product.review_rating')->get();
-        return view('web.wishList.wishList', compact('products'));
+    public function wishList()
+    {
+        if (auth('client')->check()) {
+            $products = WishList::where('user_id', auth('client')->id())->with('product', 'product.category', 'product.review_rating')->get();
+            return view('web.wishList.wishList', compact('products'));
+        } else {
+            return redirect()->route('login.account');
+        }
     }
 
-    public function tag($tag){
+    public function tag($tag)
+    {
         $products = Product::where('title', 'like', '%' . $tag . '%')
-                            ->where('status','1')
-                            ->with('category:id,name')
-                            ->with('review_rating') 
-                            ->get();
-        return view('web.products.tag',compact('products'));
+            ->where('status', '1')
+            ->with('category:id,name')
+            ->with('review_rating')
+            ->get();
+        return view('web.products.tag', compact('products'));
     }
 
     /*public function newsletter(){

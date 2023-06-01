@@ -33,7 +33,7 @@ Route::post('product/rating', [ProductController::class, 'review_rating'])->name
 Route::get('product/add-wishlist/{id}', [ProductController::class, 'wishlist_add'])->name('product.add_wishlist');
 Route::get('product/wishlist', [ProductController::class, 'wishList'])->name('wishList.show');
 Route::get('product/{tag}', [ProductController::class, 'tag'])->name('product.tag');
-//Route::get('product/newsletter', [ProductController::class, 'newsletter'])->name('product.newsletter');
+Route::get('product/newsletter', [ProductController::class, 'newsletter'])->name('product.newsletter');
 
 Route::prefix('cart')->group(function () {
     Route::get('/', [CartController::class, 'index'])->name('cart.index');

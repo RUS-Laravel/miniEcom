@@ -209,21 +209,7 @@
 
         let $product_insert = $('#productInsert');
 
-        /*$(document).ready(function() {
-            productId();
-        });
 
-        function productId() {
-            $.ajax({
-                url: "{{ route('admin.products.productId.image') }}",
-                success: function(response) {
-                    if (response.data) {
-                        console.log(response.data);
-                        $('[data-product="productId"]').val(response.data)
-                    }
-                }
-            });
-        }*/
 
         $(document.body).on('click','[data-insert="productInsertButton"]', function(){
             $.ajax({

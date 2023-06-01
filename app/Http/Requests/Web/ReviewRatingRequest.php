@@ -30,4 +30,12 @@ class ReviewRatingRequest extends BaseRequest
             'comment' => ['nullable'],
         ];
     }
+
+    public function prepareForValidation()
+    {
+        $this->merge([
+            'star_rating' => $this->rating,
+            'comments' => $this->comment,
+        ]);
+    }
 }

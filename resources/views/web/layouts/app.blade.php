@@ -30,12 +30,12 @@
 <body class="relative vertical-nav">
 
     <!-- Preloader -->
-    <div class="loader-mask">
+    {{-- <div class="loader-mask">
         <div class="loader">
             <div></div>
             <div></div>
         </div>
-    </div>
+    </div> --}}
 
     <main class="main-wrapper">
 
