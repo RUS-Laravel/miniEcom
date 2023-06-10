@@ -104,10 +104,9 @@
                                 {{-- @php
                                     $explode_tags = explode(',', $product->tags);
                                 @endphp --}}
-                                
+
                                 @foreach ($product->etags ?? [] as $tag)
-                                    <a href="{{route('product.tag', $tag)}}">{{ $tag }} </a>,
-                                   
+                                    <a href="{{ route('product.tag', $tag) }}">{{ $tag }} </a>,
                                 @endforeach
                             </span>
                         </div>
@@ -173,34 +172,25 @@
                                         <div class="reviews">
                                             <ul class="reviews-list">
                                                 @foreach ($product->review_rating as $rating)
-                                                  
-                                                            <li>
-                                                                <div class="review-body">
-                                                                    <div class="review-content">
-                                                                        <p class="review-author"><strong> {{ $rating->user->name }} </strong> - {{ $rating->created_at }}</p>
-                                                                        <div class="rating">
-                                                                            @for ($i = 1; $i <= $rating->star_rating; $i++)
-                                                                                <a href="javascript:void(0)"></a>
-                                                                            @endfor
-
-                                                                        </div>
-                                                                        <p> {{ $rating->comments }} </p>
-                                                                    </div>
+                                                    <li>
+                                                        <div class="review-body">
+                                                            <div class="review-content">
+                                                                <p class="review-author"><strong> {{ $rating->user->name }} </strong> - {{ $rating->created_at }}</p>
+                                                                <div class="">
+                                                                    @for ($i = 1; $i <= 5; $i++)
+                                                                        @if ($i <= $rating->star_rating)
+                                                                            <a href="javascript:void(0)">*</a>
+                                                                        @else
+                                                                            <a href="javascript:void(0)">-</a>
+                                                                        @endif
+                                                                    @endfor
                                                                 </div>
-                                                            </li>
-                                                       
-                                                @endforeach
-                                                <li>
-                                                    <div class="review-body">
-                                                        <div class="review-content">
-                                                            <p class="review-author"><strong>Alexander Samokhin</strong> - May 6, 2014 at 12:48 pm</p>
-                                                            <div class="rating">
-                                                                <a href="#"></a>
+                                                                <p> {{ $rating->comments }} </p>
                                                             </div>
-                                                            <p>This template is so awesome. I didn’t expect so many features inside. E-commerce pages are very useful, you can launch your online store in few seconds. I will rate 5 stars.</p>
                                                         </div>
-                                                    </div>
-                                                </li>
+                                                    </li>
+                                                @endforeach
+
                                             </ul>
                                             @if (auth('client')->user())
                                                 <p class="h5">Mehsul haqqinda reyinizi bildirin...</p>
@@ -254,8 +244,6 @@
     @push('js')
 
         <script>
-
-        
             // ---- ---- Const ---- ---- //
             const stars = document.querySelectorAll('.stars i');
             //const starsNone = document.querySelector('.rating-box');
@@ -306,23 +294,36 @@
                     success: function(response) {
                         console.log(response)
                         $('[data-control="product-size"]').html(response.blade)
-                        
+                        /*if(response != undefined){
+                            $('[data-control="query"]').html('<button type="submit" class="btn btn-dark btn-lg add-to-cart"><span>Add to Cart</span></button>')
+                        }else{
+                            $('[data-control="query"]').html('<button type="submit" class="btn btn-dark btn-lg add-to-cart"><span>Add Newsletter</span></button>')
+                        }*/
                     }
                 })
             })
 
-          
-            $(document.body).on('click', '[data-insert="wishList"]', function() {
+           /* $(document).ready(function() { 
+                console.log($('[name="color_id"]').find(':selected').val());
+                console.log($('[name="size_id"]').find(':selected').val())           
                 $.ajax({
-                    url: $(this).data('url'),
-                    success: function(response) {
-                        console.log(response);
-                        window.location.reload();
+                url:  '{{ route('product.newsletter') }}',
+                data: {
+                    color: $('[name="color_id"]').find(':selected').val(),
+                    size: $('[name="size_id"]').find(':selected').val()
+                },
+                success: function(response) {
+                    console.log(response);
+                    if(response != undefined){
+                      $('[data-control="query"]').html('<button type="submit" class="btn btn-dark btn-lg add-to-cart"><span>Add to Cart</span></button>')
+                    }else{
+                        $('[data-control="query"]').html('<button type="submit" class="btn btn-dark btn-lg add-to-cart"><span>Add Newsletter</span></button>')
                     }
-                })
-            })
+                }
+                });
+            });*/
 
-            $(document.body).on('click', '[data-insert="newsletter"]', function() {
+            $(document.body).on('click', '[data-insert="wishList"]', function() {
                 $.ajax({
                     url: $(this).data('url'),
                     success: function(response) {
