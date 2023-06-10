@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\WishList;
 use App\Models\ReviewRating;
 use App\Models\Product_Size;
+use App\Models\NewsLetter;
 use Illuminate\Http\Request;
 use App\Http\Requests\Web\ReviewRatingRequest;
 
@@ -70,6 +71,26 @@ class ProductController extends BaseController
         return view('web.wishList.wishList', compact('products'));
     }
 
+    public function addNewsletter($id){
+        if (NewsLetter::where('product_id', $id)->where('user_id', auth('client')->user()->id)->count()) {
+            $res = NewsLetter::where('product_id', $id)
+                ->where('user_id', auth('client')->user()->id)
+                ->delete();
+        } else {
+            $data = [
+                'user_id' => auth('client')->user()->id,
+                'product_id' => $id
+            ];
+            $res = NewsLetter::create($data);
+        }
+        return $res;
+    }
+
+    public function newsletter(){
+        $products = NewsLetter::where('user_id',auth('client')->user()->id)->with('product','product.category','product.review_rating')->get();
+        return view('web.newsletter.newsletter', compact('products'));
+    }
+
     public function tag($tag){
         $products = Product::where('title', 'like', '%' . $tag . '%')
                             ->where('status','1')
@@ -79,11 +100,5 @@ class ProductController extends BaseController
         return view('web.products.tag',compact('products'));
     }
 
-    /*public function newsletter(){
-        $color = request()->color;
-        $size = request()->size;
-
-        $res = Product_Size::where('size_id',$size)->where('product_color_id',$color)->first();
-        return response()->json($res);
-    }*/
+    
 }
