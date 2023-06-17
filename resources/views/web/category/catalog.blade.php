@@ -90,7 +90,7 @@
                     <p>
                         <label for="amount">Price:</label>
                         <input type="text" id="amount" name="amount">
-                        
+
                     </p>
                 </div>
 
@@ -100,8 +100,8 @@
                     <ul class="color-select list-dividers">
                         @foreach ($colors as $color)
                             <li>
-                                <input type="checkbox" class="input-checkbox" id="{{ $color->color_name }}" name="color" value="{{ $color->id }}">
-                                <label for="{{ $color->color_name }}" class="checkbox-label">{{ $color->color_name }}</label>
+                                <input type="checkbox" class="input-checkbox" id="color_{{ $color->color_name }}" name="color" value="{{ $color->id }}">
+                                <label for="color_{{ $color->color_name }}" class="checkbox-label">{{ $color->color_name }}</label>
                             </li>
                         @endforeach
 
@@ -112,34 +112,35 @@
                 <div class="widget filter-by-size">
                     <h3 class="widget-title heading uppercase relative bottom-line full-grey">Size</h3>
                     <ul class="size-select list-dividers">
-                        @foreach ($sizes as $size)
+                        @foreach ($sizes as $index => $size)
                             <li>
-                                <input type="checkbox" class="input-checkbox" id="size" name="size" value="{{ $size->id }}">
-                                <label for="size" class="checkbox-label">{{ $size->size }}</label>
+                                <input type="checkbox" class="input-checkbox" id="size{{ $index }}" name="size" value="{{ $size->id }}">
+                                <label for="size{{ $index }}" class="checkbox-label">{{ $size->size }}</label>
                             </li>
                         @endforeach
 
                     </ul>
                 </div>
-                <a href="javascript:void(0)" data-insert="filter" class="btn btn-sm btn-stroke"><span>Filter</span></a>
-                <!-- Best Sellers -->
-                <div class="widget bestsellers" data-control="best-product-table">
-                    
-                </div>
 
                 <!-- Tags -->
                 <div class="widget tags clearfix">
                     <h3 class="widget-title heading uppercase relative bottom-line full-grey">Tags</h3>
-                   
                     @foreach ($category->etags ?? [] as $tag)
-                        <a href="javascript:void(0)" data-value="{{ $tag }}" data-click="tag">{{ $tag ?? '' }}</a>
-                        <input type="hidden" value="" name="tag">
+                        @if ($tag)
+                            <a href="javascript:void(0)" data-value="{{ $tag }}" data-click="tag">{{ $tag ?? '' }}</a>
+                            <input type="hidden" value="" name="tag">
+                        @endif
                     @endforeach
 
                 </div>
 
-            </aside> <!-- end sidebar -->
+                <a href="javascript:void(0)" data-insert="filter" class="btn btn-sm btn-stroke mb-10 w-100"><span>Filter</span></a>
 
+                <!-- Best Sellers -->
+                <div class="widget bestsellers" data-control="best-product-table">
+                    @include('web.category.best_products')
+                </div>
+            </aside> <!-- end sidebar -->
         </div> <!-- end row -->
     </div> <!-- end container -->
 </section> <!-- end catalog -->
@@ -147,37 +148,16 @@
 @endsection
 @push('js')
 <script>
-    $(function() {
-        $("#slider-range").slider({
-            range: true,
-            min: 0,
-            max: {{$max_price}},
-            values: [0, {{$max_price}}],
-            slide: function(event, ui) {
-                console.log({
-                    low: ui.values[0],
-                    hight: ui.values[1],
-                });
-                $("#amount").val("руб" + ui.values[0] + " - руб" + ui.values[1]);
-                setTimeout(() => {
-                    table({
-                        id: $('[name="id"]').val(),
-                        _token: '{{ csrf_token() }}',
-                        range: {
-                            low: ui.values[0],
-                            hight: ui.values[1],
-                        },
-                    });
-                }, 500);
-            }
-        });
-        $("#amount").val("руб " + $("#slider-range").slider("values", 0) +
-            " - руб " + $("#slider-range").slider("values", 1));
-    });
+    // set by default for filetering data
+    var data = {
+        id: $('[name="id"]').val(),
+        _token: '{{ csrf_token() }}',
+    };
 
-
-    $(document.body).on('click','[data-insert="filter"]', function() {
-        table();
+    // Filter Button event
+    $(document.body).on('click', '[data-insert="filter"]', function() {
+         console.log(data);
+        table(data);
     });
 
     function table(data = {}) {
@@ -187,112 +167,74 @@
             dataType: 'json',
             success: function(response) {
                 if (response.table !== undefined) {
-                    console.log(response);
                     $('[data-control="category-data-table"]').html(response.table)
-                    //$('[data-control="best-product-table"]').html(response.bests)
                 }
             }
         });
     }
 
-    //CATEGORY
-    $(document).ready(function() {
-        table({
-            id: $('[name="id"]').val(),
-            _token: '{{ csrf_token() }}'
-        });
+    $("#slider-range").slider({
+        range: true,
+        min: 0,
+        max: {{ $max_price }},
+        values: [0, {{ $max_price }}],
+        slide: function(event, ui) {
+            // console.log({
+            //     low: ui.values[0],
+            //     hight: ui.values[1],
+            // });
+            $("#amount").val("руб " + ui.values[0] + " - руб " + ui.values[1]);
+            setTimeout(() => {
+                data.range = {
+                    low: ui.values[0],
+                    hight: ui.values[1]
+                }
+            }, 500);
+        }
     });
 
+    $("#amount").val("руб " + $("#slider-range").slider("values", 0) + " - руб " + $("#slider-range").slider("values", 1));
+
+    //CATEGORY
+    $(document).ready(function() {
+        table(data);
+    });
 
     //TAG
-
     $(document).on('click', '[data-click="tag"]', function() {
         $('[name="tag"]').val($(this).data('value'))
-        table({
-            id: $('[name="id"]').val(),
-            _token: '{{ csrf_token() }}',
-            tag: $('[name="tag"]').val(),
-
-        });
+        data.tag = $(this).data('value')
     });
 
     //COLOR 
     $(document).on('click', '[name="color"]', function() {
-
         let colorCheckboxes = document.querySelectorAll('input[name="color"]:checked');
         let colorValues = [];
         colorCheckboxes.forEach((colorCheckbox) => {
             colorValues.push(colorCheckbox.value);
         });
-
-        let sizeCheckboxes = document.querySelectorAll('input[name="size"]:checked');
-        let sizeValues = [];
-        sizeCheckboxes.forEach((sizeCheckbox) => {
-            sizeValues.push(sizeCheckbox.value);
-        });
-        //console.log(colorValues)
-        table({
-            id: $('[name="id"]').val(),
-            _token: '{{ csrf_token() }}',
-            color: colorValues,
-            size: sizeValues,
-            sort: $('[name="sort"]').find(':selected').val()
-        });
+        data.color = colorValues;
     });
 
     //SIZE
     $(document).on('click', '[name="size"]', function() {
-        let colorCheckboxes = document.querySelectorAll('input[name="color"]:checked');
-        let colorValues = [];
-        colorCheckboxes.forEach((colorCheckbox) => {
-            colorValues.push(colorCheckbox.value);
-        });
-
         let sizeCheckboxes = document.querySelectorAll('input[name="size"]:checked');
         let sizeValues = [];
         sizeCheckboxes.forEach((sizeCheckbox) => {
             sizeValues.push(sizeCheckbox.value);
         });
-
-        table({
-            id: $('[name="id"]').val(),
-            _token: '{{ csrf_token() }}',
-            color: colorValues,
-            size: sizeValues,
-            sort: $('#sort').find(':selected').val()
-        });
+        data.size = sizeValues;
     });
 
     //SORT 
-
     $(document).on('change', '[name="sort"]', function() {
-        //console.log( $(this).val())
-        let colorCheckboxes = document.querySelectorAll('input[name="color"]:checked');
-        let colorValues = [];
-        colorCheckboxes.forEach((colorCheckbox) => {
-            colorValues.push(colorCheckbox.value);
-        });
-
-        let sizeCheckboxes = document.querySelectorAll('input[name="size"]:checked');
-        let sizeValues = [];
-        sizeCheckboxes.forEach((sizeCheckbox) => {
-            sizeValues.push(sizeCheckbox.value);
-        });
-
-        table({
-            id: $('[name="id"]').val(),
-            _token: '{{ csrf_token() }}',
-            color: colorValues,
-            size: sizeValues,
-            sort: $(this).val()
-        });
+        data.sort = $(this).val()
     });
 
     $(document.body).on('click', '[data-insert="wishList"]', function() {
         $.ajax({
             url: $(this).data('url'),
             success: function(response) {
-                console.log(response);
                 window.location.reload();
             }
         })

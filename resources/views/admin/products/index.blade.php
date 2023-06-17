@@ -45,8 +45,18 @@
                 <p class="sub-header font-13">
                     @include('admin.products.error')
                 </p>
-                <div class="table-responsive mt-1 mb-1" data-control="data-table">
-
+                <div class="table-responsive mt-1 mb-1" data-control="data-tablee">
+                    <table id="data-table" class="table">
+                        <thead>
+                            <tr>
+                                <th class="">@lang('Index')</th>
+                                <th class="">@lang('Title')</th>
+                                <th class="">@lang('Price')</th>
+                                <th class="">@lang('Category')</th>
+                                <th class="">@lang('Stock')</th>
+                            </tr>
+                        </thead>
+                    </table>
                 </div>
                 {{-- @isset($products)
                 {!! $products->withQueryString()->links('vendor.pagination.bootstrap-5') !!}
@@ -60,17 +70,74 @@
 @endsection
 @push('css-lib')
     <link href="{{ url('assets/libs/selectize/css/selectize.bootstrap3.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ url('assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ url('assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ url('assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ url('assets/libs/datatables.net-select-bs4/css//select.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
 @endpush
 @push('css')
     <!-- Sweet Alert-->
     <link href="{{ url('assets/libs/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
 @endpush
 @push('js')
+    <script src="{{ url('assets/libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ url('assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ url('assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ url('assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js') }}"></script>
+    <script src="{{ url('assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ url('assets/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js') }}"></script>
+    <script src="{{ url('assets/libs/datatables.net-buttons/js/buttons.html5.min.js') }}"></script>
+    <script src="{{ url('assets/libs/datatables.net-buttons/js/buttons.flash.min.js') }}"></script>
+    <script src="{{ url('assets/libs/datatables.net-buttons/js/buttons.print.min.js') }}"></script>
+    <script src="{{ url('assets/libs/datatables.net-keytable/js/dataTables.keyTable.min.js') }}"></script>
+    <script src="{{ url('assets/libs/datatables.net-select/js/dataTables.select.min.js') }}"></script>
     <script src="{{ url('assets/libs/sweetalert2/sweetalert2.min.js') }}"></script>
     <script src="{{ url('assets/libs/selectize/js/standalone/selectize.min.js') }}"></script>
     <script>
         $(document).ready(function() {
-            table();
+            $('#data-table').dataTable({
+
+                "lengthMenu": [
+                    [2, 250, 500, 1000, -1],
+                    [2, 250, 500, 1000, "Tümü"]
+                ],
+                "ajax": {
+                    url: '{{ route('admin.products.data') }}',
+                    error: function(xhr, error, code) {
+                        if (xhr.responseJSON)
+                            console.log(xhr.responseJSON.message, code)
+                    },
+                    dataSrc: function(json) {
+                        return json.data;
+                    },
+                    data: function(d) {
+                        // backende requestin ötürülmesi
+                        d._token = '{{ csrf_token() }}';
+                        d.search = $('input[type="search"]').val();
+                    },
+                },
+                columns: [{
+                        data: 'id'
+                    },
+                    {
+                        data: 'title'
+                    },
+                    {
+                        data: 'price',
+                        class: 'text-right'
+                    },
+                    {
+                        data: 'category.name',
+                    },
+                    {
+                        data: 'stock',
+                        class: 'text-right'
+                    }
+                ],
+            });
+        });
+        $(document).ready(function() {
+            // table();
         });
 
         function table(data = {}) {

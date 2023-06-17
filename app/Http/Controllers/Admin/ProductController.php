@@ -103,27 +103,38 @@ class ProductController extends BaseController
 
         $query = Product::with('category:id,name');
 
-        if (!empty($search)) {
-            $query = $query->where(function ($q) use ($search) {
-                $q->where('title', 'like', '%' . $search . '%')
-                    ->orWhere('stock', 'like', '%' . $search . '%')
-                    ->orWhere('discount', 'like', '%' . $search . '%')
-                    ->orWhere('price', 'like', '%' . $search . '%');
-            });
-        }
+        // if (!empty($search)) {
+        //     $query = $query->where(function ($q) use ($search) {
+        //         $q->where('title', 'like', '%' . $search . '%')
+        //             ->orWhere('stock', 'like', '%' . $search . '%')
+        //             ->orWhere('discount', 'like', '%' . $search . '%')
+        //             ->orWhere('price', 'like', '%' . $search . '%');
+        //     });
+        // }
 
-        if (!empty($select)) {
-            $query = match ($select) {
-                'low' => $query->orderBy('price', 'asc'),
-                'high' => $query->orderBy('price', 'desc'),
-                default => $query
-            };
-        }
+        // if (!empty($select)) {
+        //     $query = match ($select) {
+        //         'low' => $query->orderBy('price', 'asc'),
+        //         'high' => $query->orderBy('price', 'desc'),
+        //         default => $query
+        //     };
+        // }
+        $recordsTotal = $query->get()->count();
+        $countDatum = $recordsTotal;
+        $countDatum = $query->get()->count();
+        if (request()->get('length'))
+            $length = request()->get('length');
+        else
+            $length = 1;
+        if ($length != -1)
+            $query->skip(request()->get('start'))->take($length);
 
         return response()->json([
-            'data' => $query->paginate(11),
-            'blade' => view('admin.products.table', ['products' => $query->paginate(11)])->render(),
-            'req' => $request->all()
+            'data' => $query->get(),
+            'recordsTotal' => $recordsTotal,
+            'recordsFiltered' => $countDatum,
+            'draw' => $request->get('draw'),
+            'draws' => $request->all(),
         ]);
     }
 
