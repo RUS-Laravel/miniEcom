@@ -91,7 +91,7 @@
                             @if ($product->stock == 0)
                                 <button type="submit" class="btn btn-dark btn-lg add-to-cart" data-insert="newsletter" data-url="{{ route('product.add.newsletter', $product->id) }}"><span>Add Newsletter</span></button>
                             @else
-                                <button type="submit" class="btn btn-dark btn-lg add-to-cart"><span>Add to Cart</span></button>
+                                <button type="submit" class="btn btn-dark btn-lg add-to-cart" class="product-add-to-wishlist"><span>Add to Cart</span></button>
                             @endif
                             <a href="javascript:void(0)" data-url="{{ route('product.add_wishlist', $product->id) }}" data-insert="wishList" class="product-add-to-wishlist"><i class="fa fa-heart"></i></a>
                         </div>
@@ -294,34 +294,10 @@
                     success: function(response) {
                         console.log(response)
                         $('[data-control="product-size"]').html(response.blade)
-                        /*if(response != undefined){
-                            $('[data-control="query"]').html('<button type="submit" class="btn btn-dark btn-lg add-to-cart"><span>Add to Cart</span></button>')
-                        }else{
-                            $('[data-control="query"]').html('<button type="submit" class="btn btn-dark btn-lg add-to-cart"><span>Add Newsletter</span></button>')
-                        }*/
+                        
                     }
                 })
             })
-
-           /* $(document).ready(function() { 
-                console.log($('[name="color_id"]').find(':selected').val());
-                console.log($('[name="size_id"]').find(':selected').val())           
-                $.ajax({
-                url:  '{{ route('product.newsletter') }}',
-                data: {
-                    color: $('[name="color_id"]').find(':selected').val(),
-                    size: $('[name="size_id"]').find(':selected').val()
-                },
-                success: function(response) {
-                    console.log(response);
-                    if(response != undefined){
-                      $('[data-control="query"]').html('<button type="submit" class="btn btn-dark btn-lg add-to-cart"><span>Add to Cart</span></button>')
-                    }else{
-                        $('[data-control="query"]').html('<button type="submit" class="btn btn-dark btn-lg add-to-cart"><span>Add Newsletter</span></button>')
-                    }
-                }
-                });
-            });*/
 
             $(document.body).on('click', '[data-insert="wishList"]', function() {
                 $.ajax({
@@ -333,6 +309,18 @@
                 })
             })
 
+
+            $(document.body).on('click', '[data-insert="newsletter"]', function() {
+                $.ajax({
+                    url: $(this).data('url'),
+                    success: function(response) {
+                        console.log(response);
+                        window.location.reload();
+                    }
+                })
+            })
+
+            
         
         </script>
     @endpush

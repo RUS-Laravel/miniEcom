@@ -47,7 +47,8 @@
                   
                   <div class="row items-grid" data-control="category-data-table">
                     @foreach ($products as $product)
-                        
+                        @if ($product->stock > 0)
+                          
                     <div class="col-md-4 col-xs-6 product product-grid">
                         <div class="product-item clearfix">
                           <div class="product-img hover-trigger">
@@ -134,6 +135,7 @@
     
                         </div>
                       </div>
+                      @endif
                       @endforeach
                   </div> <!-- end row -->
                 </div> <!-- end grid mode -->
@@ -159,6 +161,7 @@
           </div> <!-- end container -->
         </section> <!-- end catalog -->
     </form>
+    
 @endsection
 @push('js')
   <script>

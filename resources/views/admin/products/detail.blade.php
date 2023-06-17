@@ -140,13 +140,9 @@
                             </form>
                         </div>
 
-                        @php
-                            $explode_tags = explode(",", $product->tags);
-                        @endphp
-
                         <h4 class="header-title mt-4 mb-1">Tags</h4>
                         <ul class="list-group list-group-horizontal-sm mb-3">
-                            @foreach ($explode_tags as $tag)
+                            @foreach ($product->etags as $tag)
                             <li class="list-group-item">{{$tag}}</li>
                             @endforeach
                             

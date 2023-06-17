@@ -65,7 +65,7 @@ class CategoryController extends Controller
             };
         }
 
-        $best_ids = Order::with('details')->withSum('details', 'quantity')->get()
+        /*$best_ids = Order::with('details')->withSum('details', 'quantity')->get()
             ->sortByDesc('details_sum_quantity')
             ->split(2)
             ->first()
@@ -73,10 +73,10 @@ class CategoryController extends Controller
             ->flatten()
             ->unique()
             ->values();
-
+        $bests = Product::whereIn('id', $best_ids)->get();*/
         return response()->json([
             'data' => $products,
-            'bests' => Product::whereIn('id', $best_ids)->get(),
+            //'bests' => view('web.category.best_products', ['bests' => $bests])->render(),
             'table' => view('web.category.category', ['products' => $products->get()])->render(),
             'req' => request()->all()
         ]);
@@ -90,13 +90,13 @@ class CategoryController extends Controller
         // ]);
     }
 
-
     public function catalog($id)
     {
         $colors = Color::all();
         $sizes = Size::all();
         $category = Category::where('id', $id)->first();
-        return view('web.category.catalog', compact('id', 'colors', 'sizes', 'category'));
+        $max_price =Product::where('status','1')->max('price');
+        return view('web.category.catalog', compact('id', 'colors', 'sizes', 'category','max_price'));
         //return view('web.category.catalog', compact('products', 'product_colors', 'product_sizes', 'category'));
     }
 }

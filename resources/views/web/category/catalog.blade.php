@@ -90,7 +90,7 @@
                     <p>
                         <label for="amount">Price:</label>
                         <input type="text" id="amount" name="amount">
-                        <a href="javascript:void(0)" data-insert="priceFilter" class="btn btn-sm btn-stroke"><span>Filter</span></a>
+                        
                     </p>
                 </div>
 
@@ -121,46 +121,17 @@
 
                     </ul>
                 </div>
-
+                <a href="javascript:void(0)" data-insert="filter" class="btn btn-sm btn-stroke"><span>Filter</span></a>
                 <!-- Best Sellers -->
-                <div class="widget bestsellers">
-                    <div class="products-widget">
-                        <h3 class="widget-title heading uppercase relative bottom-line full-grey mb-30">Best Sellers</h3>
-                        <ul class="product-list-widget">
-                            <li class="clearfix">
-                                <a href="shop-single.html">
-                                    <img src="img/shop/shop_item_9.jpg" alt="">
-                                    <span class="product-title">White Shirt</span>
-                                </a>
-                                <span class="price">
-                                    <ins>
-                                        <span class="amount">$120.00</span>
-                                    </ins>
-                                </span>
-                            </li>
-                            <li class="clearfix">
-                                <a href="shop-single.html">
-                                    <img src="img/shop/shop_item_10.jpg" alt="">
-                                    <span class="product-title">Street Hoddie</span>
-                                </a>
-                                <span class="price">
-                                    <ins>
-                                        <span class="amount">$179.00</span>
-                                    </ins>
-                                </span>
-                            </li>
-                        </ul>
-                    </div>
+                <div class="widget bestsellers" data-control="best-product-table">
+                    
                 </div>
 
                 <!-- Tags -->
                 <div class="widget tags clearfix">
                     <h3 class="widget-title heading uppercase relative bottom-line full-grey">Tags</h3>
-                    @php
-                        $explode_tags = explode(',', $category->tags);
-                    @endphp
-
-                    @foreach ($explode_tags as $tag)
+                   
+                    @foreach ($category->etags ?? [] as $tag)
                         <a href="javascript:void(0)" data-value="{{ $tag }}" data-click="tag">{{ $tag ?? '' }}</a>
                         <input type="hidden" value="" name="tag">
                     @endforeach
@@ -180,14 +151,14 @@
         $("#slider-range").slider({
             range: true,
             min: 0,
-            max: 1500,
-            values: [0, 1500],
+            max: {{$max_price}},
+            values: [0, {{$max_price}}],
             slide: function(event, ui) {
                 console.log({
                     low: ui.values[0],
                     hight: ui.values[1],
                 });
-                $("#amount").val("$" + ui.values[0] + " - $" + ui.values[1]);
+                $("#amount").val("руб" + ui.values[0] + " - руб" + ui.values[1]);
                 setTimeout(() => {
                     table({
                         id: $('[name="id"]').val(),
@@ -200,10 +171,12 @@
                 }, 500);
             }
         });
-        $("#amount").val("$" + $("#slider-range").slider("values", 0) +
-            " - $" + $("#slider-range").slider("values", 1));
+        $("#amount").val("руб " + $("#slider-range").slider("values", 0) +
+            " - руб " + $("#slider-range").slider("values", 1));
     });
-    $(document).ready(function() {
+
+
+    $(document.body).on('click','[data-insert="filter"]', function() {
         table();
     });
 
@@ -216,6 +189,7 @@
                 if (response.table !== undefined) {
                     console.log(response);
                     $('[data-control="category-data-table"]').html(response.table)
+                    //$('[data-control="best-product-table"]').html(response.bests)
                 }
             }
         });
@@ -229,18 +203,6 @@
         });
     });
 
-    //PRICE FILTER
-
-    /* $(document).on('click', '[data-insert="priceFilter]', function() {
-       console.log($('[name="amount"]').val());
-         table({
-             id: $('[name="id"]').val(),
-             _token: '{{ csrf_token() }}',
-             amount: $('[name="amount"]').val(),
-             color: $('[name="color"]').find(':checked').val(),
-             size: $('[name="size"]').find(':checked').val()
-         });
-     });*/
 
     //TAG
 

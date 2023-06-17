@@ -12,6 +12,11 @@ class Category extends Model
         'name', 'description', 'status', 'parent_id','tags'
     ];
 
+    public function getEtagsAttribute()
+    {
+        return  explode(',', $this->tags);
+    }
+
     public function categories()
     {
         return $this->hasMany(self::class, 'parent_id', 'id')->with('categories');
