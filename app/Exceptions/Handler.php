@@ -51,12 +51,12 @@ class Handler extends ExceptionHandler
 
     public function render($request, Throwable $exception)
     {
-        if ($request->is('api/*')) {
-            return response()->json([
-                'message' => $exception->getMessage(),
-            ], $exception->getStatusCode() ?? 400);
-        } else {
+//        if ($request->is('api/*')) {
+//            return response()->json([
+//                'message' => $exception->getMessage(),
+//            ], $exception->getStatusCode() ?? 500);
+//        } else {
+//        }
             return parent::render($request, $exception);
-        }
     }
 }
