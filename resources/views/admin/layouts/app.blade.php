@@ -220,7 +220,8 @@
     <script type="text/javascript">
         $.ajaxSetup({
             headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'Authorization': 'Bearer 5|MmrhD7msv1W3rtusWHwkfW1o494dV32VTAeObG0i'
             }
         });
     </script>

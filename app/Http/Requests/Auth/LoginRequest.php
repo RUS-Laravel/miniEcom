@@ -35,7 +35,6 @@ class LoginRequest extends FormRequest
 
     protected function failedValidation(Validator $validator)
     {
-        dd("e");
         # ya json formatında yada view html formatında response type
         if ($this->is('api/*'))
             throw new HttpResponseException(

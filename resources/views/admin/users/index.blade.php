@@ -7,12 +7,12 @@
                 <button type="button" data-toggle="modal" data-target="#userInsertModal" class="btn btn-outline-success waves-effect waves-light">+ New User</button>
                 <button type="button" data-toggle="modal" data-target="#userInformationModal" class="btn btn-outline-success waves-effect waves-light">+ New User Information</button>
                 <p class="sub-header font-13">
-                    
+
                 </p>
                 <div class="table-responsive" data-con="table-res"></div>
                     <ul class="list-group list-group-flush" id="erorrs">
                     </ul>
-           
+
             </div>
         </div>
     </div>
@@ -23,10 +23,10 @@
 @endsection
 @push('css')
     <!-- Sweet Alert-->
-   
+
 @endpush
 @push('js')
-   
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         let $user_insert_modal = $('#userInsertModal');
@@ -73,7 +73,7 @@
                     user_id : $user_information_modal.find('[name="user_id"]').val()
                 },
                 success: function(response){
-                
+
                     console.log(response)
                     if(response.status){
                         Swal.fire(
@@ -93,7 +93,7 @@
                             $user_information_modal.modal('hide')
                             table();
                         })
-                       
+
                     }
                 }
             })
@@ -134,7 +134,7 @@
                         $.each(response.data, function(key, err_message){
                                 err = err + '<li class="alert alert-warning py-1">'+err_message+'</li>'
                             });
-                        
+
                         $("#erorrs").html(err);
                     }
                 }
@@ -142,7 +142,7 @@
         })
 
         $(document.body).on('click', '[data-control="user-edit-button"]', function() {
-            
+
             $.ajax({
                 url: $(this).data('url'),
                 success: function(response) {
@@ -156,7 +156,7 @@
                         $user_edit_modal.find("#customEditRadio1").attr('checked', true)
                     else
                         $user_edit_modal.find("#customEditRadio2").attr('checked',true)
-                
+
                         $user_edit_modal.modal('show')
                 }
             })
@@ -200,7 +200,7 @@
 
         $(document.body).on('click', '[data-con="user_del_button"]', function(){
            //console.log($(this).data('id'))
-          
+
             $.ajax({
                 url:$(this).data('url'),
                 success: function(res){

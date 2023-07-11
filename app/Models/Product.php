@@ -67,12 +67,12 @@ class Product extends Model
 
 
 
-    // public function total(): Attribute
-    // {
-    //     return new Attribute(
-    //         get: fn () => $this->stock * $this->price
-    //     );
-    // }
+//     public function total(): Attribute
+//     {
+//         return new Attribute(
+//             get: fn () => $this->stock * $this->price
+//         );
+//     }
 
     public function category(): HasOne
     {

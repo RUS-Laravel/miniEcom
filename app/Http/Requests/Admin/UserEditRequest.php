@@ -17,10 +17,10 @@ class UserEditRequest extends FormRequest
     {
         return [
             'id' => ['required'],
-            'name' => ['required'],
-            'surname' => ['required'],
+            'name' => ['nullable'],
+            'surname' => ['nullable'],
             'email' => ['required', 'email', "unique:users,id,{$this->id}"],
-            'password' => ['required'],
+            'password' => ['nullable'],
             'is_user' => ['required', 'in:1,2'],
         ];
     }
